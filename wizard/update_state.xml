@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="update_state_view" model="ir.ui.view">
+        <field name="name">update.state.view</field>
+        <field name="model">update.state</field>
+        <field name="arch" type="xml">
+            <form string="Update state">
+                <group>
+                    <group>
+                        <field name="status"/>
+                    </group>
+
+                </group>
+                <group>
+                    <field name="comment"/>
+                </group>
+
+                <footer>
+                    <button string="Confirm" name="set_update_state" type="object" default_focus="1" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_update_state" model="ir.actions.act_window">
+        <field name="name">Update State</field>
+        <field name="res_model">update.state</field>
+<!--        <field name="binding_model_id" ref="model_issues"/>-->
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="update_state_view"/>
+    </record>
+</odoo>

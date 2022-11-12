@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="issues_form" model="ir.ui.view">
+            <field name="name">issues.form</field>
+            <field name="model">issues</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="update_state" string="Update state" class="oe_highlight" type="object"/>
+                        <field name="status" widget="statusbar" statusbar_visible="new,open,onhold,resolved,duplicate,wontfix,invalid"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title pr-0">
+                            <label for="title" string="Title" class="oe_edit_only"/>
+                            <h1 class="d-flex flex-row justify-content-between">
+                                <field name="title" class="o_task_name text-truncate" placeholder="Title..."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="project_id" />
+                                <field name="reproducible"/>
+                                <field name="reporter_id"/>
+                                <field name="label_id"/>
+                            </group>
+                            <group>
+                                <field name="type"/>
+                                <field name="priority"/>
+                                <field name="assignee_id"/>
+
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="description_page" string="Description">
+                                <field name="description" widget="html"/>
+                                <div class="d-none oe_clear"/>
+                            </page>
+
+						</notebook>
+<!--                        <group>-->
+<!--                            <field name="attachment_ids" widget="many2many_binary"/>-->
+<!--                        </group>-->
+
+                    </sheet>
+
+                     <div class="oe_chatter">
+                         <field name="message_follower_ids" widget="mail_followers"/>
+                         <field name="message_ids" widget="mail_thread"/>
+                     </div>
+                </form>
+            </field>
+        </record>
+
+<!--        Tìm kiếm theo id, title-->
+        <record id="issues_search" model="ir.ui.view">
+            <field name="name">issues.form</field>
+            <field name="model">issues</field>
+            <field eval="10" name="priority"/>
+            <field name="arch" type="xml">
+                <search string="Issues Search">
+                    <field name="name" string="ID"/>
+                    <field name="title" string="Title"/>
+<!--                    filter-->
+                    <group expand='0' string='Filters'>
+                        <filter name='open_filter' string="Status open,new" domain="[('status','in',('new','open'))]"/>
+                        <separator/>
+                        <filter name='done_filter' string="Status other" domain="[('status','in',('onhold','resolved','duplicate','wontfix','invalid'))]"/>
+
+                    </group>
+<!--                    groupby-->
+                    <group expand='0' string='Group by'>
+                        <filter string='Priority' name="priority_group" context="{'group_by': 'priority'}"/>
+                        <filter string='Type' name="type_group" context="{'group_by': 'type'}"/>
+                        <filter string='Assignee' name="assignee_group" context="{'group_by': 'assignee_id'}"/>
+                        <filter string='Status' name="status_group" context="{'group_by': 'status'}"/>
+                        <filter string='Reproducible' name="reproducible_group" context="{'group_by': 'reproducible'}"/>
+                        <filter string='Label' name="label_group" context="{'group_by': 'label_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+
+        <record id="issues_tree" model="ir.ui.view">
+            <field name="name">issues.view</field>
+            <field name="model">issues</field>
+            <field name="arch" type="xml">
+
+                <tree string="Issues" default_order="create_date desc">
+
+                    <field name="name"/>
+                    <field name="title"/>
+                    <field name="type"/>
+                    <field name="priority"/>
+                    <field name="status"/>
+                    <field name="label_id"/>
+                    <field name="assignee_id"/>
+                    <field name="create_date"/>
+                    <field name="write_date"/>
+
+                </tree>
+            </field>
+        </record>
+
+
+
+
+
+        <record id="action_issues" model="ir.actions.act_window">
+            <field name="name">Issues</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">issues</field>
+<!--            mặc định filter chưa được giải quyết-->
+            <field name="context">{"search_default_open_filter":1}</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('issues_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('issues_form')})]"/>
+            <field name="search_view_id" ref="issues_search"/>
+        </record>
+
+        <menuitem id="menu_issues"
+            name="Issues"
+            action="action_issues"
+            sequence="10"
+            groups="base.group_user"/>
+    </data>
+</odoo>
