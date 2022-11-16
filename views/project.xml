@@ -74,8 +74,6 @@
                     <header>
                         <button name="download_file_import" string="Thống kê cho dự án" type="object"
                                 class="oe_highlight o_expense_sheet_submit"/>
-                    </header>
-                    <header>
                         <button name="download_file_import_1" string="Xuất danh sách các dự án" type="object"
                                 class="oe_highlight o_expense_sheet_submit"/>
                     </header>
