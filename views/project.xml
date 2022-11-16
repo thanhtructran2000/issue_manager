@@ -104,8 +104,8 @@
                             <page string="Description">
                                 <field name="description" widget="html"/>
                             </page>
-                            <page string="Label">
-                                <field name="label_ids"/>
+                            <page string="Function">
+                                <field name="function_ids"/>
                             </page>
                         </notebook>
                     </sheet>
