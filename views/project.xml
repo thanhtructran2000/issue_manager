@@ -5,6 +5,7 @@
             <field name="name">testing.project.tree</field>
             <field name="model">testing.project</field>
             <field name="arch" type="xml">
+
                 <tree string="Testing project tree">
                     <field name="priority" widget="priority"/>
                     <field name="project_name"/>
@@ -70,6 +71,12 @@
             <field name="model">testing.project</field>
             <field name="arch" type="xml">
                 <form string="Testing Project Form">
+      <!--                    tt-->
+                    <header>
+                        <button name="download_file_import_1" string="Xuất danh sách các dự án" type="object"
+                                class="oe_highlight o_expense_sheet_submit"/>
+                    </header>
+<!--                    tt-->
                     <sheet>
                         <div class="oe_button_box" name="button_box" groups="base.group_user">
                             <button class="oe_stat_button" name="get_issue" type="object" icon="fa-bug" >

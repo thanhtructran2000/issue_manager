@@ -2,6 +2,8 @@
 from odoo import api, fields, models, tools, _
 from odoo.exceptions import UserError, ValidationError
 
+
+
 class Issues(models.Model):
     _name = "issues"
     _description = "Issues model"
@@ -46,11 +48,8 @@ class Issues(models.Model):
         ('duplicate', 'Duplicate'),
         ('wontfix','Wontfix'),
         ('invalid','Invalid'),
+        ('closed', 'Closed'),
     ], string='Status', default='new', required=True)
-
-
-
-
 
     label_id = fields.Many2one('label', string='Label', domain = "[('project_id', '=', project_id)]")
 
@@ -94,6 +93,8 @@ class Issues(models.Model):
             'res_id': new_import.id,
         })
         return action
+
+
 
 
 

@@ -17,6 +17,7 @@
         'views/project.xml',
         'views/label_views.xml',
         'wizard/update_state.xml',
+        'views/report_project_list_xls_views.xml',
 
 
     ],
