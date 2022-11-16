@@ -14,15 +14,13 @@ class TestingProject(models.Model):
     _description = 'Dự án kiểm thử'
     _rec_name = 'project_name'
     _order = 'priority desc, start_date desc'
-    # _transient = True
-    # _log_access = True
-    # INHERIT_ORDER = 'priority desc'
 
+    project_code = fields.Char(string='Project code', required="1")
     project_name = fields.Char(string='Project name', required="1")
     manager_id = fields.Many2one('res.users', string="Project manager")
     start_date = fields.Date(string="Start date", default=fields.Date.today(), readonly=True)
     end_date = fields.Date(string="End date")
-    assignee_id = fields.Many2one('res.users', string="Assignee", default=lambda self: self.env.user)
+    assignee_id = fields.Many2one('res.users', string="Manager", default=lambda self: self.env.user)
     description = fields.Html(string="Description")
     issues_ids = fields.One2many('issues', 'project_id')
     priority = fields.Selection([('0', ''), ('1', '')], default='0')
@@ -208,7 +206,7 @@ class TestingProject(models.Model):
                 for record in self.env['issues'].search([('project_id', '=', line.id)]):
                     sheet3.write(x, 0, record.name, style_value_center) #ID
                     sheet3.write(x, 1, record.title, style_value_left) #Summary
-                    sheet3.write(x, 2, record.label_id.name, style_value_center)  # Category
+                    sheet3.write(x, 2, record.function_id.name, style_value_center)  # Category
                     sheet3.write(x, 3, record.type, style_value_center)#Type
                     sheet3.write(x, 4, record.priority, style_value_center)#Severity
                     sheet3.write(x, 5, record.status, style_value_center)#Status

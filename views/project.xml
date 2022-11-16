@@ -5,9 +5,9 @@
             <field name="name">testing.project.tree</field>
             <field name="model">testing.project</field>
             <field name="arch" type="xml">
-
                 <tree string="Testing project tree">
                     <field name="priority" widget="priority"/>
+                    <field name="project_code"/>
                     <field name="project_name"/>
                     <field name="manager_id"/>
                     <field name="assignee_id"/>
@@ -40,6 +40,9 @@
                                             <field name="project_name"/>
                                         </h3>
                                         <div class="o_kanban_primary_left">
+                                            <div>
+                                                Project code: <field name="project_code"/>
+                                            </div>
                                             <div>
                                                 Project manager: <strong><field name="manager_id"/></strong>
                                             </div>
@@ -90,6 +93,9 @@
                                  <field name="project_name" class="o_task_name text-truncate"/>
                              </h1>
                          </div>
+                        <group>
+                            <field name="project_code"/>
+                        </group>
                         <group>
                             <group>
                                 <field name="manager_id"/>
