@@ -64,10 +64,12 @@ class TestingProject(models.Model):
             excel_style = {
                 'tieude': {'bold': 1, 'font_name': 'Times New Roman', 'font_size': 15, 'align': 'center',
                            'valign': 'vcenter', 'text_wrap': 1},
+                'tieude_font14': {'bold': 1, 'font_name': 'Times New Roman', 'font_size': 14, 'align': 'center',
+                                  'valign': 'vcenter', 'text_wrap': 1},
                 'header': {'border': 1, 'bold': 1, 'font_name': 'Times New Roman', 'font_size': 12, 'align': 'center',
                            'valign': 'vcenter', 'text_wrap': 1},
-                'header_left': {'border': 1, 'bold': 1, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'left'
-                                ,'fg_color': '#D0cece', 'valign': 'vcenter', 'text_wrap': 1},
+                'header_center': {'border': 1, 'bold': 1, 'font_name': 'Times New Roman', 'font_size': 13,
+                                  'align': 'center', 'fg_color': '#D0cece', 'valign': 'vcenter', 'text_wrap': 1},
                 'value': {'font_name': 'Times New Roman', 'font_size': 13, 'align': 'left'},
                 'value_left': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 12, 'align': 'left',
                                'valign': 'vcenter', 'text_wrap': 1},
@@ -106,29 +108,32 @@ class TestingProject(models.Model):
                                                         'font_size': 12, 'align': 'left', 'valign': 'vcenter',
                                                         'text_wrap': 1},
                 'value_date': {'font_name': 'Times New Roman', 'font_size': 13, 'align': 'left',
-                               'valign': 'vcenter',
-                               'num_format': 'DD/MM/YYYY', 'text_wrap': 1},
-                'value_date_border': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'left',
-                                      'valign': 'vcenter', 'num_format': 'DD/MM/YYYY', 'text_wrap': 1}
+                               'valign': 'vcenter', 'num_format': 'DD/MM/YYYY', 'text_wrap': 1},
+                'value_date_border': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'center',
+                                      'valign': 'vcenter', 'num_format': 'DD/MM/YYYY', 'text_wrap': 1},
+                'value_center': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'center',
+                                 'valign': 'vcenter', 'text_wrap': 1},
             }
             style = copy.deepcopy(excel_style)
             custom_value['worbook_name'] = "Báo cáo kết quả kiểm định"
             custom_value['tieude'] = "Thống kê kết quả kiểm định"
             workbook = xlsxwriter.Workbook(custom_value['worbook_name'])
             style_tieude = workbook.add_format(style['tieude'])
-            style_header_bg = style['header']
+            style_header_bg = style['header_center']
             style_header_bg['fg_color'] = '#Ffcc99'
             style_header_bg1 = style['header']
             style_header_bg1['fg_color'] = '#D0cece'
             style_tieude_font_12 = style['tieude']
             style_tieude_font_12['font_size'] = 12
-            style_header_font_13 = style['header']
-            style_header_font_13['font_size'] = 13
+            # style_header_font_13 = style['header']
+            # style_header_font_13['font_size'] = 13
             style_value_left_13 = style['value_left']
             style_value_left_13['font_size'] = 13
             style['header']["text_wrap"] = 1
+            style_tieude_font14 = workbook.add_format(style['tieude_font14'])
+            style_value_center = workbook.add_format(style['value_center'])
             style_header = workbook.add_format(style['header'])
-            style_header_left = workbook.add_format(style['header_left'])
+            style_header_center = workbook.add_format(style['header_center'])
             style_value = workbook.add_format(style['value'])
             style_value_left = workbook.add_format(style['value_left'])
             style_value_left_bold = workbook.add_format(style['value_left_bold'])
@@ -136,7 +141,7 @@ class TestingProject(models.Model):
             style_value_left_bold_no_border = workbook.add_format(style['value_left_bold_no_border'])
             style_tieude = workbook.add_format(style['tieude'])
             style_tieude_font_12 = workbook.add_format(style_tieude_font_12)
-            style_header_font_13 = workbook.add_format(style_header_font_13)
+            # style_header_font_13 = workbook.add_format(style_header_font_13)
             style_header_bg = workbook.add_format(style_header_bg)
             style_header_bg1 = workbook.add_format(style_header_bg1)
             style_value_left_13 = workbook.add_format(style_value_left_13)
@@ -155,7 +160,7 @@ class TestingProject(models.Model):
 
                 # Thống kê lỗi
                 sheet.set_row(x+1, 20)
-                sheet.write(x+1, y+1, "THỐNG KÊ KẾT QUẢ KIỂM ĐỊNH LẦN …", style_tieude)
+                sheet.write(x+1, y+1, "THỐNG KÊ KẾT QUẢ KIỂM ĐỊNH LẦN …", style_tieude_font14)
                 sheet.set_column(y + 1, y + 1, 63)
                 sheet.set_column(y, y, 27)
                 sheet.write(3, 0, "Tên dự án:", style_value_left_bold_no_border)
@@ -179,21 +184,21 @@ class TestingProject(models.Model):
                 sheet2.write(4, 2, "Giao diện", style_header)
                 sheet2.set_column(3, 3, 13.5)
                 sheet2.write(4, 3, "Chức năng", style_header)
-                sheet2.set_column(4, 4, 35.5)
+                sheet2.set_column(4, 4, 15.5)
                 sheet2.merge_range(3, 4, 4, 4, "Tổng issue", style_header)
                 sheet2.set_column(5, 5, 35.5)
                 sheet2.merge_range(3, 5, 4, 5, "Ghi chú", style_header)
                 x = 5
                 stt = 1
                 for record in self.env['label'].search([('project_id', '=', line.id)]):
-                    sheet2.write(x, 0, stt, style_value_left)
+                    sheet2.write(x, 0, stt, style_value_center)
                     sheet2.write(x, 1, record.name, style_value_left)
                     sheet2.write(x, 2, "", style_value_left)
                     sheet2.write(x, 3, "", style_value_left)
                     sheet2.write(x, 5, "", style_value_left)
                     count_list = self.env['issues'].search([('label_id', '=', record.id)])
                     count = len(count_list)
-                    sheet2.write(x, 4, count, style_value_left)
+                    sheet2.write(x, 4, count, style_value_center)
 
                     x += 1
                     stt += 1
@@ -201,20 +206,20 @@ class TestingProject(models.Model):
                 # Danh sách lỗi
                 x = 4
                 for record in self.env['issues'].search([('project_id', '=', line.id)]):
-                    sheet3.write(x, 0, record.name, style_value_left) #ID
+                    sheet3.write(x, 0, record.name, style_value_center) #ID
                     sheet3.write(x, 1, record.title, style_value_left) #Summary
-                    sheet3.write(x, 2, record.label_id.name, style_value_left)  # Category
-                    sheet3.write(x, 3, record.type, style_value_left)#Type
-                    sheet3.write(x, 4, record.priority, style_value_left)#Severity
-                    sheet3.write(x, 5, record.status, style_value_left)#Status
-                    sheet3.write(x, 6, "", style_value_left)  #
-                    sheet3.write(x, 7, "", style_value_left)  #
-                    sheet3.write(x, 8, record.reporter_id.name, style_value_left)#Reporter
+                    sheet3.write(x, 2, record.label_id.name, style_value_center)  # Category
+                    sheet3.write(x, 3, record.type, style_value_center)#Type
+                    sheet3.write(x, 4, record.priority, style_value_center)#Severity
+                    sheet3.write(x, 5, record.status, style_value_center)#Status
+                    sheet3.write(x, 6, "", style_value_center)  #
+                    sheet3.write(x, 7, "", style_value_center)  #
+                    sheet3.write(x, 8, record.reporter_id.name, style_value_center)#Reporter
                     sheet3.write(x, 9, record.create_date, style_value_date_border)  # Bug report date
                     sheet3.write(x, 10, record.write_date, style_value_date_border)  # Bug fix date
-                    sheet3.write(x, 11, "", style_value_left)  #
+                    sheet3.write(x, 11, "", style_value_center)  #
                     x += 1
-                sheet3.merge_range(1, 0, 1, 6, "... - THỐNG KÊ LỖI KIỂM ĐỊNH LẦN ...", style_tieude)
+                sheet3.merge_range(1, 0, 1, 6, "... - THỐNG KÊ LỖI KIỂM ĐỊNH LẦN ...", style_tieude_font14)
                 sheet3.set_column(0, 0, 5.55)
                 sheet3.write(3, 0, "Bug ID", style_header_bg)
 
@@ -262,87 +267,87 @@ class TestingProject(models.Model):
 
                 #Sheet số liệu
                 sheet4.write(2, 1, self.env['issues'].search_count([('status', '=', 'new'),
-                                    ('priority', '=', 'blocker'), ('project_id', '=', line.id)]), style_value_left)
+                                    ('priority', '=', 'blocker'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(2, 2, self.env['issues'].search_count([('status', '=', 'open'),
-                                    ('priority', '=', 'blocker'), ('project_id', '=', line.id)]), style_value_left)
+                                    ('priority', '=', 'blocker'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(2, 3, self.env['issues'].search_count([('status', '=', 'resolved'),
-                                    ('priority', '=', 'blocker'), ('project_id', '=', line.id)]), style_value_left)
+                                    ('priority', '=', 'blocker'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(2, 4, self.env['issues'].search_count([('status', '=', 'invalid'),
-                                    ('priority', '=', 'blocker'), ('project_id', '=', line.id)]), style_value_left)
+                                    ('priority', '=', 'blocker'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(2, 5, self.env['issues'].search_count([('status', '=', 'duplicate'),
-                                    ('priority', '=', 'blocker'), ('project_id', '=', line.id)]), style_value_left)
+                                    ('priority', '=', 'blocker'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(2, 6, self.env['issues'].search_count([('status', '=', 'wontfix'),
-                                    ('priority', '=', 'blocker'), ('project_id', '=', line.id)]), style_value_left)
+                                    ('priority', '=', 'blocker'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(2, 7, self.env['issues'].search_count([('status', '=', 'close'),
-                                    ('priority', '=', 'blocker'), ('project_id', '=', line.id)]), style_value_left)
-                sheet4.write(2, 8, '=sum(b3:h3)', style_value_left)
+                                    ('priority', '=', 'blocker'), ('project_id', '=', line.id)]), style_value_center)
+                sheet4.write(2, 8, '=sum(b3:h3)', style_value_center)
 
                 sheet4.write(3, 1, self.env['issues'].search_count([('status', '=', 'new'),
-                                    ('priority', '=', 'critical'), ('project_id', '=', line.id)]), style_value_left)
+                                    ('priority', '=', 'critical'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(3, 2, self.env['issues'].search_count([('status', '=', 'open'),
-                                    ('priority', '=', 'critical'), ('project_id', '=', line.id)]), style_value_left)
+                                    ('priority', '=', 'critical'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(3, 3, self.env['issues'].search_count([('status', '=', 'resolved'),
-                                    ('priority', '=', 'critical'), ('project_id', '=', line.id)]), style_value_left)
+                                    ('priority', '=', 'critical'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(3, 4, self.env['issues'].search_count([('status', '=', 'invalid'),
-                                    ('priority', '=', 'critical'), ('project_id', '=', line.id)]), style_value_left)
+                                    ('priority', '=', 'critical'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(3, 5, self.env['issues'].search_count([('status', '=', 'duplicate'),
-                                    ('priority', '=', 'critical'), ('project_id', '=', line.id)]), style_value_left)
+                                    ('priority', '=', 'critical'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(3, 6, self.env['issues'].search_count([('status', '=', 'wontfix'),
-                                    ('priority', '=', 'critical'), ('project_id', '=', line.id)]), style_value_left)
+                                    ('priority', '=', 'critical'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(3, 7, self.env['issues'].search_count([('status', '=', 'close'),
-                                    ('priority', '=', 'critical'), ('project_id', '=', line.id)]), style_value_left)
-                sheet4.write(3, 8, '=sum(b4:h4)', style_value_left)
+                                    ('priority', '=', 'critical'), ('project_id', '=', line.id)]), style_value_center)
+                sheet4.write(3, 8, '=sum(b4:h4)', style_value_center)
 
                 sheet4.write(4, 1, self.env['issues'].search_count([('status', '=', 'new'),
-                                        ('priority', '=', 'major'), ('project_id', '=', line.id)]), style_value_left)
+                                        ('priority', '=', 'major'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(4, 2, self.env['issues'].search_count([('status', '=', 'open'),
-                                        ('priority', '=', 'major'), ('project_id', '=', line.id)]), style_value_left)
+                                        ('priority', '=', 'major'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(4, 3, self.env['issues'].search_count([('status', '=', 'resolved'),
-                                        ('priority', '=', 'major'), ('project_id', '=', line.id)]), style_value_left)
+                                        ('priority', '=', 'major'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(4, 4, self.env['issues'].search_count([('status', '=', 'invalid'),
-                                        ('priority', '=', 'major'), ('project_id', '=', line.id)]), style_value_left)
+                                        ('priority', '=', 'major'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(4, 5, self.env['issues'].search_count([('status', '=', 'duplicate'),
-                                        ('priority', '=', 'major'), ('project_id', '=', line.id)]), style_value_left)
+                                        ('priority', '=', 'major'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(4, 6, self.env['issues'].search_count([('status', '=', 'wontfix'),
-                                        ('priority', '=', 'major'), ('project_id', '=', line.id)]), style_value_left)
+                                        ('priority', '=', 'major'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(4, 7, self.env['issues'].search_count([('status', '=', 'closed'),
-                                        ('priority', '=', 'major'), ('project_id', '=', line.id)]), style_value_left)
-                sheet4.write(4, 8, '=sum(b5:h5)', style_value_left)
+                                        ('priority', '=', 'major'), ('project_id', '=', line.id)]), style_value_center)
+                sheet4.write(4, 8, '=sum(b5:h5)', style_value_center)
 
                 sheet4.write(5, 1, self.env['issues'].search_count([('status', '=', 'new'),
-                                        ('priority', '=', 'minor'), ('project_id', '=', line.id)]), style_value_left)
+                                        ('priority', '=', 'minor'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(5, 2, self.env['issues'].search_count([('status', '=', 'open'),
-                                        ('priority', '=', 'minor'), ('project_id', '=', line.id)]), style_value_left)
+                                        ('priority', '=', 'minor'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(5, 3, self.env['issues'].search_count([('status', '=', 'resolved'),
-                                        ('priority', '=', 'minor'), ('project_id', '=', line.id)]), style_value_left)
+                                        ('priority', '=', 'minor'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(5, 4, self.env['issues'].search_count([('status', '=', 'invalid'),
-                                        ('priority', '=', 'minor'), ('project_id', '=', line.id)]), style_value_left)
+                                        ('priority', '=', 'minor'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(5, 5, self.env['issues'].search_count([('status', '=', 'duplicate'),
-                                        ('priority', '=', 'minor'), ('project_id', '=', line.id)]), style_value_left)
+                                        ('priority', '=', 'minor'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(5, 6, self.env['issues'].search_count([('status', '=', 'wontfix'),
-                                        ('priority', '=', 'minor'), ('project_id', '=', line.id)]), style_value_left)
+                                        ('priority', '=', 'minor'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(5, 7, self.env['issues'].search_count([('status', '=', 'close'),
-                                        ('priority', '=', 'minor'), ('project_id', '=', line.id)]), style_value_left)
-                sheet4.write(5, 8, '=sum(b6:h6)', style_value_left)
+                                        ('priority', '=', 'minor'), ('project_id', '=', line.id)]), style_value_center)
+                sheet4.write(5, 8, '=sum(b6:h6)', style_value_center)
 
                 sheet4.write(6, 1, self.env['issues'].search_count([('status', '=', 'new'),
-                                        ('priority', '=', 'trivial'), ('project_id', '=', line.id)]), style_value_left)
+                                        ('priority', '=', 'trivial'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(6, 2, self.env['issues'].search_count([('status', '=', 'open'),
-                                        ('priority', '=', 'trivial'), ('project_id', '=', line.id)]), style_value_left)
+                                        ('priority', '=', 'trivial'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(6, 3, self.env['issues'].search_count([('status', '=', 'resolved'),
-                                        ('priority', '=', 'trivial'), ('project_id', '=', line.id)]), style_value_left)
+                                        ('priority', '=', 'trivial'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(6, 4, self.env['issues'].search_count([('status', '=', 'invalid'),
-                                        ('priority', '=', 'trivial'), ('project_id', '=', line.id)]), style_value_left)
+                                        ('priority', '=', 'trivial'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(6, 5, self.env['issues'].search_count([('status', '=', 'duplicate'),
-                                        ('priority', '=', 'trivial'), ('project_id', '=', line.id)]), style_value_left)
+                                        ('priority', '=', 'trivial'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(6, 6, self.env['issues'].search_count([('status', '=', 'wontfix'),
-                                        ('priority', '=', 'trivial'), ('project_id', '=', line.id)]), style_value_left)
+                                        ('priority', '=', 'trivial'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(6, 7, self.env['issues'].search_count([('status', '=', 'close'),
-                                        ('priority', '=', 'trivial'), ('project_id', '=', line.id)]), style_value_left)
-                sheet4.write(6, 8, '=sum(b7:h7)', style_value_left)
+                                        ('priority', '=', 'trivial'), ('project_id', '=', line.id)]), style_value_center)
+                sheet4.write(6, 8, '=sum(b7:h7)', style_value_center)
 
                 sheet4.set_column(0, 0, 21.5)
-                sheet4.write(1, 0, "By Severity", style_header_left)
+                sheet4.write(1, 0, "By Severity", style_header_bg1)
 
                 sheet4.set_column(1, 1, 11.5)
                 sheet4.write(1, 1, "New", style_header_bg1)
@@ -374,7 +379,7 @@ class TestingProject(models.Model):
                 sheet4.write(5, 0, "Minor", style_value_left_13)
                 sheet4.write(6, 0, "Trivial", style_value_left_13)
 
-                sheet4.write(8, 0, "By Status", style_header_left)
+                sheet4.write(8, 0, "By Status", style_header_bg1)
                 sheet4.write(8, 1, "New", style_header_bg1)
                 sheet4.write(8, 2, "Open", style_header_bg1)
                 sheet4.write(8, 3, "Resolved", style_header_bg1)
@@ -443,10 +448,6 @@ class TestingProject(models.Model):
                 sheet.fit_to_pages(pages_horz, pages_vert)
 
                 sheet.set_margins(0, 0.7, 0.75, 0.75)
-                sheet2.fit_to_pages(pages_horz, pages_vert)
-
-                sheet2.set_margins(0, 0.7, 0.75, 0.75)
-
             workbook.close()
             fp = open(custom_value['worbook_name'], "rb")
             out = base64.encodestring(fp.read())
