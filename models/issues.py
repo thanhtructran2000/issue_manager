@@ -10,7 +10,7 @@ class Issues(models.Model):
     _inherit = ['mail.thread']
 
 
-    name = fields.Char(string='ID', help="Result ID", readonly="1",copy=False, index=True)
+    name = fields.Char(string='ID', help="Result ID", readonly="1")
 
     title = fields.Char(string='Title', required=True, size=100)
     project_id = fields.Many2one('testing.project', string='Project',  ondelete='cascade', required=True)
@@ -51,12 +51,14 @@ class Issues(models.Model):
         ('closed', 'Closed'),
     ], string='Status', default='new', required=True)
 
-    function_id = fields.Many2one('function', string='Function', domain="[('project_id', '=', project_id)]", ondelete='cascade')
+    function_id = fields.Many2one('function', string='Function', domain = "[('project_id', '=', project_id)]", ondelete='cascade')
+
+
 
     @api.model
     def create(self, vals):
-        if self.env['issues'].search([], order='name desc'):
-            last_name = self.env['issues'].search([], order='name desc')[0].name
+        if self.env['issues'].search([], order='id desc'):
+            last_name = self.env['issues'].search([], order='id desc')[0].name
             new_name = last_name.split('#')
             new_name = int(new_name[1]) + 1
             vals['name'] = '#' + str(new_name)
@@ -65,20 +67,12 @@ class Issues(models.Model):
         return super(Issues, self).create(vals)
 
 
-
-
-
     # quyền
     def unlink(self):
         if self.reporter_id.id != self.env.user.id:
             raise UserError(_("You do not have permission to delete"))
         else:
             return super(Issues, self).unlink()
-
-
-    # default project
-
-
 
 
 

@@ -3,6 +3,7 @@ from odoo.exceptions import UserError, ValidationError
 
 class Function(models.Model):
     _name = 'function'
+
     _description = 'function'
 
     name = fields.Char(string='Function', required="1")
@@ -12,5 +13,3 @@ class Function(models.Model):
     def issues_count2(self):
         for record in self:
             record.issues_count = self.env['issues'].search_count([('function_id', '=', record.id)])
-
-

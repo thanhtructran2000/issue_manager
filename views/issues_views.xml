@@ -120,7 +120,7 @@
         <menuitem id="menu_issues"
             name="Issues"
             action="action_issues"
-            sequence="10"
+            sequence="500"
             groups="base.group_user"/>
     </data>
 </odoo>
