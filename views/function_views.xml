@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-        <record id="label_form" model="ir.ui.view">
-            <field name="name">label.form</field>
-            <field name="model">label</field>
+        <record id="function_form" model="ir.ui.view">
+            <field name="name">function.form</field>
+            <field name="model">function</field>
             <field name="arch" type="xml">
-                <form string="Create Label">
+                <form string="Create Function">
                     <sheet>
                         <group>
                             <field name="name"/>
@@ -13,27 +13,29 @@
                         <group>
                             <field name="project_id"/>
                         </group>
+
                     </sheet>
                 </form>
             </field>
         </record>
 
 
-        <record id="label_tree" model="ir.ui.view">
-            <field name="name">label.view</field>
-            <field name="model">label</field>
+        <record id="function_tree" model="ir.ui.view">
+            <field name="name">function.view</field>
+            <field name="model">function</field>
             <field name="arch" type="xml">
-                <tree string="Label" editable="bottom">
+                <tree string="Function" editable="bottom">
                     <field name="name"/>
+                    <field name="issues_count"/>
                 </tree>
             </field>
         </record>
 
 
-        <record id="action_label" model="ir.actions.act_window">
-            <field name="name">Label</field>
+        <record id="action_function" model="ir.actions.act_window">
+            <field name="name">Function</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">label</field>
+            <field name="res_model">function</field>
             <field name="view_mode">tree,form</field>
 
         </record>

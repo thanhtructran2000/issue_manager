@@ -23,7 +23,7 @@
                                 <field name="project_id" />
                                 <field name="reproducible"/>
                                 <field name="reporter_id"/>
-                                <field name="label_id"/>
+                                <field name="function_id"/>
                             </group>
                             <group>
                                 <field name="type"/>
@@ -76,7 +76,7 @@
                         <filter string='Assignee' name="assignee_group" context="{'group_by': 'assignee_id'}"/>
                         <filter string='Status' name="status_group" context="{'group_by': 'status'}"/>
                         <filter string='Reproducible' name="reproducible_group" context="{'group_by': 'reproducible'}"/>
-                        <filter string='Label' name="label_group" context="{'group_by': 'label_id'}"/>
+                        <filter string='Function' name="function_group" context="{'group_by': 'function_id'}"/>
                     </group>
                 </search>
             </field>
@@ -96,7 +96,7 @@
                     <field name="type"/>
                     <field name="priority"/>
                     <field name="status"/>
-                    <field name="label_id"/>
+                    <field name="function_id"/>
                     <field name="assignee_id"/>
                     <field name="create_date"/>
                     <field name="write_date"/>
@@ -120,7 +120,7 @@
         <menuitem id="menu_issues"
             name="Issues"
             action="action_issues"
-            sequence="10"
+            sequence="500"
             groups="base.group_user"/>
     </data>
 </odoo>

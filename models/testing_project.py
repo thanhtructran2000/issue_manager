@@ -27,7 +27,7 @@ class TestingProject(models.Model):
     issues_ids = fields.One2many('issues', 'project_id')
     priority = fields.Selection([('0', ''), ('1', '')], default='0')
     issues_count = fields.Integer(compute='compute_count')
-    label_ids = fields.One2many('label', 'project_id')
+    function_ids = fields.One2many('function', 'project_id')
 
     def get_issue(self):
         for line in self:
@@ -190,13 +190,13 @@ class TestingProject(models.Model):
                 sheet2.merge_range(3, 5, 4, 5, "Ghi chú", style_header)
                 x = 5
                 stt = 1
-                for record in self.env['label'].search([('project_id', '=', line.id)]):
+                for record in self.env['function'].search([('project_id', '=', line.id)]):
                     sheet2.write(x, 0, stt, style_value_center)
                     sheet2.write(x, 1, record.name, style_value_left)
                     sheet2.write(x, 2, "", style_value_left)
                     sheet2.write(x, 3, "", style_value_left)
                     sheet2.write(x, 5, "", style_value_left)
-                    count_list = self.env['issues'].search([('label_id', '=', record.id)])
+                    count_list = self.env['issues'].search([('function_id', '=', record.id)])
                     count = len(count_list)
                     sheet2.write(x, 4, count, style_value_center)
 
@@ -509,7 +509,7 @@ class TestingProject(models.Model):
         x = 0
         y = 0
         style = copy.deepcopy(excel_style)
-        custom_value['worbook_name'] = "Mẫu xuất báo cáo cho tất cả các dự án kiểm định"
+        custom_value['worbook_name'] = "Dự án kiểm định còn lỗi"
         custom_value['tieude'] = "Danh sách các dự án còn lỗi"
         workbook = xlsxwriter.Workbook(custom_value['worbook_name'])
 
@@ -593,7 +593,7 @@ class TestingProject(models.Model):
             sheet.write(1,2, "Tổng lỗi:", style_value_center_bold_no_border)
             sheet.write(1,3, '=COUNTA(A5:A100)', style_value_center_no_bold_no_border)
 
-            sheet.write_url(1, 10, "internal:'Danh sách các dự án còn lỗi'!A1", string="Trở về",
+            sheet.write_url(1, 11, "internal:'Dự án kiểm định còn lỗi'!A1", string="Trở về",
                             cell_format=style_value_center_underline_no_border_gb_link)
 
             sheet.write(3,0, "Bug ID", style_value_center_bold_bg_2)
@@ -601,14 +601,20 @@ class TestingProject(models.Model):
             sheet.write(3, 2, "Type", style_value_center_bold_bg_2)
             sheet.write(3, 3, "Severity", style_value_center_bold_bg_2)
             sheet.write(3, 4, "Status", style_value_center_bold_bg_2)
-            sheet.write(3, 7, "Critical", style_value_center_bold_bg_2)
-            sheet.write(3, 8, "Major", style_value_center_bold_bg_2)
-            sheet.write(3, 9, "Minor", style_value_center_bold_bg_2)
-            sheet.write(3, 10, "Trivial", style_value_center_bold_bg_2)
+
+
+
+
+            sheet.write(3, 7, "Blocker", style_value_center_bold_bg_2)
+            sheet.write(3, 8, "Critical", style_value_center_bold_bg_2)
+            sheet.write(3, 9, "Major", style_value_center_bold_bg_2)
+            sheet.write(3, 10, "Minor", style_value_center_bold_bg_2)
+            sheet.write(3, 11, "Trivial", style_value_center_bold_bg_2)
             sheet.set_row(3, 40)
 
+
             x = 4
-            for record in self.env['issues'].search([('project_id', '=', line.id)]):
+            for record in self.env['issues'].search([('project_id', '=', line.id), ('status','=', ('open', 'new'))]):
                 sheet.write(x, 0, record.name, style_value_center)
                 sheet.write_rich_string(x, 1, record.name, ": ", record.title, style_value_left)
                 sheet.write(x, 2, record.type, style_value_center)
@@ -620,6 +626,7 @@ class TestingProject(models.Model):
             sheet.write(4, 8, '=COUNTIF(D5:D500, I4)', style_value_right)
             sheet.write(4, 9, '=COUNTIF(D5:D500, J4)', style_value_right)
             sheet.write(4, 10, '=COUNTIF(D5:D500, K4)', style_value_right)
+            sheet.write(4, 11, '=COUNTIF(D5:D500, L4)', style_value_right)
 
             # hiển thị issue của dự án
             # print_area(), set_paper() and fit_to_pages() do the trick
