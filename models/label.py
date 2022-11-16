@@ -6,4 +6,4 @@ class Label(models.Model):
     _description = 'Label'
 
     name = fields.Char(string='Label', required="1")
-    project_id = fields.Many2one('testing.project', string='Testing project', required="1")
+    project_id = fields.Many2one('testing.project', string='Testing project', required="1", ondelete='cascade')
