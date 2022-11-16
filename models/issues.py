@@ -29,7 +29,7 @@ class Issues(models.Model):
         ('critical', 'Critical'),
         ('major', 'Major'),
         ('minor', 'Minor'),
-        ('trivial','Trivial')
+        ('trivial', 'Trivial')
     ], string='Priority', required=True)
 
     # attachment_ids = fields.Many2many('ir.attachment', 'issues_attachments_rel', 'issues_id',
@@ -44,20 +44,16 @@ class Issues(models.Model):
         ('onhold', 'On hold'),
         ('resolved', 'Resolved'),
         ('duplicate', 'Duplicate'),
-        ('wontfix','Wontfix'),
-        ('invalid','Invalid'),
+        ('wontfix', 'Wontfix'),
+        ('invalid', 'Invalid'),
+        ('closed', 'Closed'),
     ], string='Status', default='new', required=True)
-
-
-
 
 
     label_id = fields.Many2one('label', string='Label', domain = "[('project_id', '=', project_id)]")
 
-
-
     @api.model
-    def create(self,vals):
+    def create(self, vals):
         if self.env['issues'].search([], order='name desc'):
             last_name = self.env['issues'].search([], order='name desc')[0].name
             new_name = last_name.split('#')

@@ -2,3 +2,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_testing_project,access_testing_project,model_testing_project,base.group_user,1,1,1,1
 access_label,access_label,model_label,base.group_user,1,1,1,1
 access_issues,access_issues,model_issues,base.group_user,1,1,1,1
+access_report_issues,access_report_issues,model_report_issues,base.group_user,1,1,1,1
