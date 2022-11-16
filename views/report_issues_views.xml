@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="report_issues_form" model="ir.ui.view">
+            <field name="name">report.issues.form</field>
+            <field name="model">report.issues</field>
+            <field name="arch" type="xml">
+                <form string="Create Report">
+                    <sheet>
+                        <group>
+                            <field name="report_data"/>
+                        </group>
+                        <group>
+                            <field name="file_name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="report_issues_tree" model="ir.ui.view">
+            <field name="name">report.issues.view</field>
+            <field name="model">report.issues</field>
+            <field name="arch" type="xml">
+                <tree string="Report issues">
+                    <field name="report_data"/>
+                    <field name="file_name"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="report_issues_action" model="ir.actions.act_window">
+            <field name="name">Report Issues</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">report.issues</field>
+            <field name="view_mode">tree,form</field>
+
+        </record>
+
+<!--        <menuitem id="report_issues"-->
+<!--            name="Report issues"-->
+<!--            action="report_issues_action"-->
+<!--            sequence="10"-->
+<!--            groups="base.group_user"/>-->
+    </data>
+</odoo>

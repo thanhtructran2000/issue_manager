@@ -105,10 +105,6 @@
             </field>
         </record>
 
-
-
-
-
         <record id="action_issues" model="ir.actions.act_window">
             <field name="name">Issues</field>
             <field name="type">ir.actions.act_window</field>
