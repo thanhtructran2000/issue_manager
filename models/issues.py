@@ -51,7 +51,7 @@ class Issues(models.Model):
         ('closed', 'Closed'),
     ], string='Status', default='new', required=True)
 
-    label_id = fields.Many2one('label', string='Label', domain = "[('project_id', '=', project_id)]", ondelete='cascade')
+    function_id = fields.Many2one('function', string='Function', domain="[('project_id', '=', project_id)]", ondelete='cascade')
 
     @api.model
     def create(self, vals):
