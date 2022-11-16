@@ -8,7 +8,8 @@
                 <form>
                     <header>
                         <button name="update_state" string="Update state" class="oe_highlight" type="object"/>
-                        <field name="status" widget="statusbar" statusbar_visible="new,open,onhold,resolved,duplicate,wontfix,invalid"/>
+
+                        <field name="status" widget="statusbar" statusbar_visible="new,open,onhold,resolved,duplicate,wontfix,invalid,closed"/>
                     </header>
                     <sheet>
                         <div class="oe_title pr-0">
@@ -65,7 +66,7 @@
                     <group expand='0' string='Filters'>
                         <filter name='open_filter' string="Status open,new" domain="[('status','in',('new','open'))]"/>
                         <separator/>
-                        <filter name='done_filter' string="Status other" domain="[('status','in',('onhold','resolved','duplicate','wontfix','invalid'))]"/>
+                        <filter name='done_filter' string="Status other" domain="[('status','in',('onhold','resolved','duplicate','wontfix','invalid','closed'))]"/>
 
                     </group>
 <!--                    groupby-->

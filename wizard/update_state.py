@@ -13,6 +13,7 @@ class UpdateState(models.TransientModel):
         ('duplicate', 'Duplicate'),
         ('wontfix','Wontfix'),
         ('invalid','Invalid'),
+        ('closed', 'Closed'),
     ], string='Status', default='new', required=True)
     comment = fields.Text(string='Comment', required=True)
 
