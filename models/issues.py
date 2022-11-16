@@ -51,7 +51,7 @@ class Issues(models.Model):
         ('closed', 'Closed'),
     ], string='Status', default='new', required=True)
 
-    label_id = fields.Many2one('label', string='Label', domain = "[('project_id', '=', project_id)]")
+    label_id = fields.Many2one('label', string='Label', domain = "[('project_id', '=', project_id)]", ondelete='cascade')
 
     @api.model
     def create(self, vals):
@@ -70,7 +70,7 @@ class Issues(models.Model):
 
     # quyền
     def unlink(self):
-        if self.reporter.id != self.env.user.id:
+        if self.reporter_id.id != self.env.user.id:
             raise UserError(_("You do not have permission to delete"))
         else:
             return super(Issues, self).unlink()
