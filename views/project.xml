@@ -10,9 +10,7 @@
                     <field name="project_code"/>
                     <field name="project_name"/>
                     <field name="manager_id"/>
-                    <field name="assignee_id"/>
-                    <field name="start_date"/>
-                    <field name="end_date"/>
+
                 </tree>
             </field>
        </record>
@@ -46,21 +44,14 @@
                                             <div>
                                                 Project manager: <strong><field name="manager_id"/></strong>
                                             </div>
-                                            <div>
-                                                Assignee: <strong><field name="assignee_id"/></strong>
-                                            </div>
-                                            <div>
-                                                <field name="start_date"/>
-                                                        -
-                                                <field name="end_date"/>
-                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
                                 <div class="o_project_kanban_boxes" style="padding-top: 5px">
                                     <div class="o_project_kanban_box" style="float: right">
                                            <strong> <field name="issues_count"/>
-                                           <span class="o_label">Issue</span></strong>
+                                           <span class="o_label">Issues</span></strong>
                                     </div>
                                 </div>
                             </div>
@@ -83,9 +74,14 @@
 
                     <sheet>
                         <div class="oe_button_box" name="button_box" groups="base.group_user">
-                            <button class="oe_stat_button" name="get_issue" type="object" icon="fa-bug" >
-                                <field string="Issue" name="issues_count" widget="statinfo"/>
+                            <button class="oe_stat_button" name="get_times" type="object">
+                                <field string="Times" name="times_count" widget="statinfo"/>
                             </button>
+
+                            <button class="oe_stat_button" name="get_issues" type="object" icon="fa-bug" >
+                                <field string="Issues" name="issues_count" widget="statinfo"/>
+                            </button>
+
                         </div>
                          <div class="oe_title pr-0">
                              <h1 class="d-flex flex-row">
@@ -98,12 +94,17 @@
                         </group>
                         <group>
                             <group>
+                                <field name="project_code"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
                                 <field name="manager_id"/>
-                                <field name="start_date"/>
+
                             </group>
                             <group>
-                                <field name="assignee_id"/>
-                                <field name="end_date"/>
+
+
                             </group>
                         </group>
                         <notebook>
