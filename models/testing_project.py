@@ -14,19 +14,7 @@ class TestingProject(models.Model):
     _description = 'Dự án kiểm thử'
     _rec_name = 'project_name'
     _order = 'priority desc'
-    #
-    # project_code = fields.Char(string='Project code', required="1")
-    # project_name = fields.Char(string='Project name', required="1")
-    # manager_id = fields.Many2one('res.users', string="Project manager")
-    # start_date = fields.Date(string="Start date", default=fields.Date.today(), readonly=True)
-    # end_date = fields.Date(string="End date")
-    # assignee_id = fields.Many2one('res.users', string="Manager", default=lambda self: self.env.user)
-    # description = fields.Html(string="Description")
-    # issues_ids = fields.One2many('issues', 'project_id')
-    # priority = fields.Selection([('0', ''), ('1', '')], default='0')
-    # issues_count = fields.Integer(compute='compute_count')
-    # function_ids = fields.One2many('function', 'project_id')
-    #
+
 
     project_name = fields.Char(string='Project name', required="1")
     project_code = fields.Char(string='Project code', required="1")
@@ -35,33 +23,44 @@ class TestingProject(models.Model):
     times_ids = fields.One2many('times', 'project_id')
     issues_ids = fields.One2many('issues', 'project_id')
     priority = fields.Selection([('0', ''), ('1', '')], default='0')
-    times_count = fields.Integer(compute='compute_count')
-    issues_count = fields.Integer(compute='compute_count')
     function_ids = fields.One2many('function', 'project_id')
-    def get_issue(self):
+    times_count = fields.Integer(compute='compute_count1')
+    issues_count = fields.Integer(compute='compute_count2')
+
+
+    def get_issues(self):
         for line in self:
             action = self.env.ref('issue_manager.action_issues').read()[0]
             action['domain'] = [('project_id', '=', line.id)]
             action['context'] = {'default_project_id': line.id}
             return action
 
+
     @api.depends('issues_ids')
-    def compute_count(self):
+    def compute_count2(self):
         for record in self:
             record.issues_count = self.env['issues'].search_count(
                 [('project_id', '=', record.id)])
 
+    # link đến ds times thuộc project đó
+    def get_times(self):
+        for line in self:
+            action = self.env.ref('issue_manager.action_times').read()[0]
+            action['domain'] = [('project_id', '=', line.id)]
+            action['context'] = {'default_project_id': line.id}
+            return action
+
+    # đếm số lần trong 1 project
+    @api.depends('times_ids')
+    def compute_count1(self):
+        for record in self:
+            record.times_count = self.env['times'].search_count(
+                [('project_id', '=', record.id)])
 
     def unlink(self):
         if self.issues_count > 0:
             raise ValidationError(_("Dự án hiện tại vẫn còn đang có issue nên không thể xóa dự án kiểm thử"))
         return super(TestingProject, self).unlink()
-
-    # @api.constrains('start_date', 'end_date')
-    # def check_end_date(self):
-    #     for record in self:
-    #         if record.end_date < record.start_date:
-    #             raise ValidationError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu"))
 
     def download_file_import(self):
         cr = self.env.cr
@@ -176,7 +175,7 @@ class TestingProject(models.Model):
                 sheet.write(3, 1, line.project_name, style_value_left_bold_no_border)
                 sheet.write(4, 0, "Nội dung kiểm định:", style_value_left_bold_no_border)
                 sheet.write(5, 0, "Kiểm định viên:", style_value_left_bold_no_border)
-                sheet.write(5, 1, line.assignee_id.name, style_value)
+                # sheet.write(5, 1, line.assignee_id.name, style_value)
                 sheet.write(6, 0, "Số lỗi trong lần ...:", style_value_left_bold_no_border)
                 sheet.write(7, 0, "Tổng số lỗi:", style_value_left_bold_no_border)
                 sheet.write(7, 1, line.issues_count, style_value)
@@ -444,9 +443,9 @@ class TestingProject(models.Model):
                 sheet4.write(16, 0, "Giai đoạn test", style_value_left_no_border)
                 sheet4.write(17, 0, "Lần", style_value_left_no_border)
                 sheet4.write(18, 0, "Thời gian bắt đầu", style_value_left_no_border)
-                # sheet4.write(18, 1, line.start_date, style_value_date)
+
                 sheet4.write(19, 0, "Thời gian kết thúc", style_value_left_no_border)
-                # sheet4.write(19, 1, line.end_date, style_value_date)
+
                 sheet4.write(20, 0, "Lỗi trong lần ...", style_value_left_no_border)
                 sheet4.write(21, 0, "Tổng số lỗi", style_value_left_no_border)
                 sheet4.write(21, 1, line.issues_count, style_value_left_no_border)

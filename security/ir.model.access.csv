@@ -5,3 +5,4 @@ access_issues,access_issues,model_issues,base.group_user,1,1,1,1
 access_report_issues,access_report_issues,model_report_issues,base.group_user,1,1,1,1
 access_report_project_list_xls,access_report_project_list_xls,model_report_project_list_xls,base.group_user,1,1,1,1
 access_times,access_times,model_times,base.group_user,1,1,1,1
+

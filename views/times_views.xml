@@ -18,24 +18,19 @@
                         </div>
                         <group>
                             <group>
-                                <field name="start_date" />
-                                <field name="assignee_id"/>
-                                <field name="project_id"/>
 
+                                <field name="project_id"/>
+                                <field name="start_date" />
                             </group>
                             <group>
+                                <field name="assignee_id"/>
                                 <field name="end_date"/>
                             </group>
                         </group>
-
-
                     </sheet>
-
-
                 </form>
             </field>
         </record>
-
         <record id="times_tree" model="ir.ui.view">
             <field name="name">times.view</field>
             <field name="model">times</field>
@@ -44,8 +39,8 @@
                 <tree string="Times" default_order="create_date desc">
 
                     <field name="times_name"/>
-                    <field name="assignee_id"/>
                     <field name="project_id"/>
+                     <field name="assignee_id"/>
                     <field name="start_date"/>
                     <field name="end_date"/>
                 </tree>
