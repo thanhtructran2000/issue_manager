@@ -7,14 +7,12 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-
+                        <button name="download_file_import" string="Thống kê cho dự án" type="object"
+                                class="oe_highlight o_expense_sheet_submit"/>
                     </header>
                     <sheet>
-                        <div class="oe_title pr-0">
-                            <label for="times_name" string="Times" class="oe_edit_only"/>
-                            <h1 class="d-flex flex-row justify-content-between">
-                                <field name="times_name" class="o_task_name text-truncate" placeholder="1..."/>
-                            </h1>
+                        <div>
+                                <h1>Lần kiểm tra <field name="times_name" placeholder="1..."/></h1>
                         </div>
                         <group>
                             <group>
