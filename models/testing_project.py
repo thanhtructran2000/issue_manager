@@ -13,20 +13,31 @@ class TestingProject(models.Model):
     _name = 'testing.project'
     _description = 'Dự án kiểm thử'
     _rec_name = 'project_name'
-    _order = 'priority desc, start_date desc'
+    _order = 'priority desc'
+    #
+    # project_code = fields.Char(string='Project code', required="1")
+    # project_name = fields.Char(string='Project name', required="1")
+    # manager_id = fields.Many2one('res.users', string="Project manager")
+    # start_date = fields.Date(string="Start date", default=fields.Date.today(), readonly=True)
+    # end_date = fields.Date(string="End date")
+    # assignee_id = fields.Many2one('res.users', string="Manager", default=lambda self: self.env.user)
+    # description = fields.Html(string="Description")
+    # issues_ids = fields.One2many('issues', 'project_id')
+    # priority = fields.Selection([('0', ''), ('1', '')], default='0')
+    # issues_count = fields.Integer(compute='compute_count')
+    # function_ids = fields.One2many('function', 'project_id')
+    #
 
-    project_code = fields.Char(string='Project code', required="1")
     project_name = fields.Char(string='Project name', required="1")
-    manager_id = fields.Many2one('res.users', string="Project manager")
-    start_date = fields.Date(string="Start date", default=fields.Date.today(), readonly=True)
-    end_date = fields.Date(string="End date")
-    assignee_id = fields.Many2one('res.users', string="Manager", default=lambda self: self.env.user)
+    project_code = fields.Char(string='Project code', required="1")
+    manager_id = fields.Many2one('res.users', string="Project manager", default=lambda self: self.env.user)
     description = fields.Html(string="Description")
+    times_ids = fields.One2many('times', 'project_id')
     issues_ids = fields.One2many('issues', 'project_id')
     priority = fields.Selection([('0', ''), ('1', '')], default='0')
+    times_count = fields.Integer(compute='compute_count')
     issues_count = fields.Integer(compute='compute_count')
     function_ids = fields.One2many('function', 'project_id')
-
     def get_issue(self):
         for line in self:
             action = self.env.ref('issue_manager.action_issues').read()[0]
@@ -46,11 +57,11 @@ class TestingProject(models.Model):
             raise ValidationError(_("Dự án hiện tại vẫn còn đang có issue nên không thể xóa dự án kiểm thử"))
         return super(TestingProject, self).unlink()
 
-    @api.constrains('start_date', 'end_date')
-    def check_end_date(self):
-        for record in self:
-            if record.end_date < record.start_date:
-                raise ValidationError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu"))
+    # @api.constrains('start_date', 'end_date')
+    # def check_end_date(self):
+    #     for record in self:
+    #         if record.end_date < record.start_date:
+    #             raise ValidationError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu"))
 
     def download_file_import(self):
         cr = self.env.cr
@@ -113,7 +124,7 @@ class TestingProject(models.Model):
                                  'valign': 'vcenter', 'text_wrap': 1},
             }
             style = copy.deepcopy(excel_style)
-            custom_value['worbook_name'] = "Báo cáo kết quả kiểm định"
+            custom_value['worbook_name'] = line.project_code + "_" + line.project_name
             custom_value['tieude'] = "Thống kê kết quả kiểm định"
             workbook = xlsxwriter.Workbook(custom_value['worbook_name'])
             style_tieude = workbook.add_format(style['tieude'])
@@ -172,7 +183,7 @@ class TestingProject(models.Model):
 
                 # Danh sách chức năng
                 sheet2.set_column(0, 4, 35.5)
-                sheet2.merge_range(1, 0, 1, 5, "... - DANH SÁCH CHỨC NĂNG KIỂM ĐỊNH", style_tieude_font_12)
+                sheet2.merge_range(1, 0, 1, 5, line.project_code + " - DANH SÁCH CHỨC NĂNG KIỂM ĐỊNH", style_tieude_font_12)
                 sheet2.set_column(0, 0, 6.35)
                 sheet2.merge_range(3, 0, 4, 0, "STT", style_header)
                 sheet2.set_column(1, 1, 67.8)
@@ -217,7 +228,7 @@ class TestingProject(models.Model):
                     sheet3.write(x, 10, record.write_date, style_value_date_border)  # Bug fix date
                     sheet3.write(x, 11, "", style_value_center)  #
                     x += 1
-                sheet3.merge_range(1, 0, 1, 6, "... - THỐNG KÊ LỖI KIỂM ĐỊNH LẦN ...", style_tieude_font14)
+                sheet3.merge_range(1, 0, 1, 6, line.project_code + " - THỐNG KÊ LỖI KIỂM ĐỊNH LẦN ...", style_tieude_font14)
                 sheet3.set_column(0, 0, 5.55)
                 sheet3.write(3, 0, "Bug ID", style_header_bg)
 
@@ -329,7 +340,7 @@ class TestingProject(models.Model):
                 sheet4.write(5, 8, '=sum(b6:h6)', style_value_center)
 
                 sheet4.write(6, 1, self.env['issues'].search_count([('status', '=', 'new'),
-                                        ('priority', '=', 'trivial'), ('project_id', '=', line.id)]), style_value_center)
+                                    111('priority', '=', 'trivial'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(6, 2, self.env['issues'].search_count([('status', '=', 'open'),
                                         ('priority', '=', 'trivial'), ('project_id', '=', line.id)]), style_value_center)
                 sheet4.write(6, 3, self.env['issues'].search_count([('status', '=', 'resolved'),
@@ -377,7 +388,7 @@ class TestingProject(models.Model):
                 sheet4.write(5, 0, "Minor", style_value_left_13)
                 sheet4.write(6, 0, "Trivial", style_value_left_13)
 
-                sheet4.write(8, 0, "By Status", style_header_bg1)
+                sheet4.write(8, 0, "By Resolution", style_header_bg1)
                 sheet4.write(8, 1, "New", style_header_bg1)
                 sheet4.write(8, 2, "Open", style_header_bg1)
                 sheet4.write(8, 3, "Resolved", style_header_bg1)
@@ -391,7 +402,8 @@ class TestingProject(models.Model):
                 y = 1
                 sheet4.write(9, 0, "New", style_value_left_13)
                 sheet4.write(10, 0, "Open", style_value_left_13)
-                sheet4.write(11, 0, "Close", style_value_left_13)
+                sheet4.write(11, 0, "On hold", style_value_left_13)
+                sheet4.write(12, 0, "Close", style_value_left_13)
 
                 # Xử lý chỗ trống
                 x = 9
@@ -432,9 +444,9 @@ class TestingProject(models.Model):
                 sheet4.write(16, 0, "Giai đoạn test", style_value_left_no_border)
                 sheet4.write(17, 0, "Lần", style_value_left_no_border)
                 sheet4.write(18, 0, "Thời gian bắt đầu", style_value_left_no_border)
-                sheet4.write(18, 1, line.start_date, style_value_date)
+                # sheet4.write(18, 1, line.start_date, style_value_date)
                 sheet4.write(19, 0, "Thời gian kết thúc", style_value_left_no_border)
-                sheet4.write(19, 1, line.end_date, style_value_date)
+                # sheet4.write(19, 1, line.end_date, style_value_date)
                 sheet4.write(20, 0, "Lỗi trong lần ...", style_value_left_no_border)
                 sheet4.write(21, 0, "Tổng số lỗi", style_value_left_no_border)
                 sheet4.write(21, 1, line.issues_count, style_value_left_no_border)

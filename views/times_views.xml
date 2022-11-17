@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="times_form" model="ir.ui.view">
+            <field name="name">times.form</field>
+            <field name="model">times</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+
+                    </header>
+                    <sheet>
+                        <div class="oe_title pr-0">
+                            <label for="times_name" string="Times" class="oe_edit_only"/>
+                            <h1 class="d-flex flex-row justify-content-between">
+                                <field name="times_name" class="o_task_name text-truncate" placeholder="1..."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="start_date" />
+                                <field name="assignee_id"/>
+                                <field name="project_id"/>
+
+                            </group>
+                            <group>
+                                <field name="end_date"/>
+                            </group>
+                        </group>
+
+
+                    </sheet>
+
+
+                </form>
+            </field>
+        </record>
+
+        <record id="times_tree" model="ir.ui.view">
+            <field name="name">times.view</field>
+            <field name="model">times</field>
+            <field name="arch" type="xml">
+
+                <tree string="Times" default_order="create_date desc">
+
+                    <field name="times_name"/>
+                    <field name="assignee_id"/>
+                    <field name="project_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_times" model="ir.actions.act_window">
+            <field name="name">Times</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">times</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('times_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('times_form')})]"/>
+
+        </record>
+
+        <menuitem id="menu_times"
+            name="Times"
+            action="action_times"
+            sequence="500"
+            groups="base.group_user"/>
+    </data>
+</odoo>

@@ -16,6 +16,7 @@
         'views/issues_views.xml',
         'views/project.xml',
         'views/function_views.xml',
+        'views/times_views.xml',
         'views/report_issues_views.xml',
         'wizard/update_state.xml',
         'views/report_project_list_xls_views.xml',
