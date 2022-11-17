@@ -30,6 +30,8 @@ class TestingProject(models.Model):
     times_count = fields.Integer(compute='compute_count1')
     issues_count = fields.Integer(compute='compute_count2')
 
+    issues_count_tong_loi = fields.Integer(compute='compute_count_tong_loi')
+
 
     # link đến danh sách các issues thuộc  1 project
     def get_issues(self):
@@ -46,6 +48,9 @@ class TestingProject(models.Model):
         for record in self:
             record.issues_count = self.env['issues'].search_count(
                 [('project_id', '=', record.id)])
+
+
+
 
     # link đến ds times thuộc project đó
     def get_times(self):
@@ -66,6 +71,16 @@ class TestingProject(models.Model):
         if self.issues_count > 0:
             raise ValidationError(_("Dự án hiện tại vẫn còn đang có issue nên không thể xóa dự án kiểm thử"))
         return super(TestingProject, self).unlink()
+
+
+    # đếm số lượng issues có trạng thái new, open, onhold trong 1 project
+    @api.depends('issues_ids')
+    def compute_count_tong_loi(self):
+        for record in self:
+            record.issues_count_tong_loi = self.env['issues'].search_count(
+                [('project_id', '=', record.id),
+                 ('status', 'in', ('new', 'open', 'onhold')),
+                 ])
 
 
 
@@ -169,7 +184,7 @@ class TestingProject(models.Model):
         for line in testing_projects:
             sheet.write(x, 0, stt, style_value_center)
             sheet.write(x, 1, line.project_name, style_value_left)
-            sheet.write(x, 2, line.issues_count, style_value_center)
+            sheet.write(x, 2, line.issues_count_tong_loi, style_value_center)
             sheet.write_url(x, 3, "internal:'{}'!A1".format(line.project_name), string="»", cell_format=style_value_center_underline_bg_link)
             x += 1
             stt += 1
@@ -198,7 +213,7 @@ class TestingProject(models.Model):
             sheet.write(1,2, "Tổng lỗi:", style_value_center_bold_no_border)
             sheet.write(1,3, '=COUNTA(A5:A100)', style_value_center_no_bold_no_border)
 
-            sheet.write_url(1, 11, "internal:'Dự án kiểm định còn lỗi'!A1", string="Trở về",
+            sheet.write_url(1, 11, "internal:'Danh sách các dự án còn lỗi'!A1", string="Trở về",
                             cell_format=style_value_center_underline_no_border_gb_link)
 
             sheet.write(3,0, "Bug ID", style_value_center_bold_bg_2)
@@ -219,7 +234,7 @@ class TestingProject(models.Model):
 
 
             x = 4
-            for record in self.env['issues'].search([('project_id', '=', line.id), ('status','=', ('open', 'new'))]):
+            for record in self.env['issues'].search([('project_id', '=', line.id), ('status','=', ('open', 'new', 'onhold'))]):
                 sheet.write(x, 0, record.name, style_value_center)
                 sheet.write_rich_string(x, 1, record.name, ": ", record.title, style_value_left)
                 sheet.write(x, 2, record.type, style_value_center)

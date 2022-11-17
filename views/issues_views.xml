@@ -8,7 +8,6 @@
                 <form>
                     <header>
                         <button name="update_state" string="Update state" class="oe_highlight" type="object"/>
-
                         <field name="status" widget="statusbar" statusbar_visible="new,open,onhold,resolved,duplicate,wontfix,invalid,closed"/>
                     </header>
                     <sheet>
@@ -24,13 +23,13 @@
                                 <field name="reproducible"/>
                                 <field name="reporter_id"/>
                                 <field name="function_id"/>
+                                <field name="resolution"/>
                             </group>
                             <group>
                                 <field name="times_id"/>
                                 <field name="type"/>
                                 <field name="priority"/>
                                 <field name="assignee_id"/>
-                                <field name="resolution"/>
                             </group>
                         </group>
                         <notebook>
