@@ -12,7 +12,6 @@ class Times(models.Model):
     assignee_id = fields.Many2one('res.users', string='Assignee', default=lambda self: self.env.user)
     project_id = fields.Many2one('testing.project', string='Project',  ondelete='cascade', required=True)
 
-
     @api.constrains('start_date', 'end_date')
     def check_end_date(self):
         for record in self:
