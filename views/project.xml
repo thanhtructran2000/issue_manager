@@ -68,15 +68,13 @@
             <field name="arch" type="xml">
                 <form string="Testing Project Form">
                     <header>
-                        <button name="download_file_import" string="Thống kê cho dự án" type="object"
-                                class="oe_highlight o_expense_sheet_submit"/>
                         <button name="download_file_import_1" string="Xuất danh sách các dự án" type="object"
                                 class="oe_highlight o_expense_sheet_submit"/>
                     </header>
 
                     <sheet>
                         <div class="oe_button_box" name="button_box" groups="base.group_user">
-                            <button class="oe_stat_button" name="get_times" type="object">
+                            <button class="oe_stat_button" name="get_times" type="object" icon="fa-list-alt">
                                 <field string="Times" name="times_count" widget="statinfo"/>
                             </button>
                             <button class="oe_stat_button" name="get_issues" type="object" icon="fa-bug" >
@@ -90,24 +88,13 @@
                                  <field name="project_name" class="o_task_name text-truncate"/>
                              </h1>
                          </div>
+
                         <group>
                             <group>
                                 <field name="project_code"/>
                             </group>
-                        </group>
-                        <group>
-                            <group>
-                                <field name="project_code"/>
-                            </group>
-                        </group>
-                        <group>
                             <group>
                                 <field name="manager_id"/>
-
-                            </group>
-                            <group>
-
-
                             </group>
                         </group>
                         <notebook>

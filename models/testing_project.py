@@ -1,7 +1,4 @@
 from odoo import fields, models, api, _
-
-# from odoo.addons.issue_manager.models import general_function as gf
-
 from odoo.exceptions import UserError, ValidationError
 import base64
 import io
@@ -20,14 +17,21 @@ class TestingProject(models.Model):
     project_code = fields.Char(string='Project code', required="1")
     manager_id = fields.Many2one('res.users', string="Project manager", default=lambda self: self.env.user)
     description = fields.Html(string="Description")
-    times_ids = fields.One2many('times', 'project_id')
-    issues_ids = fields.One2many('issues', 'project_id')
     priority = fields.Selection([('0', ''), ('1', '')], default='0')
     function_ids = fields.One2many('function', 'project_id')
+
+
+
+
+
+    times_ids = fields.One2many('times', 'project_id')
+    issues_ids = fields.One2many('issues', 'project_id')
+
     times_count = fields.Integer(compute='compute_count1')
     issues_count = fields.Integer(compute='compute_count2')
 
 
+    # link đến danh sách các issues thuộc  1 project
     def get_issues(self):
         for line in self:
             action = self.env.ref('issue_manager.action_issues').read()[0]
@@ -36,6 +40,7 @@ class TestingProject(models.Model):
             return action
 
 
+    # đếm số lượng issues trong 1 project
     @api.depends('issues_ids')
     def compute_count2(self):
         for record in self:

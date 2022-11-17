@@ -26,6 +26,7 @@
                                 <field name="function_id"/>
                             </group>
                             <group>
+                                <field name="times_id"/>
                                 <field name="type"/>
                                 <field name="priority"/>
                                 <field name="assignee_id"/>
