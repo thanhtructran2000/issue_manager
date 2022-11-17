@@ -54,6 +54,13 @@ class Issues(models.Model):
         ('closed', 'Closed'),
     ], string='Status', default='new', required=True)
 
+    resolution = fields.Selection(selection=[
+        ('new', 'New'),
+        ('open', 'Open'),
+        ('closed', 'Closed'),
+        ('onhold', 'On hold'),
+    ], string='Resolution', default='new', required=True)
+
     function_id = fields.Many2one('function', string='Function', domain = "[('project_id', '=', project_id)]", ondelete='cascade')
 
 
