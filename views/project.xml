@@ -87,11 +87,13 @@
                                  <field name="project_name" class="o_task_name text-truncate"/>
                              </h1>
                          </div>
+
                         <group>
                             <group>
                                 <field name="project_code"/>
                             </group>
-                                  <group>
+                            <group>
+
                                 <field name="manager_id"/>
                             </group>
                         </group>

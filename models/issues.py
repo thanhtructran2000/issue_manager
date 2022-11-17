@@ -11,10 +11,13 @@ class Issues(models.Model):
 
 
     name = fields.Char(string='ID', help="Result ID", readonly="1")
-
     title = fields.Char(string='Title', required=True, size=100)
     project_id = fields.Many2one('testing.project', string='Project',  ondelete='cascade', required=True)
+
+    times_id = fields.Many2one('times', ondelete='cascade', required=True,  domain = "[('project_id', '=', project_id)]")
+
     description = fields.Text(string='Description')
+
     reproducible = fields.Selection(selection=[
         ('always', 'Always'),
         ('sometimes', 'Sometimes'),
@@ -85,6 +88,8 @@ class Issues(models.Model):
             'res_id': new_import.id,
         })
         return action
+
+
 
 
 

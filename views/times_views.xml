@@ -11,8 +11,17 @@
                                 class="oe_highlight o_expense_sheet_submit"/>
                     </header>
                     <sheet>
-                        <div>
-                                <h1>Lần kiểm tra <field name="times_name" placeholder="1..."/></h1>
+                        <div class="oe_button_box" name="button_box" groups="base.group_user">
+                            <button class="oe_stat_button" name="get_issues_of_times" type="object" icon="fa-bug" >
+                                <field string="Issues" name="count_issues_times" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title pr-0">
+                            <h1 class="d-flex flex-row justify-content-between">
+                                <group>
+                                    <field name="times_name" class="o_task_name text-truncate" placeholder="1..."/>
+                                </group>
+                            </h1>
                         </div>
                         <group>
                             <group>
@@ -38,7 +47,7 @@
 
                     <field name="times_name"/>
                     <field name="project_id"/>
-                     <field name="assignee_id"/>
+                    <field name="assignee_id"/>
                     <field name="start_date"/>
                     <field name="end_date"/>
                 </tree>
