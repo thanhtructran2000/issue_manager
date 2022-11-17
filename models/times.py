@@ -12,8 +12,8 @@ class Times(models.Model):
     _name = 'times'
     _description = 'Times'
     _rec_name = 'times_name'
-    times_name = fields.Integer(string='Times', required=True)
 
+    times_name = fields.Integer(string='Times', required=True)
     start_date = fields.Date(string="Start date", default=fields.Date.today(), readonly=True)
     end_date = fields.Date(string="End date")
     assignee_id = fields.Many2one('res.users', string='Assignee', default=lambda self: self.env.user)
@@ -171,27 +171,30 @@ class Times(models.Model):
 
                     x += 1
                     stt += 1
-
-                # # Danh sách lỗi
+   # # Danh sách lỗi
                 x = 4
-                for record in self.env['issues'].search([ ('times_id', '=', record.id),
+                for record in self.env['issues'].search([('times_id', '=', record.id),
                                                          ('status', 'in', ('new', 'open', 'onhold','resolved', 'duplicate', 'wontfix', 'invalid')),
                                                                   ]):
                     sheet3.write(x, 0, record.name, style_value_center)  # ID
                     sheet3.write(x, 1, record.title, style_value_left)  # Summary
                     sheet3.write(x, 2, record.function_id.name, style_value_center)  # Category
+
                     sheet3.write(x, 3, record.type, style_value_center)  # Type
                     sheet3.write(x, 4, record.priority, style_value_center)  # Severity
                     sheet3.write(x, 5, record.status, style_value_center)  # Status
                     sheet3.write(x, 6, record.resolution, style_value_center)  # Resolution
                     sheet3.write(x, 7, record.times_id.times_name, style_value_center)  # Target version: lần mấy
+
                     sheet3.write(x, 8, record.reporter_id.name, style_value_center)  # Reporter
                     sheet3.write(x, 9, record.create_date, style_value_date_border)  # Bug report date
                     sheet3.write(x, 10, record.write_date, style_value_date_border)  # Bug fix date
                     sheet3.write(x, 11, "", style_value_center)  #
                     x += 1
-                # sheet3.merge_range(1, 0, 1, 6, record.project_code + " - THỐNG KÊ LỖI KIỂM ĐỊNH",
-                #                    style_tieude_font14)
+
+                sheet3.merge_range(1, 0, 1, 6, line.project_id.project_code + " - THỐNG KÊ LỖI KIỂM ĐỊNH",
+                                   style_tieude_font14)
+
                 sheet3.set_column(0, 0, 5.55)
                 sheet3.write(3, 0, "Bug ID", style_header_bg)
 
@@ -205,7 +208,9 @@ class Times(models.Model):
                 sheet3.write(3, 3, "Type", style_header_bg)
 
                 sheet3.set_column(4, 4, 9.4)
+
                 sheet3.write(3, 4, "Priority", style_header_bg)
+
 
                 sheet3.set_column(5, 5, 11.7)
                 sheet3.write(3, 5, "Status", style_header_bg)
@@ -222,7 +227,6 @@ class Times(models.Model):
 
                 sheet3.set_column(9, 9, 20.3)
                 sheet3.write(3, 9, "Bug report date", style_header_bg)
-
 
                 sheet3.set_column(10, 10, 18.9)
                 sheet3.write(3, 10, "Bug fix date", style_header_bg)
