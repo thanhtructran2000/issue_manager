@@ -7,11 +7,12 @@ class Times(models.Model):
     _description = 'Times'
     _rec_name = 'times_name' #
 
-    times_name = fields.Integer(required=True, default=False, readonly=True)
+    times_name = fields.Integer(required=True, default=None)
     start_date = fields.Date(string="Start date", default=fields.Date.today(), readonly=True)
     end_date = fields.Date(string="End date")
     assignee_id = fields.Many2one('res.users', string='Assignee', default=lambda self: self.env.user)
     project_id = fields.Many2one('testing.project', string='Project',  ondelete='cascade', required=True)
+
 
     issues_ids = fields.One2many('issues', 'times_id')
 
@@ -38,6 +39,7 @@ class Times(models.Model):
         for record in self:
             record.count_issues_times = self.env['issues'].search_count(
                 [('times_id', '=', record.id)])
+
 
 
 

@@ -48,12 +48,14 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="o_project_kanban_boxes" style="padding-top: 5px">
                                     <div class="o_project_kanban_box" style="float: right">
                                            <strong> <field name="issues_count"/>
                                            <span class="o_label">Issues</span></strong>
                                     </div>
                                 </div>
+
                             </div>
                         </t>
                     </templates>
@@ -75,7 +77,6 @@
                             <button class="oe_stat_button" name="get_times" type="object" icon="fa-list-alt">
                                 <field string="Times" name="times_count" widget="statinfo"/>
                             </button>
-
                             <button class="oe_stat_button" name="get_issues" type="object" icon="fa-bug" >
                                 <field string="Issues" name="issues_count" widget="statinfo"/>
                             </button>
