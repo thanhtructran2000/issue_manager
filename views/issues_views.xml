@@ -23,13 +23,13 @@
                                 <field name="reproducible"/>
                                 <field name="reporter_id"/>
                                 <field name="function_id"/>
+                                <field name="resolution"/>
                             </group>
                             <group>
                                 <field name="times_id"/>
                                 <field name="type"/>
                                 <field name="priority"/>
                                 <field name="assignee_id"/>
-
                             </group>
                         </group>
                         <notebook>
@@ -96,6 +96,7 @@
                     <field name="type"/>
                     <field name="priority"/>
                     <field name="status"/>
+                    <field name="resolution"/>
                     <field name="function_id"/>
                     <field name="assignee_id"/>
                     <field name="create_date"/>

@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, tools, _
 from odoo.exceptions import UserError, ValidationError
+
 import base64
 import io
 import os
 import copy
 import xlsxwriter
+
 class Times(models.Model):
     _name = 'times'
     _description = 'Times'
@@ -21,7 +23,6 @@ class Times(models.Model):
 
     def download_file_import(self):
         cr = self.env.cr
-        # for line in self:
         for line in self:
             custom_value = {}
             x = 0
@@ -80,7 +81,7 @@ class Times(models.Model):
                                  'valign': 'vcenter', 'text_wrap': 1},
             }
             style = copy.deepcopy(excel_style)
-            custom_value['worbook_name'] = self.project_id.project_code + "_" + self.project_id.project_name + "_" 
+            custom_value['worbook_name'] = self.project_id.project_code + "_" + self.project_id.project_name + "_Lan" + str(self.times_name)
             custom_value['tieude'] = "Thống kê kết quả kiểm định"
             workbook = xlsxwriter.Workbook(custom_value['worbook_name'])
             style_tieude = workbook.add_format(style['tieude'])
@@ -125,7 +126,7 @@ class Times(models.Model):
 
                 # Thống kê lỗi
                 sheet.set_row(x + 1, 20)
-                sheet.write(x + 1, y + 1, "THỐNG KÊ KẾT QUẢ KIỂM ĐỊNH LẦN …", style_tieude_font14)
+                sheet.write(x + 1, y + 1, "THỐNG KÊ KẾT QUẢ KIỂM ĐỊNH LẦN " + str(line.times_name), style_tieude_font14)
                 sheet.set_column(y + 1, y + 1, 63)
                 sheet.set_column(y, y, 27)
                 for record in self.env['testing.project'].search([('times_ids', '=', line.id)]):
@@ -135,101 +136,99 @@ class Times(models.Model):
                     sheet.write(5, 0, "Kiểm định viên:", style_value_left_bold_no_border)
                     sheet.write(5, 1, line.assignee_id.name, style_value)
                     sheet.write(6, 0, "Số lỗi trong lần " + str(line.times_name), style_value_left_bold_no_border)
-                    sheet.write(7, 1, record.issues_count, style_value)
+                    sheet.write(6, 1, line.count_issues_times, style_value)
                     sheet.write(7, 0, "Tổng số lỗi:", style_value_left_bold_no_border)
                     sheet.write(7, 1, record.issues_count, style_value)
 
-                # # Danh sách chức năng
-                # sheet2.set_column(0, 4, 35.5)
-                # sheet2.merge_range(1, 0, 1, 5, record.project_code + " - DANH SÁCH CHỨC NĂNG KIỂM ĐỊNH",
-                #                    style_tieude_font_12)
-                # sheet2.set_column(0, 0, 6.35)
-                # sheet2.merge_range(3, 0, 4, 0, "STT", style_header)
-                # sheet2.set_column(1, 1, 67.8)
-                # sheet2.merge_range(3, 1, 4, 1, "Chức năng kiểm định", style_header)
-                # sheet2.merge_range(3, 2, 3, 3, "Kết quả kiểm định", style_header)
-                # sheet2.set_column(2, 2, 13.5)
-                # sheet2.write(4, 2, "Giao diện", style_header)
-                # sheet2.set_column(3, 3, 13.5)
-                # sheet2.write(4, 3, "Chức năng", style_header)
-                # sheet2.set_column(4, 4, 15.5)
-                # sheet2.merge_range(3, 4, 4, 4, "Tổng issue", style_header)
-                # sheet2.set_column(5, 5, 35.5)
-                # sheet2.merge_range(3, 5, 4, 5, "Ghi chú", style_header)
-                # x = 5
-                # stt = 1
-                # for record in self.env['function'].search([('project_id', '=', record.id)]):
-                #     sheet2.write(x, 0, stt, style_value_center)
-                #     sheet2.write(x, 1, record.name, style_value_left)
-                #     sheet2.write(x, 2, "", style_value_left)
-                #     sheet2.write(x, 3, "", style_value_left)
-                #     sheet2.write(x, 5, "", style_value_left)
-                #     count_list = self.env['issues'].search([('function_id', '=', record.id)])
-                #     count = len(count_list)
-                #     sheet2.write(x, 4, count, style_value_center)
-                #
-                #     x += 1
-                #     stt += 1
-                #
+                # Danh sách chức năng
+                sheet2.set_column(0, 4, 35.5)
+                sheet2.merge_range(1, 0, 1, 5, record.project_code + " - DANH SÁCH CHỨC NĂNG KIỂM ĐỊNH",
+                                   style_tieude_font_12)
+                sheet2.set_column(0, 0, 6.35)
+                sheet2.merge_range(3, 0, 4, 0, "STT", style_header)
+                sheet2.set_column(1, 1, 67.8)
+                sheet2.merge_range(3, 1, 4, 1, "Chức năng kiểm định", style_header)
+                sheet2.merge_range(3, 2, 3, 3, "Kết quả kiểm định", style_header)
+                sheet2.set_column(2, 2, 13.5)
+                sheet2.write(4, 2, "Giao diện", style_header)
+                sheet2.set_column(3, 3, 13.5)
+                sheet2.write(4, 3, "Chức năng", style_header)
+                sheet2.set_column(4, 4, 15.5)
+                sheet2.merge_range(3, 4, 4, 4, "Tổng issue", style_header)
+                sheet2.set_column(5, 5, 35.5)
+                sheet2.merge_range(3, 5, 4, 5, "Ghi chú", style_header)
+                x = 5
+                stt = 1
+                for record in self.env['function'].search([('project_id', '=', record.id)]):
+                    sheet2.write(x, 0, stt, style_value_center)
+                    sheet2.write(x, 1, record.name, style_value_left)
+                    sheet2.write(x, 2, "", style_value_left)
+                    sheet2.write(x, 3, "", style_value_left)
+                    sheet2.write(x, 5, "", style_value_left)
+                    count_list = self.env['issues'].search([('function_id', '=', record.id)])
+                    count = len(count_list)
+                    sheet2.write(x, 4, count, style_value_center)
+
+                    x += 1
+                    stt += 1
+
                 # # Danh sách lỗi
-                # x = 4
-                # for record in self.env['issues'].search([('project_id', '=', record.id)]):
-                #     sheet3.write(x, 0, record.name, style_value_center)  # ID
-                #     sheet3.write(x, 1, record.title, style_value_left)  # Summary
-                #     sheet3.write(x, 2, record.function_id.name, style_value_center)  # Category
-                #     sheet3.write(x, 3, record.type, style_value_center)  # Type
-                #     sheet3.write(x, 4, record.priority, style_value_center)  # Severity
-                #     sheet3.write(x, 5, record.status, style_value_center)  # Status
-                #     sheet3.write(x, 6, "", style_value_center)  #
-                #     sheet3.write(x, 7, "", style_value_center)  #
-                #     sheet3.write(x, 8, record.reporter_id.name, style_value_center)  # Reporter
-                #     sheet3.write(x, 9, record.create_date, style_value_date_border)  # Bug report date
-                #     sheet3.write(x, 10, record.write_date, style_value_date_border)  # Bug fix date
-                #     sheet3.write(x, 11, "", style_value_center)  #
-                #     x += 1
-                # sheet3.merge_range(1, 0, 1, 6, record.project_code + " - THỐNG KÊ LỖI KIỂM ĐỊNH LẦN ...",
+                x = 4
+                for record in self.env['issues'].search([ ('times_id', '=', record.id),
+                                                         ('status', 'in', ('new', 'open', 'onhold','resolved', 'duplicate', 'wontfix', 'invalid')),
+                                                                  ]):
+                    sheet3.write(x, 0, record.name, style_value_center)  # ID
+                    sheet3.write(x, 1, record.title, style_value_left)  # Summary
+                    sheet3.write(x, 2, record.function_id.name, style_value_center)  # Category
+                    sheet3.write(x, 3, record.type, style_value_center)  # Type
+                    sheet3.write(x, 4, record.priority, style_value_center)  # Severity
+                    sheet3.write(x, 5, record.status, style_value_center)  # Status
+                    sheet3.write(x, 6, record.resolution, style_value_center)  # Resolution
+                    sheet3.write(x, 7, record.times_id.times_name, style_value_center)  # Target version: lần mấy
+                    sheet3.write(x, 8, record.reporter_id.name, style_value_center)  # Reporter
+                    sheet3.write(x, 9, record.create_date, style_value_date_border)  # Bug report date
+                    sheet3.write(x, 10, record.write_date, style_value_date_border)  # Bug fix date
+                    sheet3.write(x, 11, "", style_value_center)  #
+                    x += 1
+                # sheet3.merge_range(1, 0, 1, 6, record.project_code + " - THỐNG KÊ LỖI KIỂM ĐỊNH",
                 #                    style_tieude_font14)
-                # sheet3.set_column(0, 0, 5.55)
-                # sheet3.write(3, 0, "Bug ID", style_header_bg)
-                #
-                # sheet3.set_column(1, 1, 81.2)
-                # sheet3.write(3, 1, "Summary", style_header_bg)
-                #
-                # sheet3.set_column(2, 2, 23.6)
-                # sheet3.write(3, 2, "Category", style_header_bg)
-                #
-                # sheet3.set_column(3, 3, 14)
-                # sheet3.write(3, 3, "Type", style_header_bg)
-                #
-                # sheet3.set_column(4, 4, 9.4)
-                # sheet3.write(3, 4, "Severity", style_header_bg)
-                #
-                # sheet3.set_column(5, 5, 11.7)
-                # sheet3.write(3, 5, "Status", style_header_bg)
-                #
-                # sheet3.set_column(6, 6, 12.5)
-                # sheet3.write(3, 6, "Resolution", style_header_bg)
-                #
-                # sheet3.set_column(7, 7, 17.3)
-                # sheet3.write(3, 7, "Target Version", style_header_bg)
-                #
-                # sheet3.set_column(8, 8, 19.7)
-                # sheet3.write(3, 8, "Reporter", style_header_bg)
-                #
-                # sheet3.set_column(8, 8, 19.7)
-                # sheet3.write(3, 8, "Reporter", style_header_bg)
-                #
-                # sheet3.set_column(9, 9, 20.3)
-                # sheet3.write(3, 9, "Bug report date", style_header_bg)
-                #
-                # sheet3.set_column(9, 9, 18.9)
-                # sheet3.write(3, 9, "Bug report date", style_header_bg)
-                #
-                # sheet3.set_column(10, 10, 18.9)
-                # sheet3.write(3, 10, "Bug fix date", style_header_bg)
-                #
-                # sheet3.set_column(11, 11, 21)
-                # sheet3.write(3, 11, "Fixed in Version", style_header_bg)
+                sheet3.set_column(0, 0, 5.55)
+                sheet3.write(3, 0, "Bug ID", style_header_bg)
+
+                sheet3.set_column(1, 1, 81.2)
+                sheet3.write(3, 1, "Summary", style_header_bg)
+
+                sheet3.set_column(2, 2, 23.6)
+                sheet3.write(3, 2, "Category", style_header_bg)
+
+                sheet3.set_column(3, 3, 14)
+                sheet3.write(3, 3, "Type", style_header_bg)
+
+                sheet3.set_column(4, 4, 9.4)
+                sheet3.write(3, 4, "Priority", style_header_bg)
+
+                sheet3.set_column(5, 5, 11.7)
+                sheet3.write(3, 5, "Status", style_header_bg)
+
+                sheet3.set_column(6, 6, 12.5)
+                sheet3.write(3, 6, "Resolution", style_header_bg)
+
+                sheet3.set_column(7, 7, 17.3)
+                sheet3.write(3, 7, "Target Version", style_header_bg)
+
+                sheet3.set_column(8, 8, 19.7)
+                sheet3.write(3, 8, "Reporter", style_header_bg)
+
+
+                sheet3.set_column(9, 9, 20.3)
+                sheet3.write(3, 9, "Bug report date", style_header_bg)
+
+
+                sheet3.set_column(10, 10, 18.9)
+                sheet3.write(3, 10, "Bug fix date", style_header_bg)
+
+                sheet3.set_column(11, 11, 21)
+                sheet3.write(3, 11, "Fixed in Version", style_header_bg)
 
                 # Sheet số liệu
                 # sheet4.write(2, 1, self.env['issues'].search_count([('status', '=', 'new'),
@@ -469,7 +468,6 @@ class Times(models.Model):
 
 
 
-
     # link đến danh sách các issues thuộc times đó
     def get_issues_of_times(self):
         for line in self:
@@ -489,8 +487,16 @@ class Times(models.Model):
                 [('times_id', '=', record.id)])
 
 
-    # @api.constrains('start_date', 'end_date')
-    # def check_end_date(self):
-    #     for line in self:
-    #         if line.end_date < line.start_date:
-    #             raise ValidationError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu"))
+
+
+
+    @api.constrains('start_date', 'end_date')
+    def check_end_date(self):
+        for record in self:
+            if record.end_date < record.start_date:
+                raise ValidationError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu"))
+
+
+
+
+
