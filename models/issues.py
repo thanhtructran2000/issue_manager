@@ -54,6 +54,7 @@ class Issues(models.Model):
     function_id = fields.Many2one('function', string='Function', domain = "[('project_id', '=', project_id)]", ondelete='cascade')
 
 
+
     @api.model
     def create(self, vals):
         if self.env['issues'].search([], order='id desc'):

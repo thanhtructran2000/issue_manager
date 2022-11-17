@@ -37,13 +37,7 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">function</field>
             <field name="view_mode">tree,form</field>
-
         </record>
 
-<!--        <menuitem id="label"-->
-<!--            name="Label"-->
-<!--            action="action_label"-->
-<!--            sequence="10"-->
-<!--            groups="base.group_user"/>-->
     </data>
 </odoo>

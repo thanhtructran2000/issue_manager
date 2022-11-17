@@ -90,6 +90,9 @@
                              </h1>
                          </div>
                         <group>
+                            <field name="project_code"/>
+                        </group>
+                        <group>
                             <group>
                                 <field name="project_code"/>
                             </group>

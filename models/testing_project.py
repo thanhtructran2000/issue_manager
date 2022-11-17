@@ -13,12 +13,15 @@ class TestingProject(models.Model):
     _name = 'testing.project'
     _description = 'Dự án kiểm thử'
     _rec_name = 'project_name'
+
     _order = 'priority desc'
 
 
-    project_name = fields.Char(string='Project name', required="1")
     project_code = fields.Char(string='Project code', required="1")
+    project_name = fields.Char(string='Project name', required="1")
+
     manager_id = fields.Many2one('res.users', string="Project manager", default=lambda self: self.env.user)
+
     description = fields.Html(string="Description")
     times_ids = fields.One2many('times', 'project_id')
     issues_ids = fields.One2many('issues', 'project_id')
@@ -222,7 +225,7 @@ class TestingProject(models.Model):
                 for record in self.env['issues'].search([('project_id', '=', line.id)]):
                     sheet3.write(x, 0, record.name, style_value_center) #ID
                     sheet3.write(x, 1, record.title, style_value_left) #Summary
-                    sheet3.write(x, 2, record.label_id.name, style_value_center)  # Category
+                    sheet3.write(x, 2, record.function_id.name, style_value_center)  # Category
                     sheet3.write(x, 3, record.type, style_value_center)#Type
                     sheet3.write(x, 4, record.priority, style_value_center)#Severity
                     sheet3.write(x, 5, record.status, style_value_center)#Status
