@@ -71,6 +71,7 @@
                         <button name="download_file_import_1" string="Xuất danh sách các dự án" type="object"
                                 class="oe_highlight o_expense_sheet_submit"/>
                     </header>
+
                     <sheet>
                         <div class="oe_button_box" name="button_box" groups="base.group_user">
                             <button class="oe_stat_button" name="get_times" type="object" icon="fa-list-alt">
@@ -93,7 +94,6 @@
                                 <field name="project_code"/>
                             </group>
                             <group>
-
                                 <field name="manager_id"/>
                             </group>
                         </group>
