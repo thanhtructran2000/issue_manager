@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, tools, _
 from odoo.exceptions import UserError, ValidationError
-
 import base64
 import io
 import os
@@ -13,14 +12,15 @@ class Times(models.Model):
     _description = 'Times'
     _rec_name = 'times_name'
     times_name = fields.Integer(string='Times', required=True)
-
     start_date = fields.Date(string="Start date", default=fields.Date.today(), readonly=True)
     end_date = fields.Date(string="End date")
     assignee_id = fields.Many2one('res.users', string='Assignee', default=lambda self: self.env.user)
     project_id = fields.Many2one('testing.project', string='Project',  ondelete='cascade', required=True)
-    issues_ids = fields.One2many('issues', 'times_id')
-    count_issues_times = fields.Integer(compute='count_issues_of_times')
 
+
+    issues_ids = fields.One2many('issues', 'times_id')
+
+    count_issues_times = fields.Integer(compute='count_issues_of_times')
     def download_file_import(self):
         cr = self.env.cr
         for line in self:
@@ -81,7 +81,9 @@ class Times(models.Model):
                                  'valign': 'vcenter', 'text_wrap': 1},
             }
             style = copy.deepcopy(excel_style)
-            custom_value['worbook_name'] = self.project_id.project_code + "_" + self.project_id.project_name + "_Lan" + str(self.times_name)
+
+            custom_value['worbook_name'] = self.project_id.project_code + "_" + self.project_id.project_name + "_"
+
             custom_value['tieude'] = "Thống kê kết quả kiểm định"
             workbook = xlsxwriter.Workbook(custom_value['worbook_name'])
             style_tieude = workbook.add_format(style['tieude'])
@@ -126,7 +128,7 @@ class Times(models.Model):
 
                 # Thống kê lỗi
                 sheet.set_row(x + 1, 20)
-                sheet.write(x + 1, y + 1, "THỐNG KÊ KẾT QUẢ KIỂM ĐỊNH LẦN " + str(line.times_name), style_tieude_font14)
+                sheet.write(x + 1, y + 1, "THỐNG KÊ KẾT QUẢ KIỂM ĐỊNH LẦN …", style_tieude_font14)
                 sheet.set_column(y + 1, y + 1, 63)
                 sheet.set_column(y, y, 27)
                 for record in self.env['testing.project'].search([('times_ids', '=', line.id)]):
@@ -136,43 +138,45 @@ class Times(models.Model):
                     sheet.write(5, 0, "Kiểm định viên:", style_value_left_bold_no_border)
                     sheet.write(5, 1, line.assignee_id.name, style_value)
                     sheet.write(6, 0, "Số lỗi trong lần " + str(line.times_name), style_value_left_bold_no_border)
-                    sheet.write(6, 1, line.count_issues_times, style_value)
+                    sheet.write(7, 1, record.issues_count, style_value)
                     sheet.write(7, 0, "Tổng số lỗi:", style_value_left_bold_no_border)
                     sheet.write(7, 1, record.issues_count, style_value)
 
-                # Danh sách chức năng
-                sheet2.set_column(0, 4, 35.5)
-                sheet2.merge_range(1, 0, 1, 5, record.project_code + " - DANH SÁCH CHỨC NĂNG KIỂM ĐỊNH",
-                                   style_tieude_font_12)
-                sheet2.set_column(0, 0, 6.35)
-                sheet2.merge_range(3, 0, 4, 0, "STT", style_header)
-                sheet2.set_column(1, 1, 67.8)
-                sheet2.merge_range(3, 1, 4, 1, "Chức năng kiểm định", style_header)
-                sheet2.merge_range(3, 2, 3, 3, "Kết quả kiểm định", style_header)
-                sheet2.set_column(2, 2, 13.5)
-                sheet2.write(4, 2, "Giao diện", style_header)
-                sheet2.set_column(3, 3, 13.5)
-                sheet2.write(4, 3, "Chức năng", style_header)
-                sheet2.set_column(4, 4, 15.5)
-                sheet2.merge_range(3, 4, 4, 4, "Tổng issue", style_header)
-                sheet2.set_column(5, 5, 35.5)
-                sheet2.merge_range(3, 5, 4, 5, "Ghi chú", style_header)
-                x = 5
-                stt = 1
-                for record in self.env['function'].search([('project_id', '=', record.id)]):
-                    sheet2.write(x, 0, stt, style_value_center)
-                    sheet2.write(x, 1, record.name, style_value_left)
-                    sheet2.write(x, 2, "", style_value_left)
-                    sheet2.write(x, 3, "", style_value_left)
-                    sheet2.write(x, 5, "", style_value_left)
-                    count_list = self.env['issues'].search([('function_id', '=', record.id)])
-                    count = len(count_list)
-                    sheet2.write(x, 4, count, style_value_center)
 
-                    x += 1
-                    stt += 1
-
+                # # Danh sách chức năng
+                # sheet2.set_column(0, 4, 35.5)
+                # sheet2.merge_range(1, 0, 1, 5, record.project_code + " - DANH SÁCH CHỨC NĂNG KIỂM ĐỊNH",
+                #                    style_tieude_font_12)
+                # sheet2.set_column(0, 0, 6.35)
+                # sheet2.merge_range(3, 0, 4, 0, "STT", style_header)
+                # sheet2.set_column(1, 1, 67.8)
+                # sheet2.merge_range(3, 1, 4, 1, "Chức năng kiểm định", style_header)
+                # sheet2.merge_range(3, 2, 3, 3, "Kết quả kiểm định", style_header)
+                # sheet2.set_column(2, 2, 13.5)
+                # sheet2.write(4, 2, "Giao diện", style_header)
+                # sheet2.set_column(3, 3, 13.5)
+                # sheet2.write(4, 3, "Chức năng", style_header)
+                # sheet2.set_column(4, 4, 15.5)
+                # sheet2.merge_range(3, 4, 4, 4, "Tổng issue", style_header)
+                # sheet2.set_column(5, 5, 35.5)
+                # sheet2.merge_range(3, 5, 4, 5, "Ghi chú", style_header)
+                # x = 5
+                # stt = 1
+                # for record in self.env['function'].search([('project_id', '=', record.id)]):
+                #     sheet2.write(x, 0, stt, style_value_center)
+                #     sheet2.write(x, 1, record.name, style_value_left)
+                #     sheet2.write(x, 2, "", style_value_left)
+                #     sheet2.write(x, 3, "", style_value_left)
+                #     sheet2.write(x, 5, "", style_value_left)
+                #     count_list = self.env['issues'].search([('function_id', '=', record.id)])
+                #     count = len(count_list)
+                #     sheet2.write(x, 4, count, style_value_center)
+                #
+                #     x += 1
+                #     stt += 1
+                #
                 # # Danh sách lỗi
+
                 x = 4
                 for record in self.env['issues'].search([
                                                           ('project_id', '=', record.id),
@@ -468,8 +472,6 @@ class Times(models.Model):
             }
 
 
-
-
     # link đến danh sách các issues thuộc times đó
     def get_issues_of_times(self):
         for line in self:
@@ -481,6 +483,8 @@ class Times(models.Model):
             return action
 
 
+
+
     # đếm số lượng issues trong 1 times
     @api.depends('issues_ids')
     def count_issues_of_times(self):
@@ -488,17 +492,9 @@ class Times(models.Model):
             record.count_issues_times = self.env['issues'].search_count(
                 [('times_id', '=', record.id)])
 
-
-
-
-
     @api.constrains('start_date', 'end_date')
     def check_end_date(self):
         for record in self:
             if record.end_date < record.start_date:
                 raise ValidationError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu"))
-
-
-
-
 

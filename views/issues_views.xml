@@ -8,6 +8,7 @@
                 <form>
                     <header>
                         <button name="update_state" string="Update state" class="oe_highlight" type="object"/>
+
                         <field name="status" widget="statusbar" statusbar_visible="new,open,onhold,resolved,duplicate,wontfix,invalid,closed"/>
                     </header>
                     <sheet>
