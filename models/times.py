@@ -174,8 +174,9 @@ class Times(models.Model):
 
                 # # Danh sách lỗi
                 x = 4
-                for record in self.env['issues'].search([ ('times_id', '=', record.id),
-                                                         ('status', 'in', ('new', 'open', 'onhold','resolved', 'duplicate', 'wontfix', 'invalid')),
+                for record in self.env['issues'].search([
+                                                          ('project_id', '=', record.id),
+
                                                                   ]):
                     sheet3.write(x, 0, record.name, style_value_center)  # ID
                     sheet3.write(x, 1, record.title, style_value_left)  # Summary
@@ -190,8 +191,9 @@ class Times(models.Model):
                     sheet3.write(x, 10, record.write_date, style_value_date_border)  # Bug fix date
                     sheet3.write(x, 11, "", style_value_center)  #
                     x += 1
-                # sheet3.merge_range(1, 0, 1, 6, record.project_code + " - THỐNG KÊ LỖI KIỂM ĐỊNH",
-                #                    style_tieude_font14)
+                    
+                sheet3.merge_range(1, 0, 1, 6, line.project_id.project_code + " - THỐNG KÊ LỖI KIỂM ĐỊNH",
+                                   style_tieude_font14)
                 sheet3.set_column(0, 0, 5.55)
                 sheet3.write(3, 0, "Bug ID", style_header_bg)
 
