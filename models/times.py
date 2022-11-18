@@ -2,6 +2,7 @@
 from odoo import api, fields, models, tools, _
 from odoo.exceptions import UserError, ValidationError
 
+<<<<<<< HEAD
 import base64
 import io
 import os
@@ -14,13 +15,25 @@ class Times(models.Model):
     _rec_name = 'times_name'
 
     times_name = fields.Integer(string='Times', required=True)
+=======
+class Times(models.Model):
+    _name = 'times'
+    _description = 'Times'
+    _rec_name = 'times_name' #
+
+    times_name = fields.Integer(required=True, default=None)
+>>>>>>> parent of b055dcd (Merge pull request #12 from thanhtructran2000/su)
     start_date = fields.Date(string="Start date", default=fields.Date.today(), readonly=True)
     end_date = fields.Date(string="End date")
     assignee_id = fields.Many2one('res.users', string='Assignee', default=lambda self: self.env.user)
     project_id = fields.Many2one('testing.project', string='Project',  ondelete='cascade', required=True)
+
+
     issues_ids = fields.One2many('issues', 'times_id')
+
     count_issues_times = fields.Integer(compute='count_issues_of_times')
 
+<<<<<<< HEAD
     def download_file_import(self):
         cr = self.env.cr
         for line in self:
@@ -471,6 +484,8 @@ class Times(models.Model):
 
 
 
+=======
+>>>>>>> parent of b055dcd (Merge pull request #12 from thanhtructran2000/su)
 
     # link đến danh sách các issues thuộc times đó
     def get_issues_of_times(self):
@@ -483,6 +498,8 @@ class Times(models.Model):
             return action
 
 
+
+
     # đếm số lượng issues trong 1 times
     @api.depends('issues_ids')
     def count_issues_of_times(self):
@@ -493,14 +510,21 @@ class Times(models.Model):
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of b055dcd (Merge pull request #12 from thanhtructran2000/su)
     @api.constrains('start_date', 'end_date')
     def check_end_date(self):
         for record in self:
             if record.end_date < record.start_date:
+<<<<<<< HEAD
                 raise ValidationError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu"))
 
 
 
 
 
+=======
+                raise ValidationError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu"))
+>>>>>>> parent of b055dcd (Merge pull request #12 from thanhtructran2000/su)
