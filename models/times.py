@@ -176,64 +176,65 @@ class Times(models.Model):
                 #     stt += 1
                 #
                 # # Danh sách lỗi
-                # x = 4
-                # for record in self.env['issues'].search([('project_id', '=', record.id)]):
-                #     sheet3.write(x, 0, record.name, style_value_center)  # ID
-                #     sheet3.write(x, 1, record.title, style_value_left)  # Summary
-                #     sheet3.write(x, 2, record.function_id.name, style_value_center)  # Category
-                #     sheet3.write(x, 3, record.type, style_value_center)  # Type
-                #     sheet3.write(x, 4, record.priority, style_value_center)  # Severity
-                #     sheet3.write(x, 5, record.status, style_value_center)  # Status
-                #     sheet3.write(x, 6, "", style_value_center)  #
-                #     sheet3.write(x, 7, "", style_value_center)  #
-                #     sheet3.write(x, 8, record.reporter_id.name, style_value_center)  # Reporter
-                #     sheet3.write(x, 9, record.create_date, style_value_date_border)  # Bug report date
-                #     sheet3.write(x, 10, record.write_date, style_value_date_border)  # Bug fix date
-                #     sheet3.write(x, 11, "", style_value_center)  #
-                #     x += 1
-                # sheet3.merge_range(1, 0, 1, 6, record.project_code + " - THỐNG KÊ LỖI KIỂM ĐỊNH LẦN ...",
-                #                    style_tieude_font14)
-                # sheet3.set_column(0, 0, 5.55)
-                # sheet3.write(3, 0, "Bug ID", style_header_bg)
-                #
-                # sheet3.set_column(1, 1, 81.2)
-                # sheet3.write(3, 1, "Summary", style_header_bg)
-                #
-                # sheet3.set_column(2, 2, 23.6)
-                # sheet3.write(3, 2, "Category", style_header_bg)
-                #
-                # sheet3.set_column(3, 3, 14)
-                # sheet3.write(3, 3, "Type", style_header_bg)
-                #
-                # sheet3.set_column(4, 4, 9.4)
-                # sheet3.write(3, 4, "Severity", style_header_bg)
-                #
-                # sheet3.set_column(5, 5, 11.7)
-                # sheet3.write(3, 5, "Status", style_header_bg)
-                #
-                # sheet3.set_column(6, 6, 12.5)
-                # sheet3.write(3, 6, "Resolution", style_header_bg)
-                #
-                # sheet3.set_column(7, 7, 17.3)
-                # sheet3.write(3, 7, "Target Version", style_header_bg)
-                #
-                # sheet3.set_column(8, 8, 19.7)
-                # sheet3.write(3, 8, "Reporter", style_header_bg)
-                #
-                # sheet3.set_column(8, 8, 19.7)
-                # sheet3.write(3, 8, "Reporter", style_header_bg)
-                #
-                # sheet3.set_column(9, 9, 20.3)
-                # sheet3.write(3, 9, "Bug report date", style_header_bg)
-                #
-                # sheet3.set_column(9, 9, 18.9)
-                # sheet3.write(3, 9, "Bug report date", style_header_bg)
-                #
-                # sheet3.set_column(10, 10, 18.9)
-                # sheet3.write(3, 10, "Bug fix date", style_header_bg)
-                #
-                # sheet3.set_column(11, 11, 21)
-                # sheet3.write(3, 11, "Fixed in Version", style_header_bg)
+
+                x = 4
+                for record in self.env['issues'].search([
+                                                          ('project_id', '=', record.id),
+
+                                                                  ]):
+                    sheet3.write(x, 0, record.name, style_value_center)  # ID
+                    sheet3.write(x, 1, record.title, style_value_left)  # Summary
+                    sheet3.write(x, 2, record.function_id.name, style_value_center)  # Category
+                    sheet3.write(x, 3, record.type, style_value_center)  # Type
+                    sheet3.write(x, 4, record.priority, style_value_center)  # Severity
+                    sheet3.write(x, 5, record.status, style_value_center)  # Status
+                    sheet3.write(x, 6, record.resolution, style_value_center)  # Resolution
+                    sheet3.write(x, 7, record.times_id.times_name, style_value_center)  # Target version: lần mấy
+                    sheet3.write(x, 8, record.reporter_id.name, style_value_center)  # Reporter
+                    sheet3.write(x, 9, record.create_date, style_value_date_border)  # Bug report date
+                    sheet3.write(x, 10, record.write_date, style_value_date_border)  # Bug fix date
+                    sheet3.write(x, 11, "", style_value_center)  #
+                    x += 1
+                    
+                sheet3.merge_range(1, 0, 1, 6, line.project_id.project_code + " - THỐNG KÊ LỖI KIỂM ĐỊNH",
+                                   style_tieude_font14)
+                sheet3.set_column(0, 0, 5.55)
+                sheet3.write(3, 0, "Bug ID", style_header_bg)
+
+                sheet3.set_column(1, 1, 81.2)
+                sheet3.write(3, 1, "Summary", style_header_bg)
+
+                sheet3.set_column(2, 2, 23.6)
+                sheet3.write(3, 2, "Category", style_header_bg)
+
+                sheet3.set_column(3, 3, 14)
+                sheet3.write(3, 3, "Type", style_header_bg)
+
+                sheet3.set_column(4, 4, 9.4)
+                sheet3.write(3, 4, "Priority", style_header_bg)
+
+                sheet3.set_column(5, 5, 11.7)
+                sheet3.write(3, 5, "Status", style_header_bg)
+
+                sheet3.set_column(6, 6, 12.5)
+                sheet3.write(3, 6, "Resolution", style_header_bg)
+
+                sheet3.set_column(7, 7, 17.3)
+                sheet3.write(3, 7, "Target Version", style_header_bg)
+
+                sheet3.set_column(8, 8, 19.7)
+                sheet3.write(3, 8, "Reporter", style_header_bg)
+
+
+                sheet3.set_column(9, 9, 20.3)
+                sheet3.write(3, 9, "Bug report date", style_header_bg)
+
+
+                sheet3.set_column(10, 10, 18.9)
+                sheet3.write(3, 10, "Bug fix date", style_header_bg)
+
+                sheet3.set_column(11, 11, 21)
+                sheet3.write(3, 11, "Fixed in Version", style_header_bg)
 
                 # Sheet số liệu
                 # sheet4.write(2, 1, self.env['issues'].search_count([('status', '=', 'new'),
