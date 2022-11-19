@@ -203,7 +203,7 @@ class TestingProject(models.Model):
             sheet.write(1, 1, line.project_name, style_tieude) # vd: HỘP KHÔNG GIẤY
             sheet.set_column(0, 0, 6)
             sheet.set_column(1, 1, 70)
-            sheet.set_column(2, 2, 10)
+            sheet.set_column(2, 2, 15)
             sheet.set_column(3, 3, 10)
             sheet.set_column(4, 4, 10)
             sheet.set_row(1, 25)
