@@ -197,10 +197,14 @@ class Times(models.Model):
                     sheet3.write(x, 8, record.reporter_id.name, style_value_center)  # Reporter
                     sheet3.write(x, 9, record.create_date, style_value_date_border)  # Bug report date
                     if record.bug_fix_date == 0:
-                        sheet3.write(x, 10, " ", style_value_date_border)  # Bug fix date
+                        sheet3.write(x, 10, "", style_value_center)  # Bug fix date
                     else:
                         sheet3.write(x, 10, record.bug_fix_date, style_value_date_border)  # Bug fix date
-                    sheet3.write(x, 11, "", style_value_center)  #
+
+                    if record.fixed_in_version == 0:
+                        sheet3.write(x, 11, "", style_value_center)  # fixed_in_version
+                    else:
+                        sheet3.write(x, 11, record.fixed_in_version, style_value_center)  # fixed_in_version
                     x += 1
                 # count = 0
                 # for record in self.env['testing.project'].search_count(['times_id', '=', line.id]):
