@@ -196,8 +196,9 @@ class Times(models.Model):
                     sheet3.write(x, 10, record.bug_fix_date, style_value_date_border)  # Bug fix date
                     sheet3.write(x, 11, "", style_value_center)  #
                     x += 1
-
-
+                # count = 0
+                # for record in self.env['testing.project'].search_count(['times_id', '=', line.id]):
+                #     
 
                 sheet3.merge_range(1, 0, 1, 6, line.project_id.project_code + " - THỐNG KÊ LỖI KIỂM ĐỊNH", style_tieude_font14)
                 sheet3.set_column(0, 0, 5.55)
