@@ -21,7 +21,7 @@ class Issues(models.Model):
     reproducible = fields.Selection(selection=[
         ('always', 'Always'),
         ('sometimes', 'Sometimes'),
-        ('never','Never'),
+        ('never', 'Never'),
     ], string='Reproducible',  default='always', required=True)
     type = fields.Selection(selection=[
         ('bug', 'Bug'),
@@ -39,7 +39,6 @@ class Issues(models.Model):
 
     # attachment_ids = fields.Many2many('ir.attachment', 'issues_attachments_rel', 'issues_id',
     #                                   'attachment_id', 'Attachments')
-
     reporter_id = fields.Many2one('res.users', string='Reporter', required=True, default=lambda self: self.env.user)
     assignee_id = fields.Many2one('res.users', string='Assignee', default=lambda self: self.env.user)
 
@@ -55,6 +54,7 @@ class Issues(models.Model):
     ], string='Status', default='new', required=True)
 
     bug_fix_date = fields.Date(string='Bug fix date', compute="_fix_date")
+    version = fields.Integer()
 
     resolution = fields.Selection(selection=[
         ('new', 'New'),
@@ -74,8 +74,6 @@ class Issues(models.Model):
                 record.bug_fix_date = fields.Date.today()
             else:
                 record.bug_fix_date = 0
-
-
 
     @api.model
     def create(self, vals):
@@ -107,9 +105,6 @@ class Issues(models.Model):
             'res_id': new_import.id,
         })
         return action
-
-
-
 
 
 
