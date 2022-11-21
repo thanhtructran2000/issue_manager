@@ -78,7 +78,7 @@ class Times(models.Model):
                 'value_date': {'font_name': 'Times New Roman', 'font_size': 13, 'align': 'left',
                                'valign': 'vcenter', 'num_format': 'DD/MM/YYYY', 'text_wrap': 1},
                 'value_date_border': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'center',
-                                      'valign': 'vcenter', 'num_format': 'dd/mm/yy hh:mm', 'text_wrap': 1},
+                                      'valign': 'vcenter', 'num_format': 'DD/MM/YYYY', 'text_wrap': 1},
                 'value_center': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'center',
                                  'valign': 'vcenter', 'text_wrap': 1},
             }
@@ -185,7 +185,10 @@ class Times(models.Model):
                                                          ]):
                     sheet3.write(x, 0, record.name, style_value_center)  # ID
                     sheet3.write(x, 1, record.title, style_value_left)  # Summary
-                    sheet3.write(x, 2, record.function_id.name, style_value_center)  # Category
+                    if record.function_id.name == 0:
+                        sheet3.write(x,2, " ", style_value_center)
+                    else:
+                        sheet3.write(x, 2, record.function_id.name, style_value_center)  # Category
                     sheet3.write(x, 3, record.type, style_value_center)  # Type
                     sheet3.write(x, 4, record.priority, style_value_center)  # Severity
                     sheet3.write(x, 5, record.status, style_value_center)  # Status
@@ -193,7 +196,10 @@ class Times(models.Model):
                     sheet3.write(x, 7, record.times_id.times_name, style_value_center)  # Target version: lần mấy
                     sheet3.write(x, 8, record.reporter_id.name, style_value_center)  # Reporter
                     sheet3.write(x, 9, record.create_date, style_value_date_border)  # Bug report date
-                    sheet3.write(x, 10, record.bug_fix_date, style_value_date_border)  # Bug fix date
+                    if record.bug_fix_date == 0:
+                        sheet3.write(x, 10, " ", style_value_date_border)  # Bug fix date
+                    else:
+                        sheet3.write(x, 10, record.bug_fix_date, style_value_date_border)  # Bug fix date
                     sheet3.write(x, 11, "", style_value_center)  #
                     x += 1
                 # count = 0
