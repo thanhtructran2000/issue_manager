@@ -54,7 +54,8 @@ class Issues(models.Model):
         ('closed', 'Closed'),
     ], string='Status', default='new', required=True)
 
-    bug_fix_date = fields.Date(string='Bug fix date', compute="_fix_date")
+
+
 
     resolution = fields.Selection(selection=[
         ('new', 'New'),
@@ -65,16 +66,8 @@ class Issues(models.Model):
 
     function_id = fields.Many2one('function', string='Function', domain = "[('project_id', '=', project_id)]", ondelete='cascade')
 
-
-    # lấy ngày resolved
-    @api.depends('status')
-    def _fix_date(self):
-        for record in self:
-            if record.status =='resolved':
-                record.bug_fix_date = fields.Date.today()
-            else:
-                record.bug_fix_date = 0
-
+    bug_fix_date = fields.Date(string='Bug fix date')
+    fixed_in_version = fields.Integer(string='Fixed in version')
 
 
     @api.model
