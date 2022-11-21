@@ -25,7 +25,8 @@
                                 <field name="reporter_id"/>
                                 <field name="function_id"/>
                                 <field name="resolution"/>
-<!--                                <field name="version"/>-->
+                                <field name="fixed_in_version"/>
+
                             </group>
                             <group>
                                 <field name="times_id"/>
