@@ -11,6 +11,8 @@ class Times(models.Model):
     _name = 'times'
     _description = 'Times'
     _rec_name = 'times_name'
+
+
     times_name = fields.Integer(string='Times', required=True)
     start_date = fields.Date(string="Start date", default=fields.Date.today(), readonly=True)
     end_date = fields.Date(string="End date")
@@ -76,7 +78,7 @@ class Times(models.Model):
                 'value_date': {'font_name': 'Times New Roman', 'font_size': 13, 'align': 'left',
                                'valign': 'vcenter', 'num_format': 'DD/MM/YYYY', 'text_wrap': 1},
                 'value_date_border': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'center',
-                                      'valign': 'vcenter', 'num_format': 'DD/MM/YYYY', 'text_wrap': 1},
+                                      'valign': 'vcenter', 'num_format': 'dd/mm/yy hh:mm', 'text_wrap': 1},
                 'value_center': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'center',
                                  'valign': 'vcenter', 'text_wrap': 1},
             }
@@ -177,8 +179,9 @@ class Times(models.Model):
                  # # Danh sách lỗi
                 x = 4
 
-                for record in self.env['issues'].search([('times_id', '<=', line.id) , ('project_id','=', line.project_id.id),
-                                                         ('status', '!=', 'closed')
+                for record in self.env['issues'].search([('project_id', '=', line.project_id.id),
+                                                         '|', ('times_id', '=', line.id), '&',
+                                                         ('times_id', '<=', line.id), ('status', '!=', 'closed'),
                                                          ]):
                     sheet3.write(x, 0, record.name, style_value_center)  # ID
                     sheet3.write(x, 1, record.title, style_value_left)  # Summary
@@ -190,7 +193,7 @@ class Times(models.Model):
                     sheet3.write(x, 7, record.times_id.times_name, style_value_center)  # Target version: lần mấy
                     sheet3.write(x, 8, record.reporter_id.name, style_value_center)  # Reporter
                     sheet3.write(x, 9, record.create_date, style_value_date_border)  # Bug report date
-                    sheet3.write(x, 10, record.write_date, style_value_date_border)  # Bug fix date
+                    sheet3.write(x, 10, record.bug_fix_date, style_value_date_border)  # Bug fix date
                     sheet3.write(x, 11, "", style_value_center)  #
                     x += 1
 
