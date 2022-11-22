@@ -25,7 +25,6 @@
                                 <field name="reporter_id"/>
                                 <field name="function_id"/>
                                 <field name="resolution"/>
-                                <field name="fixed_in_version"/>
 
                             </group>
                             <group>
@@ -33,7 +32,6 @@
                                 <field name="type"/>
                                 <field name="priority"/>
                                 <field name="assignee_id"/>
-                                <field name="bug_fix_date"/>
                             </group>
                         </group>
                         <notebook>
@@ -101,11 +99,10 @@
                     <field name="type"/>
                     <field name="priority"/>
                     <field name="status"/>
-                    <field name="resolution"/>
                     <field name="function_id"/>
                     <field name="assignee_id"/>
-                    <field name="create_date"/>
-                    <field name="write_date"/>
+                    <field name="create_date" string="Created"/>
+                    <field name="write_date" string="Updated"/>
 
                 </tree>
             </field>

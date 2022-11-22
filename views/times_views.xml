@@ -49,6 +49,7 @@
                     <field name="times_name"/>
                     <field name="project_id"/>
                     <field name="assignee_id"/>
+                    <field name="count_issues_times"/>
                     <field name="start_date"/>
                     <field name="end_date"/>
                 </tree>
