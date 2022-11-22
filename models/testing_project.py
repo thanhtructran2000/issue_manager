@@ -83,10 +83,10 @@ class TestingProject(models.Model):
             'tieude': {'bold': 1, 'font_name': 'Calibri', 'font_size': 20, 'align': 'center',
                        'valign': 'vcenter', 'text_wrap': 1},
             'header': {'border': 1, 'bold': 1, 'font_name': 'Times New Roman', 'font_size': 12, 'align': 'center',
-                       'valign': 'vcenter', 'text_wrap': 1},
+                       'valign': 'vcenter', 'text_wrap': 0},
 
             'value_center': {'border': 1, 'font_name': 'Calibri', 'font_size': 11, 'align': 'center',
-                             'valign': 'vcenter', 'text_wrap': 1},
+                             'valign': 'vcenter', 'text_wrap': 0},
 
             'value_center_bold': {'border': 1, 'bold': 1, 'font_name': 'Calibri', 'font_size': 11,
                                   'align': 'center',
@@ -94,15 +94,15 @@ class TestingProject(models.Model):
 
             'value_center_bold_no_border': {'border': 0, 'bold': 1, 'font_name': 'Calibri', 'font_size': 11,
                                   'align': 'center',
-                                  'valign': 'vcenter', 'text_wrap': 1},
+                                  'valign': 'vcenter', 'text_wrap': 0},
 
             'value_center_no_bold_no_border': {'border': 0, 'bold': 0, 'font_name': 'Calibri', 'font_size': 11,
                                             'align': 'center',
-                                            'valign': 'vcenter', 'text_wrap': 1},
+                                            'valign': 'vcenter', 'text_wrap': 0},
 
             'value_center_underline': {'border': 1, 'underline': 1, 'font_name': 'Calibri',
                                                  'font_size': 11,
-                                                 'align': 'center', 'valign': 'vcenter', 'text_wrap': 1},
+                                                 'align': 'center', 'valign': 'vcenter', 'text_wrap': 0},
 
             'value_center_underline_no_border_gb_link': {'border': 0, 'underline': 1, 'font_name': 'Times New Roman',
                                                  'font_size': 12, 'fg_color': '#D0D3D4',
@@ -110,7 +110,7 @@ class TestingProject(models.Model):
 
             'value_left': {'border': 1, 'font_name': 'Calibri', 'font_size': 11, 'align': 'left',
                            'valign': 'vcenter',
-                           'text_wrap': 1},
+                           'text_wrap': 0},
             'value_right': {'border': 1, 'font_name': 'Calibri', 'font_size': 11, 'align': 'right',
                             'valign': 'vcenter'},
         }
