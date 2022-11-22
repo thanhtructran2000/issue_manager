@@ -14,12 +14,12 @@ class Times(models.Model):
 
 
     times_name = fields.Integer(string='Times', required=True)
-    start_date = fields.Date(string="Start date", default=fields.Date.today(), readonly=True)
+    start_date = fields.Date(string="Start date")
     end_date = fields.Date(string="End date")
     assignee_id = fields.Many2one('res.users', string='Assignee', default=lambda self: self.env.user)
     project_id = fields.Many2one('testing.project', string='Project',  ondelete='cascade', required=True)
     issues_ids = fields.One2many('issues', 'times_id')
-    count_issues_times = fields.Integer(compute='count_issues_of_times')
+    count_issues_times = fields.Integer(string='Issues', compute='count_issues_of_times')
 
 
 
@@ -40,47 +40,47 @@ class Times(models.Model):
                                   'align': 'center', 'fg_color': '#D0cece', 'valign': 'vcenter', 'text_wrap': 1},
                 'value': {'font_name': 'Times New Roman', 'font_size': 13, 'align': 'left'},
                 'value_left': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 12, 'align': 'left',
-                               'valign': 'vcenter', 'text_wrap': 1},
+                               'valign': 'vcenter'},
                 'value_left_bold': {'border': 1, 'bold': 1, 'font_name': 'Times New Roman', 'font_size': 14,
                                     'align': 'left',
-                                    'valign': 'vcenter', 'text_wrap': 1},
+                                    'valign': 'vcenter'},
                 'value_left_italic': {'border': 1, 'italic': 1, 'font_name': 'Times New Roman', 'font_size': 12,
                                       'align': 'left',
-                                      'valign': 'vcenter', 'text_wrap': 1},
+                                      'valign': 'vcenter'},
                 'value_left_underline': {'border': 1, 'underline': 1, 'font_name': 'Times New Roman', 'font_size': 12,
-                                         'align': 'left', 'valign': 'vcenter', 'text_wrap': 1},
+                                         'align': 'left', 'valign': 'vcenter'},
                 'value_left_bold_italic': {'border': 1, 'bold': 1, 'italic': 1, 'font_name': 'Times New Roman',
                                            'font_size': 12,
-                                           'align': 'left', 'valign': 'vcenter', 'text_wrap': 1},
+                                           'align': 'left', 'valign': 'vcenter'},
                 'value_left_bold_underline': {'border': 1, 'bold': 1, 'underline': 1, 'font_name': 'Times New Roman',
-                                              'font_size': 12, 'align': 'left', 'valign': 'vcenter', 'text_wrap': 1},
+                                              'font_size': 12, 'align': 'left', 'valign': 'vcenter'},
                 'value_left_bold_italic_underline': {'border': 1, 'bold': 1, 'italic': 1, 'underline': 1,
                                                      'font_name': 'Times New Roman', 'font_size': 12, 'align': 'left',
-                                                     'valign': 'vcenter', 'text_wrap': 1},
+                                                     'valign': 'vcenter'},
                 'value_left_no_border': {'border': 0, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'left',
-                                         'valign': 'vcenter', 'text_wrap': 1},
+                                         'valign': 'vcenter'},
                 'value_left_bold_no_border': {'border': 0, 'bold': 1, 'font_name': 'Times New Roman', 'font_size': 14,
-                                              'align': 'left', 'valign': 'vcenter', 'text_wrap': 1},
+                                              'align': 'left', 'valign': 'vcenter'},
                 'value_left_italic_no_border': {'border': 0, 'italic': 1, 'font_name': 'Times New Roman',
                                                 'font_size': 12,
-                                                'align': 'left', 'valign': 'vcenter', 'text_wrap': 1},
+                                                'align': 'left', 'valign': 'vcenter'},
                 'value_left_underline_no_border': {'border': 0, 'underline': 1, 'font_name': 'Times New Roman',
                                                    'font_size': 12,
-                                                   'align': 'left', 'valign': 'vcenter', 'text_wrap': 1},
+                                                   'align': 'left', 'valign': 'vcenter'},
                 'value_left_bold_italic_no_border': {'border': 0, 'bold': 1, 'italic': 1,
                                                      'font_name': 'Times New Roman',
                                                      'font_size': 12, 'align': 'left', 'valign': 'vcenter',
-                                                     'text_wrap': 1},
+                                                     },
                 'value_left_bold_underline_no_border': {'border': 0, 'bold': 1, 'underline': 1,
                                                         'font_name': 'Times New Roman',
                                                         'font_size': 12, 'align': 'left', 'valign': 'vcenter',
-                                                        'text_wrap': 1},
+                                                        },
                 'value_date': {'font_name': 'Times New Roman', 'font_size': 13, 'align': 'left',
-                               'valign': 'vcenter', 'num_format': 'DD/MM/YYYY', 'text_wrap': 1},
-                'value_date_border': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'center',
-                                      'valign': 'vcenter', 'num_format': 'DD/MM/YYYY', 'text_wrap': 1},
+                               'valign': 'vcenter', 'num_format': 'DD/MM/YYYY'},
+                'value_date_border': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'right',
+                                      'valign': 'vcenter', 'num_format': 'DD/MM/YYYY'},
                 'value_center': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'center',
-                                 'valign': 'vcenter', 'text_wrap': 1},
+                                 'valign': 'vcenter'},
             }
             style = copy.deepcopy(excel_style)
 
@@ -188,11 +188,12 @@ class Times(models.Model):
                     if record.function_id.name == 0:
                         sheet3.write(x,2, " ", style_value_center)
                     else:
-                        sheet3.write(x, 2, record.function_id.name, style_value_center)  # Category
-                    sheet3.write(x, 3, record.type, style_value_center)  # Type
-                    sheet3.write(x, 4, record.priority, style_value_center)  # Severity
-                    sheet3.write(x, 5, record.status, style_value_center)  # Status
-                    sheet3.write(x, 6, record.resolution, style_value_center)  # Resolution
+                        sheet3.write(x, 2, record.function_id.name, style_value_left)  # Category
+
+                    sheet3.write(x, 3, record.type.title(), style_value_center)  # Type
+                    sheet3.write(x, 4, record.priority.title(), style_value_center)  # Severity
+                    sheet3.write(x, 5, record.status.title(), style_value_center)  # Status
+                    sheet3.write(x, 6, record.resolution.title(), style_value_center)  # Resolution
                     sheet3.write(x, 7, record.times_id.times_name, style_value_center)  # Target version: lần mấy
                     sheet3.write(x, 8, record.reporter_id.name, style_value_center)  # Reporter
                     sheet3.write(x, 9, record.create_date, style_value_date_border)  # Bug report date
@@ -205,6 +206,7 @@ class Times(models.Model):
                     else:
                         sheet3.write(x, 11, record.fixed_in_version, style_value_center)  # fixed_in_version
                     x += 1
+
 
                 sheet3.merge_range(1, 0, 1, 6, line.project_id.project_code + " - THỐNG KÊ LỖI KIỂM ĐỊNH", style_tieude_font14)
                 sheet3.set_column(0, 0, 5.55)
@@ -246,117 +248,117 @@ class Times(models.Model):
                 # Sheet số liệu
                 sheet4.write(2, 1, self.env['issues'].search_count([('status', '=', 'new'),
                                                                     ('priority', '=', 'blocker'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(2, 2, self.env['issues'].search_count([('status', '=', 'open'),
                                                                     ('priority', '=', 'blocker'),
-                                                                    ('times_id', '=', record.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(2, 3, self.env['issues'].search_count([('status', '=', 'resolved'),
                                                                     ('priority', '=', 'blocker'),
-                                                                    ('times_id', '=', record.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(2, 4, self.env['issues'].search_count([('status', '=', 'invalid'),
                                                                     ('priority', '=', 'blocker'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(2, 5, self.env['issues'].search_count([('status', '=', 'duplicate'),
                                                                     ('priority', '=', 'blocker'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(2, 6, self.env['issues'].search_count([('status', '=', 'wontfix'),
                                                                     ('priority', '=', 'blocker'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(2, 7, self.env['issues'].search_count([('status', '=', 'closed'),
                                                                     ('priority', '=', 'blocker'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(2, 8, '=sum(b3:h3)', style_value_center)
 
                 sheet4.write(3, 1, self.env['issues'].search_count([('status', '=', 'new'),
                                                                     ('priority', '=', 'critical'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(3, 2, self.env['issues'].search_count([('status', '=', 'open'),
                                                                     ('priority', '=', 'critical'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(3, 3, self.env['issues'].search_count([('status', '=', 'resolved'),
                                                                     ('priority', '=', 'critical'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(3, 4, self.env['issues'].search_count([('status', '=', 'invalid'),
                                                                     ('priority', '=', 'critical'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(3, 5, self.env['issues'].search_count([('status', '=', 'duplicate'),
                                                                     ('priority', '=', 'critical'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(3, 6, self.env['issues'].search_count([('status', '=', 'wontfix'),
                                                                     ('priority', '=', 'critical'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(3, 7, self.env['issues'].search_count([('status', '=', 'closed'),
                                                                     ('priority', '=', 'critical'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(3, 8, '=sum(b4:h4)', style_value_center)
 
                 sheet4.write(4, 1, self.env['issues'].search_count([('status', '=', 'new'),
                                                                     ('priority', '=', 'major'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(4, 2, self.env['issues'].search_count([('status', '=', 'open'),
                                                                     ('priority', '=', 'major'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(4, 3, self.env['issues'].search_count([('status', '=', 'resolved'),
                                                                     ('priority', '=', 'major'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(4, 4, self.env['issues'].search_count([('status', '=', 'invalid'),
                                                                     ('priority', '=', 'major'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(4, 5, self.env['issues'].search_count([('status', '=', 'duplicate'),
                                                                     ('priority', '=', 'major'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(4, 6, self.env['issues'].search_count([('status', '=', 'wontfix'),
                                                                     ('priority', '=', 'major'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(4, 7, self.env['issues'].search_count([('status', '=', 'closed'),
                                                                     ('priority', '=', 'major'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(4, 8, '=sum(b5:h5)', style_value_center)
 
                 sheet4.write(5, 1, self.env['issues'].search_count([('status', '=', 'new'),
                                                                     ('priority', '=', 'minor'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(5, 2, self.env['issues'].search_count([('status', '=', 'open'),
                                                                     ('priority', '=', 'minor'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(5, 3, self.env['issues'].search_count([('status', '=', 'resolved'),
                                                                     ('priority', '=', 'minor'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(5, 4, self.env['issues'].search_count([('status', '=', 'invalid'),
                                                                     ('priority', '=', 'minor'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(5, 5, self.env['issues'].search_count([('status', '=', 'duplicate'),
                                                                     ('priority', '=', 'minor'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(5, 6, self.env['issues'].search_count([('status', '=', 'wontfix'),
                                                                     ('priority', '=', 'minor'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(5, 7, self.env['issues'].search_count([('status', '=', 'closed'),
                                                                     ('priority', '=', 'minor'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(5, 8, '=sum(b6:h6)', style_value_center)
 
                 sheet4.write(6, 1, self.env['issues'].search_count([('status', '=', 'new'),
                                                                     ('priority', '=', 'trivial'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(6, 2, self.env['issues'].search_count([('status', '=', 'open'),
                                                                     ('priority', '=', 'trivial'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(6, 3, self.env['issues'].search_count([('status', '=', 'resolved'),
                                                                     ('priority', '=', 'trivial'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(6, 4, self.env['issues'].search_count([('status', '=', 'invalid'),
                                                                     ('priority', '=', 'trivial'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(6, 5, self.env['issues'].search_count([('status', '=', 'duplicate'),
                                                                     ('priority', '=', 'trivial'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(6, 6, self.env['issues'].search_count([('status', '=', 'wontfix'),
                                                                     ('priority', '=', 'trivial'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(6, 7, self.env['issues'].search_count([('status', '=', 'closed'),
                                                                     ('priority', '=', 'trivial'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(6, 8, '=sum(b7:h7)', style_value_center)
 
                 sheet4.set_column(0, 0, 21.5)
@@ -412,105 +414,105 @@ class Times(models.Model):
                 # By Resolution
                 sheet4.write(9, 1, self.env['issues'].search_count([('status', '=', 'new'),
                                                                     ('resolution', '=', 'new'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(9, 2, self.env['issues'].search_count([('status', '=', 'open'),
                                                                     ('resolution', '=', 'new'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(9, 3, self.env['issues'].search_count([('status', '=', 'resolved'),
                                                                     ('resolution', '=', 'new'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(9, 4, self.env['issues'].search_count([('status', '=', 'invalid'),
                                                                     ('resolution', '=', 'new'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(9, 5, self.env['issues'].search_count([('status', '=', 'duplicate'),
                                                                     ('resolution', '=', 'new'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(9, 6, self.env['issues'].search_count([('status', '=', 'wontfix'),
                                                                     ('resolution', '=', 'new'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(9, 7, self.env['issues'].search_count([('status', '=', 'closed'),
                                                                     ('resolution', '=', 'new'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(9, 8, '=sum(b10:h10)', style_value_center)
 
 
 
                 sheet4.write(10, 1, self.env['issues'].search_count([('status', '=', 'new'),
                                                                     ('resolution', '=', 'open'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(10, 2, self.env['issues'].search_count([('status', '=', 'open'),
                                                                     ('resolution', '=', 'open'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(10, 3, self.env['issues'].search_count([('status', '=', 'resolved'),
                                                                     ('resolution', '=', 'open'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(10, 4, self.env['issues'].search_count([('status', '=', 'invalid'),
                                                                     ('resolution', '=', 'open'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(10, 5, self.env['issues'].search_count([('status', '=', 'duplicate'),
                                                                     ('resolution', '=', 'open'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(10, 6, self.env['issues'].search_count([('status', '=', 'wontfix'),
                                                                     ('resolution', '=', 'open'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(10, 7, self.env['issues'].search_count([('status', '=', 'closed'),
                                                                     ('resolution', '=', 'open'),
-                                                                    ('times_id', '=', line.id)]), style_value_center)
+                                                                    ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(10, 8, '=sum(b11:h11)', style_value_center)
 
 
                 sheet4.write(11, 1, self.env['issues'].search_count([('status', '=', 'new'),
                                                                      ('resolution', '=', 'onhold'),
-                                                                     ('times_id', '=', line.id)]), style_value_center)
+                                                                     ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(11, 2, self.env['issues'].search_count([('status', '=', 'open'),
                                                                      ('resolution', '=', 'onhold'),
-                                                                     ('times_id', '=', line.id)]), style_value_center)
+                                                                     ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(11, 3, self.env['issues'].search_count([('status', '=', 'resolved'),
                                                                      ('resolution', '=', 'onhold'),
-                                                                     ('times_id', '=', line.id)]), style_value_center)
+                                                                     ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(11, 4, self.env['issues'].search_count([('status', '=', 'invalid'),
                                                                      ('resolution', '=', 'onhold'),
-                                                                     ('times_id', '=', line.id)]), style_value_center)
+                                                                     ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(11, 5, self.env['issues'].search_count([('status', '=', 'duplicate'),
                                                                      ('resolution', '=', 'onhold'),
-                                                                     ('times_id', '=', line.id)]), style_value_center)
+                                                                     ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(11, 6, self.env['issues'].search_count([('status', '=', 'wontfix'),
                                                                      ('resolution', '=', 'onhold'),
-                                                                     ('times_id', '=', line.id)]), style_value_center)
+                                                                     ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(11, 7, self.env['issues'].search_count([('status', '=', 'closed'),
                                                                      ('resolution', '=', 'onhold'),
-                                                                     ('times_id', '=', line.id)]), style_value_center)
+                                                                     ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(11, 8, '=sum(b12:h12)', style_value_center)
 
 
                 sheet4.write(12, 1, self.env['issues'].search_count([('status', '=', 'new'),
                                                                      ('resolution', '=', 'closed'),
-                                                                     ('times_id', '=', line.id)]), style_value_center)
+                                                                     ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(12, 2, self.env['issues'].search_count([('status', '=', 'open'),
                                                                      ('resolution', '=', 'closed'),
-                                                                     ('times_id', '=', line.id)]), style_value_center)
+                                                                     ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(12, 3, self.env['issues'].search_count([('status', '=', 'resolved'),
                                                                      ('resolution', '=', 'closed'),
-                                                                     ('times_id', '=', line.id)]), style_value_center)
+                                                                     ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(12, 4, self.env['issues'].search_count([('status', '=', 'invalid'),
                                                                      ('resolution', '=', 'closed'),
-                                                                     ('times_id', '=', line.id)]), style_value_center)
+                                                                     ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(12, 5, self.env['issues'].search_count([('status', '=', 'duplicate'),
                                                                      ('resolution', '=', 'closed'),
-                                                                     ('times_id', '=', line.id)]), style_value_center)
+                                                                     ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(12, 6, self.env['issues'].search_count([('status', '=', 'wontfix'),
                                                                      ('resolution', '=', 'closed'),
-                                                                     ('times_id', '=', line.id)]), style_value_center)
+                                                                     ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(12, 7, self.env['issues'].search_count([('status', '=', 'closed'),
                                                                      ('resolution', '=', 'closed'),
-                                                                     ('times_id', '=', line.id)]), style_value_center)
+                                                                     ('project_id', '=', line.project_id.id)]), style_value_center)
                 sheet4.write(12, 8, '=sum(b13:h13)', style_value_center)
 
 
 
 
                 sheet4.write(15, 0, "Tên dự án", style_value_left_no_border)
-                sheet4.write(15, 1, line.project_id.project_name, style_value_left_no_border)
+                sheet4.write(15, 1, line.project_id.project_name, style_value_left_bold_no_border)
                 sheet4.write(16, 0, "Giai đoạn test", style_value_left_no_border)
                 sheet4.write(17, 0, "Lần", style_value_left_no_border)
                 sheet4.write(17, 1, line.times_name, style_value_left_no_border)
@@ -564,9 +566,21 @@ class Times(models.Model):
             record.count_issues_times = self.env['issues'].search_count(
                 [('times_id', '=', record.id)])
 
+
+
+
+
     @api.constrains('start_date', 'end_date')
     def check_end_date(self):
         for record in self:
-            if record.end_date < record.start_date:
+            if record.start_date < fields.Date.today():
+                raise ValidationError(_("Ngày bắt đầu không thể nhỏ hơn ngày hiện tại"))
+            elif record.end_date < record.start_date:
                 raise ValidationError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu"))
+
+
+
+
+
+
 
