@@ -25,7 +25,7 @@ class TestingProject(models.Model):
     times_count = fields.Integer(compute='compute_count1')
     issues_count = fields.Integer(compute='compute_count2')
 
-    issues_count_tong_loi = fields.Integer(compute='compute_count_tong_loi')
+    issues_count_tong_loi = fields.Integer(compute='compute_count_tong_loi', store=True)
 
 
     # link đến danh sách các issues thuộc  1 project
