@@ -21,8 +21,6 @@ class Times(models.Model):
     issues_ids = fields.One2many('issues', 'times_id')
     count_issues_times = fields.Integer(string='Issues', compute='count_issues_of_times')
 
-
-
     def download_file_import(self):
         cr = self.env.cr
         for line in self:
@@ -41,6 +39,8 @@ class Times(models.Model):
                 'value': {'font_name': 'Times New Roman', 'font_size': 13, 'align': 'left'},
                 'value_left': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 12, 'align': 'left',
                                'valign': 'vcenter'},
+                'value_left_wrap_text': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'left',
+                                            'valign': 'vcenter', 'text_wrap': 1},
                 'value_left_bold': {'border': 1, 'bold': 1, 'font_name': 'Times New Roman', 'font_size': 14,
                                     'align': 'left',
                                     'valign': 'vcenter'},
@@ -78,9 +78,11 @@ class Times(models.Model):
                 'value_date': {'font_name': 'Times New Roman', 'font_size': 13, 'align': 'left',
                                'valign': 'vcenter', 'num_format': 'DD/MM/YYYY'},
                 'value_date_border': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'right',
-                                      'valign': 'vcenter', 'num_format': 'DD/MM/YYYY'},
+                                      'valign': 'vcenter', 'num_format': 'DD/MM/YYYY', 'text_wrap': 1},
                 'value_center': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'center',
                                  'valign': 'vcenter'},
+                'value_center_wrap_text': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 13,
+                                           'align': 'center', 'valign': 'vcenter', 'text_wrap': 1},
             }
             style = copy.deepcopy(excel_style)
 
@@ -117,6 +119,8 @@ class Times(models.Model):
             style_value_left_13 = workbook.add_format(style_value_left_13)
             style_value_date = workbook.add_format(style['value_date'])
             style_value_date_border = workbook.add_format(style['value_date_border'])
+            style_value_center_wrap_text = workbook.add_format(style['value_center_wrap_text'])
+            style_value_left_wrap_text = workbook.add_format(style['value_left_wrap_text'])
             directory_path = os.path.dirname(os.path.join(os.path.dirname(__file__), "..", ".."))
 
             if len(str(line.id)) > 0:
@@ -164,14 +168,14 @@ class Times(models.Model):
                 x = 5
                 stt = 1
                 for record in self.env['function'].search([('project_id', '=', record.id)]):
-                    sheet2.write(x, 0, stt, style_value_center)
-                    sheet2.write(x, 1, record.name, style_value_left)
-                    sheet2.write(x, 2, "", style_value_left)
-                    sheet2.write(x, 3, "", style_value_left)
-                    sheet2.write(x, 5, "", style_value_left)
+                    sheet2.write(x, 0, stt, style_value_center_wrap_text)
+                    sheet2.write(x, 1, record.name, style_value_left_wrap_text)
+                    sheet2.write(x, 2, "", style_value_left_wrap_text)
+                    sheet2.write(x, 3, "", style_value_left_wrap_text)
+                    sheet2.write(x, 5, "", style_value_left_wrap_text)
                     count_list = self.env['issues'].search([('function_id', '=', record.id)])
                     count = len(count_list)
-                    sheet2.write(x, 4, count, style_value_center)
+                    sheet2.write(x, 4, count, style_value_center_wrap_text)
 
                     x += 1
                     stt += 1
@@ -183,19 +187,19 @@ class Times(models.Model):
                                                          '|', ('times_id', '=', line.id), '&',
                                                          ('times_id', '<=', line.id), ('status', '!=', 'closed'),
                                                          ]):
-                    sheet3.write(x, 0, record.name, style_value_center)  # ID
-                    sheet3.write(x, 1, record.title, style_value_left)  # Summary
+                    sheet3.write(x, 0, record.name, style_value_center_wrap_text)  # ID
+                    sheet3.write(x, 1, record.title, style_value_left_wrap_text)  # Summary
                     if record.function_id.name == 0:
-                        sheet3.write(x,2, " ", style_value_center)
+                        sheet3.write(x,2, " ", style_value_center_wrap_text)
                     else:
-                        sheet3.write(x, 2, record.function_id.name, style_value_left)  # Category
+                        sheet3.write(x, 2, record.function_id.name, style_value_left_wrap_text)  # Category
 
-                    sheet3.write(x, 3, record.type.title(), style_value_center)  # Type
-                    sheet3.write(x, 4, record.priority.title(), style_value_center)  # Severity
-                    sheet3.write(x, 5, record.status.title(), style_value_center)  # Status
-                    sheet3.write(x, 6, record.resolution.title(), style_value_center)  # Resolution
-                    sheet3.write(x, 7, record.times_id.times_name, style_value_center)  # Target version: lần mấy
-                    sheet3.write(x, 8, record.reporter_id.name, style_value_center)  # Reporter
+                    sheet3.write(x, 3, record.type.title(), style_value_center_wrap_text)  # Type
+                    sheet3.write(x, 4, record.priority.title(), style_value_center_wrap_text)  # Severity
+                    sheet3.write(x, 5, record.status.title(), style_value_center_wrap_text)  # Status
+                    sheet3.write(x, 6, record.resolution.title(), style_value_center_wrap_text)  # Resolution
+                    sheet3.write(x, 7, record.times_id.times_name, style_value_center_wrap_text)  # Target version: lần mấy
+                    sheet3.write(x, 8, record.reporter_id.name, style_value_center_wrap_text)  # Reporter
                     sheet3.write(x, 9, record.create_date, style_value_date_border)  # Bug report date
                     if record.bug_fix_date == 0:
                         sheet3.write(x, 10, "", style_value_center)  # Bug fix date
@@ -209,7 +213,7 @@ class Times(models.Model):
 
 
                 sheet3.merge_range(1, 0, 1, 6, line.project_id.project_code + " - THỐNG KÊ LỖI KIỂM ĐỊNH", style_tieude_font14)
-                sheet3.set_column(0, 0, 5.55)
+                # sheet3.set_column(0, 0, 5.55)
                 sheet3.write(3, 0, "Bug ID", style_header_bg)
 
                 sheet3.set_column(1, 1, 81.2)
@@ -566,19 +570,8 @@ class Times(models.Model):
             record.count_issues_times = self.env['issues'].search_count(
                 [('times_id', '=', record.id)])
 
-
-
-
-
     @api.constrains('start_date', 'end_date')
     def check_end_date(self):
         for record in self:
             if record.start_date and record.end_date and record.end_date < record.start_date:
                 raise ValidationError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu"))
-
-
-
-
-
-
-
