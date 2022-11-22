@@ -12,17 +12,12 @@ class TestingProject(models.Model):
     _rec_name = 'project_name'
     _order = 'priority desc'
 
-
     project_name = fields.Char(string='Project name', required="1")
     project_code = fields.Char(string='Project code', required="1")
     manager_id = fields.Many2one('res.users', string="Project manager", default=lambda self: self.env.user)
     description = fields.Html(string="Description")
     priority = fields.Selection([('0', ''), ('1', '')], default='0')
     function_ids = fields.One2many('function', 'project_id')
-
-
-
-
 
     times_ids = fields.One2many('times', 'project_id')
     issues_ids = fields.One2many('issues', 'project_id')

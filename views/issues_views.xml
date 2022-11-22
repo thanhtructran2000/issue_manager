@@ -25,7 +25,6 @@
                                 <field name="reporter_id"/>
                                 <field name="function_id"/>
                                 <field name="resolution"/>
-
                             </group>
                             <group>
                                 <field name="times_id"/>
