@@ -11,8 +11,8 @@ class UpdateState(models.TransientModel):
         ('onhold', 'On hold'),
         ('resolved', 'Resolved'),
         ('duplicate', 'Duplicate'),
-        ('wontfix','Wontfix'),
-        ('invalid','Invalid'),
+        ('wontfix', 'Wontfix'),
+        ('invalid', 'Invalid'),
         ('closed', 'Closed'),
     ], string='Status', default='new', required=True)
     comment = fields.Text(string='Comment (*)')
@@ -21,6 +21,10 @@ class UpdateState(models.TransientModel):
     def set_update_state(self):
         active_ids = self._context.get('active_ids', []) or []
         for record in self.env['issues'].browse(active_ids):
+            # record.name
+            # record.description
+            # record.project_id.id
+            # record.project_id.project_name
             record.status = self.status
             display_msg = """Stage change
                             <br/>

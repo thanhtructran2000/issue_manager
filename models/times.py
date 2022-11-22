@@ -201,7 +201,6 @@ class Times(models.Model):
                         sheet3.write(x, 10, "", style_value_center)  # Bug fix date
                     else:
                         sheet3.write(x, 10, record.bug_fix_date, style_value_date_border)  # Bug fix date
-
                     if record.fixed_in_version == 0:
                         sheet3.write(x, 11, "", style_value_center)  # fixed_in_version
                     else:
@@ -559,9 +558,6 @@ class Times(models.Model):
                                  'default_project_id': line.project_id.id,
                                  }
             return action
-
-
-
 
     # đếm số lượng issues trong 1 times
     @api.depends('issues_ids')
