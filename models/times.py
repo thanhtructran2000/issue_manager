@@ -14,12 +14,12 @@ class Times(models.Model):
 
 
     times_name = fields.Integer(string='Times', required=True)
-    start_date = fields.Date(string="Start date", default=fields.Date.today(), readonly=True)
+    start_date = fields.Date(string="Start date")
     end_date = fields.Date(string="End date")
     assignee_id = fields.Many2one('res.users', string='Assignee', default=lambda self: self.env.user)
     project_id = fields.Many2one('testing.project', string='Project',  ondelete='cascade', required=True)
     issues_ids = fields.One2many('issues', 'times_id')
-    count_issues_times = fields.Integer(compute='count_issues_of_times')
+    count_issues_times = fields.Integer(string='Issues', compute='count_issues_of_times')
 
 
 
@@ -40,47 +40,47 @@ class Times(models.Model):
                                   'align': 'center', 'fg_color': '#D0cece', 'valign': 'vcenter', 'text_wrap': 1},
                 'value': {'font_name': 'Times New Roman', 'font_size': 13, 'align': 'left'},
                 'value_left': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 12, 'align': 'left',
-                               'valign': 'vcenter', 'text_wrap': 1},
+                               'valign': 'vcenter'},
                 'value_left_bold': {'border': 1, 'bold': 1, 'font_name': 'Times New Roman', 'font_size': 14,
                                     'align': 'left',
-                                    'valign': 'vcenter', 'text_wrap': 1},
+                                    'valign': 'vcenter'},
                 'value_left_italic': {'border': 1, 'italic': 1, 'font_name': 'Times New Roman', 'font_size': 12,
                                       'align': 'left',
-                                      'valign': 'vcenter', 'text_wrap': 1},
+                                      'valign': 'vcenter'},
                 'value_left_underline': {'border': 1, 'underline': 1, 'font_name': 'Times New Roman', 'font_size': 12,
-                                         'align': 'left', 'valign': 'vcenter', 'text_wrap': 1},
+                                         'align': 'left', 'valign': 'vcenter'},
                 'value_left_bold_italic': {'border': 1, 'bold': 1, 'italic': 1, 'font_name': 'Times New Roman',
                                            'font_size': 12,
-                                           'align': 'left', 'valign': 'vcenter', 'text_wrap': 1},
+                                           'align': 'left', 'valign': 'vcenter'},
                 'value_left_bold_underline': {'border': 1, 'bold': 1, 'underline': 1, 'font_name': 'Times New Roman',
-                                              'font_size': 12, 'align': 'left', 'valign': 'vcenter', 'text_wrap': 1},
+                                              'font_size': 12, 'align': 'left', 'valign': 'vcenter'},
                 'value_left_bold_italic_underline': {'border': 1, 'bold': 1, 'italic': 1, 'underline': 1,
                                                      'font_name': 'Times New Roman', 'font_size': 12, 'align': 'left',
-                                                     'valign': 'vcenter', 'text_wrap': 1},
+                                                     'valign': 'vcenter'},
                 'value_left_no_border': {'border': 0, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'left',
-                                         'valign': 'vcenter', 'text_wrap': 1},
+                                         'valign': 'vcenter'},
                 'value_left_bold_no_border': {'border': 0, 'bold': 1, 'font_name': 'Times New Roman', 'font_size': 14,
-                                              'align': 'left', 'valign': 'vcenter', 'text_wrap': 1},
+                                              'align': 'left', 'valign': 'vcenter'},
                 'value_left_italic_no_border': {'border': 0, 'italic': 1, 'font_name': 'Times New Roman',
                                                 'font_size': 12,
-                                                'align': 'left', 'valign': 'vcenter', 'text_wrap': 1},
+                                                'align': 'left', 'valign': 'vcenter'},
                 'value_left_underline_no_border': {'border': 0, 'underline': 1, 'font_name': 'Times New Roman',
                                                    'font_size': 12,
-                                                   'align': 'left', 'valign': 'vcenter', 'text_wrap': 1},
+                                                   'align': 'left', 'valign': 'vcenter'},
                 'value_left_bold_italic_no_border': {'border': 0, 'bold': 1, 'italic': 1,
                                                      'font_name': 'Times New Roman',
                                                      'font_size': 12, 'align': 'left', 'valign': 'vcenter',
-                                                     'text_wrap': 1},
+                                                     },
                 'value_left_bold_underline_no_border': {'border': 0, 'bold': 1, 'underline': 1,
                                                         'font_name': 'Times New Roman',
                                                         'font_size': 12, 'align': 'left', 'valign': 'vcenter',
-                                                        'text_wrap': 1},
+                                                        },
                 'value_date': {'font_name': 'Times New Roman', 'font_size': 13, 'align': 'left',
-                               'valign': 'vcenter', 'num_format': 'DD/MM/YYYY', 'text_wrap': 1},
-                'value_date_border': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'center',
-                                      'valign': 'vcenter', 'num_format': 'DD/MM/YYYY', 'text_wrap': 1},
+                               'valign': 'vcenter', 'num_format': 'DD/MM/YYYY'},
+                'value_date_border': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'right',
+                                      'valign': 'vcenter', 'num_format': 'DD/MM/YYYY'},
                 'value_center': {'border': 1, 'font_name': 'Times New Roman', 'font_size': 13, 'align': 'center',
-                                 'valign': 'vcenter', 'text_wrap': 1},
+                                 'valign': 'vcenter'},
             }
             style = copy.deepcopy(excel_style)
 
@@ -188,11 +188,12 @@ class Times(models.Model):
                     if record.function_id.name == 0:
                         sheet3.write(x,2, " ", style_value_center)
                     else:
-                        sheet3.write(x, 2, record.function_id.name, style_value_center)  # Category
-                    sheet3.write(x, 3, record.type, style_value_center)  # Type
-                    sheet3.write(x, 4, record.priority, style_value_center)  # Severity
-                    sheet3.write(x, 5, record.status, style_value_center)  # Status
-                    sheet3.write(x, 6, record.resolution, style_value_center)  # Resolution
+                        sheet3.write(x, 2, record.function_id.name, style_value_left)  # Category
+
+                    sheet3.write(x, 3, record.type.title(), style_value_center)  # Type
+                    sheet3.write(x, 4, record.priority.title(), style_value_center)  # Severity
+                    sheet3.write(x, 5, record.status.title(), style_value_center)  # Status
+                    sheet3.write(x, 6, record.resolution.title(), style_value_center)  # Resolution
                     sheet3.write(x, 7, record.times_id.times_name, style_value_center)  # Target version: lần mấy
                     sheet3.write(x, 8, record.reporter_id.name, style_value_center)  # Reporter
                     sheet3.write(x, 9, record.create_date, style_value_date_border)  # Bug report date
@@ -206,9 +207,7 @@ class Times(models.Model):
                     else:
                         sheet3.write(x, 11, record.fixed_in_version, style_value_center)  # fixed_in_version
                     x += 1
-                # count = 0
-                # for record in self.env['testing.project'].search_count(['times_id', '=', line.id]):
-                #     
+
 
                 sheet3.merge_range(1, 0, 1, 6, line.project_id.project_code + " - THỐNG KÊ LỖI KIỂM ĐỊNH", style_tieude_font14)
                 sheet3.set_column(0, 0, 5.55)
@@ -571,9 +570,21 @@ class Times(models.Model):
             record.count_issues_times = self.env['issues'].search_count(
                 [('times_id', '=', record.id)])
 
+
+
+
+
     @api.constrains('start_date', 'end_date')
     def check_end_date(self):
         for record in self:
-            if record.end_date < record.start_date:
+            if record.start_date < fields.Date.today():
+                raise ValidationError(_("Ngày bắt đầu không thể nhỏ hơn ngày hiện tại"))
+            elif record.end_date < record.start_date:
                 raise ValidationError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu"))
+
+
+
+
+
+
 
