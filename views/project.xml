@@ -9,9 +9,9 @@
                    <field name="project_name"/>
                    <field name="project_code"/>
                    <group expand='0' string='Filters'>
-                       <filter name='open_filter' string="Dự án còn lỗi" domain="[('issues_count', '>', 0)]"/>
+                       <filter name='open_filter' string="Dự án còn lỗi" domain="[('issues_count_tong_loi', '!=', 0)]"/>
                        <separator/>
-                       <filter name='done_filter' string="Dự án hết lỗi" domain="[('issues_count', '=', 0)]"/>
+                       <filter name='done_filter' string="Dự án hết lỗi" domain="[('issues_count_tong_loi', '=', 0)]"/>
                     </group>
                </search>
            </field>
