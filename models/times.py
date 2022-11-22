@@ -573,9 +573,7 @@ class Times(models.Model):
     @api.constrains('start_date', 'end_date')
     def check_end_date(self):
         for record in self:
-            if record.start_date < fields.Date.today():
-                raise ValidationError(_("Ngày bắt đầu không thể nhỏ hơn ngày hiện tại"))
-            elif record.end_date < record.start_date:
+            if record.start_date and record.end_date and record.end_date < record.start_date:
                 raise ValidationError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu"))
 
 
