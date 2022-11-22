@@ -25,15 +25,12 @@
                                 <field name="reporter_id"/>
                                 <field name="function_id"/>
                                 <field name="resolution"/>
-                                <field name="fixed_in_version"/>
-
                             </group>
                             <group>
                                 <field name="times_id"/>
                                 <field name="type"/>
                                 <field name="priority"/>
                                 <field name="assignee_id"/>
-                                <field name="bug_fix_date"/>
                             </group>
                         </group>
                         <notebook>

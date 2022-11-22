@@ -208,7 +208,7 @@ class Times(models.Model):
 
                 sheet3.merge_range(1, 0, 1, 6, line.project_id.project_code + " - THỐNG KÊ LỖI KIỂM ĐỊNH", style_tieude_font14)
                 sheet3.set_column(0, 0, 5.55)
-                sheet3.write(3, 0, "Bug\ ID", style_header_bg)
+                sheet3.write(3, 0, "Bug ID", style_header_bg)
 
                 sheet3.set_column(1, 1, 81.2)
                 sheet3.write(3, 1, "Summary", style_header_bg)
