@@ -21,6 +21,7 @@ class Times(models.Model):
     issues_ids = fields.One2many('issues', 'times_id')
     count_issues_times = fields.Integer(string='Issues', compute='count_issues_of_times')
 
+
     def download_file_import(self):
         cr = self.env.cr
         for line in self:
@@ -575,3 +576,16 @@ class Times(models.Model):
         for record in self:
             if record.start_date and record.end_date and record.end_date < record.start_date:
                 raise ValidationError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu"))
+
+
+  
+
+
+
+
+
+
+
+
+
+
