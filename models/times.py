@@ -21,6 +21,7 @@ class Times(models.Model):
     issues_ids = fields.One2many('issues', 'times_id')
     count_issues_times = fields.Integer(string='Issues', compute='count_issues_of_times')
 
+
     def download_file_import(self):
         cr = self.env.cr
         for line in self:
@@ -368,7 +369,7 @@ class Times(models.Model):
                 sheet4.set_column(0, 0, 21.5)
                 sheet4.write(1, 0, "By Severity", style_header_bg1)
 
-                sheet4.set_column(1, 1, 11.5)
+                sheet4.set_column(1, 1, 15.5)
                 sheet4.write(1, 1, "New", style_header_bg1)
 
                 sheet4.set_column(2, 2, 11.5)
@@ -552,7 +553,6 @@ class Times(models.Model):
                     act_id.id, act_id.report_data),
             }
 
-
     # link đến danh sách các issues thuộc times đó
     def get_issues_of_times(self):
         for line in self:
@@ -575,3 +575,7 @@ class Times(models.Model):
         for record in self:
             if record.start_date and record.end_date and record.end_date < record.start_date:
                 raise ValidationError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu"))
+            last_time = self.search([('project_id', '=', record.project_id.id)], order='id desc', limit=2)
+            if len(last_time) >= 2:
+                if record.start_date <= last_time[1].end_date:
+                    raise ValidationError(_("Ngày bắt đầu bị trùng với khoảng thời gian của lần kiểm định trước đó"))
