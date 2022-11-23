@@ -185,8 +185,8 @@ class Times(models.Model):
                 x = 4
 
                 for record in self.env['issues'].search([('project_id', '=', line.project_id.id),
-                                                         '|', ('times_id', '=', line.id), '&',
-                                                         ('times_id', '<=', line.id), ('status', '!=', 'closed'),
+                                                         '|', ('times_id', '=', line.id),
+                                                         ('times_id', '<=', line.id),
                                                          ]):
                     sheet3.write(x, 0, record.name, style_value_center_wrap_text)  # ID
                     sheet3.write(x, 1, record.title, style_value_left_wrap_text)  # Summary
@@ -516,6 +516,9 @@ class Times(models.Model):
 
 
 
+                sheet4.set_column(0, 0, 20)
+                sheet4.set_column(1,1,20)
+
                 sheet4.write(15, 0, "Tên dự án", style_value_left_no_border)
                 sheet4.write(15, 1, line.project_id.project_name, style_value_left_bold_no_border)
                 sheet4.write(16, 0, "Giai đoạn test", style_value_left_no_border)
@@ -578,9 +581,12 @@ class Times(models.Model):
                 raise ValidationError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu"))
 
 
+
+
+
+
+
   
-
-
 
 
 

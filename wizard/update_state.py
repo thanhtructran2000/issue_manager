@@ -21,17 +21,15 @@ class UpdateState(models.TransientModel):
     def set_update_state(self):
         active_ids = self._context.get('active_ids', []) or []
         for record in self.env['issues'].browse(active_ids):
-            # record.name
-            # record.description
-            # record.project_id.id
-            # record.project_id.project_name
             record.status = self.status
             display_msg = """Stage change
                             <br/>
                             Stage: """ + record.status + """<br/>""" + str(self.comment)
             if record.status == 'resolved':
                 record.bug_fix_date = fields.Date.today()
+
                 record.fixed_in_version = self.env['times'].search_count([('project_id', '=', record.project_id.id)])
+
             elif record.status != 'resolved':
                 record.bug_fix_date = 0
                 record.fixed_in_version = 0
