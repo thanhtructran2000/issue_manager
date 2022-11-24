@@ -27,6 +27,7 @@ class UpdateState(models.TransientModel):
                             Stage: """ + record.status + """<br/>""" + str(self.comment)
             if record.status == 'resolved':
                 record.bug_fix_date = fields.Date.today()
+
                 th1 = self.env['times'].search([('project_id', '=', record.project_id.id), ('start_date', '<=', record.bug_fix_date), ('end_date', '>=', record.bug_fix_date)])
                 th2 = self.env['times'].search([('project_id', '=', record.project_id.id), ('end_date', '<', record.bug_fix_date)], order='id desc', limit=1)
                 if th1:
@@ -35,10 +36,6 @@ class UpdateState(models.TransientModel):
                     record.fixed_in_version = th2.times_name
                 else:
                     record.fixed_in_version = record.times_id.times_name
-
-
-
-
             elif record.status != 'resolved':
                 record.bug_fix_date = 0
                 record.fixed_in_version = 0
@@ -46,5 +43,3 @@ class UpdateState(models.TransientModel):
 
 
             return record.message_post(body=display_msg)
-
-
