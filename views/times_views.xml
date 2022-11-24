@@ -17,13 +17,13 @@
                             </button>
 
                         </div>
-<!--                        <div class="oe_title pr-0">-->
-<!--                            <h1 class="d-flex flex-row justify-content-between">-->
-<!--                                <group>-->
-<!--                                    <field name="times_name" class="o_task_name text-truncate" placeholder="1..."/>-->
-<!--                                </group>-->
-<!--                            </h1>-->
-<!--                        </div>-->
+                        <div class="oe_title pr-0">
+                            <h1 class="d-flex flex-row justify-content-between">
+                                <group>
+                                    <field name="times_name" class="o_task_name text-truncate" />
+                                </group>
+                            </h1>
+                        </div>
                         <group>
                             <group>
 

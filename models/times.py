@@ -13,7 +13,7 @@ class Times(models.Model):
     _rec_name = 'times_name'
 
 
-    times_name = fields.Integer(string='Times', readonly="1")
+    times_name = fields.Char(string='Times', readonly="1")
     start_date = fields.Date(string="Start date")
     end_date = fields.Date(string="End date")
     assignee_id = fields.Many2one('res.users', string='Assignee', default=lambda self: self.env.user)
@@ -580,17 +580,17 @@ class Times(models.Model):
                 raise ValidationError(_("Ngày kết thúc không thể nhỏ hơn ngày bắt đầu"))
             last_time = self.search([('project_id', '=', record.project_id.id)], order='id desc', limit=2)
             if len(last_time) >= 2:
-                if record.start_date <= last_time[1].end_date:
+                if record.start_date and record.end_date and record.start_date <= last_time[1].end_date:
                     raise ValidationError(_("Ngày bắt đầu bị trùng với khoảng thời gian của lần kiểm định trước đó"))
 
-    
-
-
-
-
-
-
-
+    @api.model
+    def create(self, vals):
+        if self.env['times'].search([('project_id', '=', self.project_id.id)], order='id desc', limit=2):
+            new_times = self.search([('project_id', '=', self.project_id.id)], order='id desc', limit=2)[1].times_name
+            vals['times_name'] = new_times + 1
+        else:
+            vals['times_name'] = 1
+        return super(Times, self).create(vals)
 
 
 

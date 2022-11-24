@@ -39,7 +39,4 @@ class UpdateState(models.TransientModel):
             elif record.status != 'resolved':
                 record.bug_fix_date = 0
                 record.fixed_in_version = 0
-
-
-
             return record.message_post(body=display_msg)
