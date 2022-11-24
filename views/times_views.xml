@@ -66,10 +66,10 @@
 
         </record>
 
-        <menuitem id="menu_times"
-            name="Times"
-            action="action_times"
-            sequence="500"
-            groups="base.group_user"/>
+<!--        <menuitem id="menu_times"-->
+<!--            name="Times"-->
+<!--            action="action_times"-->
+<!--            sequence="500"-->
+<!--            groups="base.group_user"/>-->
     </data>
 </odoo>
