@@ -15,7 +15,7 @@ class UpdateState(models.TransientModel):
         ('invalid', 'Invalid'),
         ('closed', 'Closed'),
     ], string='Status', default='new', required=True)
-    comment = fields.Text(string='Comment (*)')
+    comment = fields.Text(string='Comment', required=True)
 
 
     def set_update_state(self):

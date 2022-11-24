@@ -13,7 +13,7 @@ class Times(models.Model):
     _rec_name = 'times_name'
 
 
-    times_name = fields.Integer(string='Times', required=True)
+    times_name = fields.Integer(string='Times', readonly="1")
     start_date = fields.Date(string="Start date")
     end_date = fields.Date(string="End date")
     assignee_id = fields.Many2one('res.users', string='Assignee', default=lambda self: self.env.user)
@@ -582,4 +582,15 @@ class Times(models.Model):
             if len(last_time) >= 2:
                 if record.start_date <= last_time[1].end_date:
                     raise ValidationError(_("Ngày bắt đầu bị trùng với khoảng thời gian của lần kiểm định trước đó"))
+
+    
+
+
+
+
+
+
+
+
+
 
