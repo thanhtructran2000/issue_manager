@@ -27,10 +27,16 @@ class UpdateState(models.TransientModel):
                             Stage: """ + record.status + """<br/>""" + str(self.comment)
             if record.status == 'resolved':
                 record.bug_fix_date = fields.Date.today()
-                record.fixed_in_version = self.env['times'].search_count([('project_id', '=', record.project_id.id)])
+                if self.env['times'].search([('start_date', '<=', record.bug_fix_date),
+                                             ('end_date', '>=', record.bug_fix_date)]):
+                    record.fixed_in_version = self.env['times'].search([('start_date', '<=', record.bug_fix_date),
+                                                                    ('end_date', '>=', record.bug_fix_date)]).times_name
+                if self.env['times'].search([('end_date', '<', record.bug_fix_date)], order='id desc', limit=1):
+                    record.fixed_in_version = self.env['times'].search([('end_date', '<', record.bug_fix_date)],
+                                                                       order='id desc', limit=1).times_name
+                else:
+                    record.fixed_in_version = record.times_id.times_name
             elif record.status != 'resolved':
                 record.bug_fix_date = 0
                 record.fixed_in_version = 0
             return record.message_post(body=display_msg)
-
-
