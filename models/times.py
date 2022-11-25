@@ -592,6 +592,3 @@ class Times(models.Model):
         else:
             vals['times_name'] = '1'
         return super(Times, self).create(vals)
-
-
-

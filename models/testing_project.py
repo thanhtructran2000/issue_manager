@@ -76,6 +76,16 @@ class TestingProject(models.Model):
                  ('status', 'in', ('new', 'open', 'onhold')),
                  ])
 
+    # @api.model
+    # def create(self, vals):
+    #     for line in self:
+    #         for record in self.env['times']:
+    #             if self.env['times'].search(['project_id', '=', line.id], order='id desc'):
+    #                 record.new_times = int(self.search([], order='id desc')[0].times_name) + 1
+    #                 vals['times.times_name'] = record.new_times
+    #             else:
+    #                 vals['times.times_name'] = 1
+    #             return super(TestingProject, self).create(vals)
 
     # mẫu xuất báo cáo cho tất cả các dự án kiểm định
     def download_file_import_1(self):
