@@ -66,7 +66,16 @@ class Issues(models.Model):
     fixed_in_version = fields.Integer(string='Fixed in version')
 
 
-
+    @api.model
+    def create(self, vals):
+        if self.env['issues'].search([], order='id desc'):
+            last_name = self.env['issues'].search([], order='id desc')[0].name
+            new_name = last_name.split('#')
+            new_name = int(new_name[1]) + 1
+            vals['name'] = '#' + str(new_name)
+        else:
+            vals['name'] = '#1'
+        return super(Issues, self).create(vals)
 
     # quyền
     def unlink(self):
