@@ -65,6 +65,7 @@ class Issues(models.Model):
     bug_fix_date = fields.Date(string='Bug fix date')
     fixed_in_version = fields.Integer(string='Fixed in version')
 
+
     @api.model
     def create(self, vals):
         if self.env['issues'].search([], order='id desc'):
@@ -75,7 +76,6 @@ class Issues(models.Model):
         else:
             vals['name'] = '#1'
         return super(Issues, self).create(vals)
-
 
     # quyền
     def unlink(self):

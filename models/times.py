@@ -585,9 +585,13 @@ class Times(models.Model):
 
     @api.model
     def create(self, vals):
-        if self.env['times'].search([], order='id desc'):
-            new_times = int(self.search([], order='id desc')[0].times_name) + 1
-            vals['times_name'] = new_times
+        if self.env['times'].search([('project_id', '=', vals['project_id'])], order='id desc'):
+            last_name = self.env['times'].search([('project_id', '=', vals['project_id'])], order='id desc')[0].times_name
+            last_name = int(last_name) + 1
+            vals['times_name'] = str(last_name)
         else:
-            vals['times_name'] = 1
+            vals['times_name'] = '1'
         return super(Times, self).create(vals)
+
+
+
