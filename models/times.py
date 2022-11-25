@@ -7,6 +7,7 @@ import os
 import copy
 import xlsxwriter
 
+
 class Times(models.Model):
     _name = 'times'
     _description = 'Times'
