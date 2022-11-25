@@ -13,7 +13,7 @@ class Times(models.Model):
     _rec_name = 'times_name'
 
 
-    times_name = fields.Integer(string='Times', readonly="1")
+    times_name = fields.Char(string='Times', readonly="1")
     start_date = fields.Date(string="Start date")
     end_date = fields.Date(string="End date")
     assignee_id = fields.Many2one('res.users', string='Assignee', default=lambda self: self.env.user)
@@ -586,8 +586,9 @@ class Times(models.Model):
     @api.model
     def create(self, vals):
         if self.env['times'].search([('project_id', '=', vals['project_id'])], order='id desc'):
-            new_times = int(self.search([], order='id desc')[0].times_name) + 1
-            vals['times_name'] = new_times
+            last_name = self.env['times'].search([('project_id', '=', vals['project_id'])], order='id desc')[0].times_name
+            last_name = int(last_name) + 1
+            vals['times_name'] = str(last_name)
         else:
-            vals['times_name'] = 1
+            vals['times_name'] = '1'
         return super(Times, self).create(vals)
