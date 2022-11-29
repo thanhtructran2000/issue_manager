@@ -27,7 +27,6 @@ class TestingProject(models.Model):
 
     issues_count_tong_loi = fields.Integer(compute='compute_count_tong_loi', store=True)
 
-
     # link đến danh sách các issues thuộc  1 project
     def get_issues(self):
         for line in self:
@@ -76,6 +75,16 @@ class TestingProject(models.Model):
                  ('status', 'in', ('new', 'open', 'onhold')),
                  ])
 
+    # @api.model
+    # def create(self, vals):
+    #     for line in self:
+    #         for record in self.env['times']:
+    #             if self.env['times'].search(['project_id', '=', line.id], order='id desc'):
+    #                 record.new_times = int(self.search([], order='id desc')[0].times_name) + 1
+    #                 vals['times.times_name'] = record.new_times
+    #             else:
+    #                 vals['times.times_name'] = 1
+    #             return super(TestingProject, self).create(vals)
 
     # mẫu xuất báo cáo cho tất cả các dự án kiểm định
     def download_file_import_1(self):
@@ -269,3 +278,76 @@ class TestingProject(models.Model):
             'url': '/web/content/report.project.list.xls/%s/file_name/%s?download=true' % (
                 act_id.id, act_id.report_data),
         }
+
+
+    @api.model
+    def get_dashboard_data(self):
+        list_project = []
+        list5_project_name = []
+        list5_project_issues = []
+        for record in self.search([]):
+            list_project.append({
+                'code': record.project_code,
+                'name': record.project_name,
+                'total_issues': record.issues_count,
+                'times': record.times_count,
+                'project_manager': record.manager_id.name,
+            })
+        for line in self.search([], order='issues_count desc', limit=5):
+                list5_project_name.append(line.project_name)
+                list5_project_issues.append(line.issues_count)
+
+        # result_projects = []
+        # projects = self.search([])
+        # for line in projects:
+        #     line.issues_other = self.env['issues'].search_count(
+        #         [('project_id', '=', line.id), ('status', 'in', ('new', 'open', 'onhold'))])
+        #     line.issues_closed = line.issues_count - line.issues_other
+        #     result_projects.append({
+        #         'id': line.id,
+        #         'name': line.project_name,
+        #         'code': line.project_code,
+        #         'project_manager': line.manager_id.name,
+        #         'total_issues': line.issues_count,
+        #         'times': line.times_count,
+        #         'closed': line.issues_closed,
+        #         'other': line.issues_other,
+        #     })
+        return {
+            'table_body': list_project,
+            'bar_chart_label': list5_project_name,
+            'bar_chart_value': list5_project_issues,
+            'bar_chart_color': ['rgba(255, 99, 132)', 'rgba(255, 159, 64)', 'rgba(255, 205, 86)',
+                                'rgba(75, 192, 192)', 'rgba(153, 102, 255)'],
+            # 'pie_chart_color': ['#ebbf80', '#4c73b3', '#e38634', '#f42828', '#dcdfe9'],
+            # 'pie_chart_label': ['Closed', 'Other'],
+            # 'pie_chart_value': [line.issues_closed, line.issues_other]
+               }
+
+    @api.model
+    def get_projects(self):
+        result_projects = []
+        projects = self.search([])
+        for line in projects:
+            line.issues_other = self.env['issues'].search_count(
+                [('project_id', '=', line.id), ('status', 'in', ('new', 'open', 'onhold'))])
+            line.issues_closed = line.issues_count - line.issues_other
+            result_projects.append({
+                'id': line.id,
+                'name': line.project_name,
+                'code': line.project_code,
+                'project_manager': line.manager_id.name,
+                'total_issues': line.issues_count,
+                'times': line.times_count,
+                'closed': line.issues_closed,
+                'other': line.issues_other,
+                'pie_chart_label': ['Closed', 'Other'],
+                'pie_chart_value': [line.issues_closed, line.issues_other],
+            })
+        return result_projects
+
+
+
+
+
+

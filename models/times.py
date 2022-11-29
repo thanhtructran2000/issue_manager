@@ -7,6 +7,7 @@ import os
 import copy
 import xlsxwriter
 
+
 class Times(models.Model):
     _name = 'times'
     _description = 'Times'
@@ -592,6 +593,3 @@ class Times(models.Model):
         else:
             vals['times_name'] = '1'
         return super(Times, self).create(vals)
-
-
-

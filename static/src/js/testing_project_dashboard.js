@@ -1,4 +1,4 @@
-odoo.define('issue_manager.issues_dashboard', function (require) {
+odoo.define('issue_manager.testing_project_dashboard', function (require) {
     "use strict";
 
     var AbstractAction = require('web.AbstractAction');
@@ -7,8 +7,8 @@ odoo.define('issue_manager.issues_dashboard', function (require) {
     var ajax = require('web.ajax');
     var _t = core._t;
 
-    var IssuesDashboard = AbstractAction.extend({
-        template: 'IssuesDashboard',
+    var TestingProjectDashboard = AbstractAction.extend({
+        template: 'TestingProjectDashboard',
         title: 'Dashboard',
         jsLibs: [
             '/issue_manager/static/lib/charts/Chart.js',
@@ -24,6 +24,7 @@ odoo.define('issue_manager.issues_dashboard', function (require) {
         events: {
             'click a': 'hrefLinkClicked',
             'click .view_detail': 'viewDetail',
+            'change #select-project': 'view_project',
         },
 
         init: function (parent, context) {
@@ -47,15 +48,21 @@ odoo.define('issue_manager.issues_dashboard', function (require) {
         fetchData: function () {
             var self = this;
             var def1 = this._rpc({
-                model: 'issues',
-                method: 'get_dashboard_data_issues',
-                args: [32]
-
+                model: 'testing.project',
+                method: 'get_dashboard_data'
             }).then(function (result) {
                 self.result = result;
                 console.log(self.result);
             });
-            return $.when(def1);
+
+             var def2 = this._rpc({
+                model: 'testing.project',
+                method: 'get_projects'
+            }).then(function (result) {
+                self.projects = result;
+                console.log(self.result);
+            });
+            return $.when(def1, def2);
         },
 
         renderData: function () {
@@ -68,6 +75,15 @@ odoo.define('issue_manager.issues_dashboard', function (require) {
             }, function (start, end, label) {
             });
             this.renderGraph(self.result);
+//            this.renderGraph(self.projects);
+             // Binding projects
+            var select = this.$el.find('#select-project');
+console.log(self.projects);
+console.log(select);
+            for (let i = 0; i < self.projects.length; i++) {
+                select.append(new Option(self.projects[i].name, self.projects[i].id));
+            }
+            self.view_project();
         },
 
         hrefLinkClicked: function (ev) {
@@ -77,6 +93,20 @@ odoo.define('issue_manager.issues_dashboard', function (require) {
 
         viewDetail: function () {
 
+        },
+        view_project: function () {
+            var self = this;
+            var select_val = this.$el.find('#select-project').val()
+             for (var i = 0; i < self.projects.length; i++) {
+                if (self.projects[i].id == select_val) {
+                    self.$('#project_code').html(self.projects[i].code);
+                    self.$('#project_manager').html(self.projects[i].project_manager);
+                    self.$('#total_issues').html(self.projects[i].total_issues);
+                    self.$('#times').html(self.projects[i].times);
+                    self.$('#closed').html(self.projects[i].closed);
+                    self.$('#other').html(self.projects[i].other);
+                }
+             }
         },
 
         createLegend: function (chart, chart_type) {
@@ -117,14 +147,10 @@ odoo.define('issue_manager.issues_dashboard', function (require) {
             return value;
         },
 
-
-
         renderGraph: function (result) {
             var self = this;
             var ctx = this.$el.find('#LineChart');
             var doughnut_ctx = this.$el.find('#DoughnutChart');
-//            thêm barchart_1 cho function
-            var bar_ctx_1 = this.$el.find('#BarChart_1');
             var bar_ctx = this.$el.find('#BarChart');
             var pie_ctx = this.$el.find('#PieChart');
 
@@ -277,7 +303,6 @@ odoo.define('issue_manager.issues_dashboard', function (require) {
                         indexLabelFontColor: "white",
                         labels: result.doughnut_label,
                         datasets: [{
-
                             data: result.doughnut_value,
                             backgroundColor: result.doughnut_color,
                         }],
@@ -296,7 +321,6 @@ odoo.define('issue_manager.issues_dashboard', function (require) {
                                     var label = data.datasets[0].data[tooltipItem.index];
                                     return self.shortenLabel(label, 'percent');
                                 }
-
                             }
                         },
                         legendCallback: function (chart) {
@@ -411,102 +435,6 @@ odoo.define('issue_manager.issues_dashboard', function (require) {
                 }
             }
 
-
-
-
-
-
-            // Bar chart 1: Function
-            if (bar_ctx_1.length) {
-                var BarChart_1 = new Chart(bar_ctx_1, {
-                    type: 'bar',
-                    data: {
-                        labels: result.bar_chart_1_label,
-                        indexLabelFontColor: "white",
-                        datasets: [{
-                            data: result.bar_chart_1_value,
-                            barPercentage: 1,
-                            barThickness: 4,
-                            backgroundColor: result.bar_chart_1_color,
-                            minBarLength: 0,
-                        }],
-                    },
-                    options: {
-                        plugins: {
-                            datalabels: {
-                                display: false,
-                            }
-                        },
-                        legendCallback: function (chart) {
-                            return self.createLegend(chart, 'single');
-                        },
-                        tooltips: {
-                            enabled: true,
-                            callbacks: {
-                                label: function (tooltipItem, data) {
-                                    var label = tooltipItem.yLabel;
-                                    return self.shortenLabel(label, 'number');
-                                }
-                            }
-                        },
-                        scales: {
-                            // hide vertical lines
-                            xAxes: [{
-                                gridLines: {
-                                    display: false,
-                                    color: '#1d1d1d'
-                                },
-                                ticks: {
-                                    fontSize: 12,
-                                    fontColor: "black",
-                                    autoSkip: false,
-                                    // maxRotation: 90,
-                                    // minRotation: 90
-                                }
-                            }],
-                            yAxes: [{
-                                ticks: {
-                                    fontSize: 12,
-                                    fontColor: "black",
-                                    beginAtZero: true,
-                                    suggestedMax: result.line_chart_max,
-                                    callback: function (label, index, labels) {
-                                        return self.shortenLabel(label, 'number');
-                                    }
-                                },
-                                gridLines: {
-                                    display: false,
-                                    drawBorder: true,
-                                    color: '#1d1d1d',
-                                },
-                            }]
-                        },
-                        title: {
-                            fontSize: 16,
-                            fontColor: 'black',
-                            display: false,
-                            text: '',
-                        },
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        legend: {
-                            position: 'center',
-                            display: false,
-                            labels: {
-                                fontColor: 'black'
-                            }
-                        },
-                    },
-                });
-                if (this.$el.find('#BarChart-legends_1')) {
-                    this.$el.find('#BarChart-legends_1').html(BarChart_1.generateLegend());
-                }
-            }
-
-
-
-
-
             // Pie chart
             if (pie_ctx.length) {
                 var PieChart = new Chart(pie_ctx, {
@@ -515,8 +443,7 @@ odoo.define('issue_manager.issues_dashboard', function (require) {
                         indexLabelFontColor: "white",
                         labels: result.pie_chart_label,
                         datasets: [{
-                            data: result.pie_chart_value,
-
+                            data: result.pie_chart_label,
                             backgroundColor: result.pie_chart_color,
                         }],
                     },
@@ -533,11 +460,10 @@ odoo.define('issue_manager.issues_dashboard', function (require) {
                         tooltips: {
                             enabled: true,
                             callbacks: {
-                                  title: function(tooltipItem, data, labels) {
-                                    var value = data.datasets[0].data[tooltipItem.index];
-                                    var labels = data.labels[tooltipItem.index];
-                                    return labels + value;
-                                  }
+                                label: function (tooltipItem, data) {
+                                    var label = data.datasets[0].data[tooltipItem.index];
+                                    return self.shortenLabel(label, 'number');
+                                }
                             }
                         },
                         responsive: true,
@@ -564,8 +490,6 @@ odoo.define('issue_manager.issues_dashboard', function (require) {
         },
     });
 
-    core.action_registry.add('issues_dashboard', IssuesDashboard);
-    return IssuesDashboard;
+    core.action_registry.add('testing_project_dashboard', TestingProjectDashboard);
+    return TestingProjectDashboard;
 });
-
-

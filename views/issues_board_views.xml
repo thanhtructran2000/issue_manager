@@ -6,7 +6,7 @@
             <field name="name">Dashboard issues</field>
             <field name="tag">issues_dashboard</field>
         </record>
-        <menuitem id="menu_dashboard_view"
+        <menuitem id="menu_dashboard_issues_view"
                   sequence="6"
                   action="issues_dashboard_action"
                  />
