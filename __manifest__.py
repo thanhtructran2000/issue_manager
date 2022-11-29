@@ -23,7 +23,7 @@
         'views/report_project_list_xls_views.xml',
         'views/times_views.xml',
         'views/web_templates.xml',
-        'views/sample_board_views.xml',
+        'views/testing_project_board_views.xml',
         'views/menu_views.xml',
 
 

@@ -22,7 +22,7 @@
 <!--        </record>-->
         <menuitem id="menu_dashboard_view"
                   sequence="6"
-                  action="sample_dashboard_action"/>
+                  action="testing_project_dashboard_action"/>
 
 
     </data>
