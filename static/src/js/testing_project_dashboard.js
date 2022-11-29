@@ -1,4 +1,4 @@
-odoo.define('lk_base.sample_dashboard', function (require) {
+odoo.define('issue_manager.testing_project_dashboard', function (require) {
     "use strict";
 
     var AbstractAction = require('web.AbstractAction');
@@ -7,14 +7,14 @@ odoo.define('lk_base.sample_dashboard', function (require) {
     var ajax = require('web.ajax');
     var _t = core._t;
 
-    var SampleDashboard = AbstractAction.extend({
-        template: 'SampleDashboard',
+    var TestingProjectDashboard = AbstractAction.extend({
+        template: 'TestingProjectDashboard',
         title: 'Dashboard',
         jsLibs: [
-            '/lk_base/static/lib/charts/Chart.js',
-            '/lk_base/static/lib/charts/Chart.bundle.js',
-            '/lk_base/static/lib/charts/chartjs-plugin-datalabels.js',
-            '/lk_base/static/lib/tabulator/js/tabulator.js',
+            '/issue_manager/static/lib/charts/Chart.js',
+            '/issue_manager/static/lib/charts/Chart.bundle.js',
+            '/issue_manager/static/lib/charts/chartjs-plugin-datalabels.js',
+            '/issue_manager/static/lib/tabulator/js/tabulator.js',
             '/web/static/lib/daterangepicker/daterangepicker.js',
             '/web/static/src/js/libs/daterangepicker.js',
         ],
@@ -24,6 +24,7 @@ odoo.define('lk_base.sample_dashboard', function (require) {
         events: {
             'click a': 'hrefLinkClicked',
             'click .view_detail': 'viewDetail',
+            'change #select-project': 'view_project',
         },
 
         init: function (parent, context) {
@@ -47,13 +48,21 @@ odoo.define('lk_base.sample_dashboard', function (require) {
         fetchData: function () {
             var self = this;
             var def1 = this._rpc({
-                model: 'sample.kanban',
+                model: 'testing.project',
                 method: 'get_dashboard_data'
             }).then(function (result) {
                 self.result = result;
                 console.log(self.result);
             });
-            return $.when(def1);
+
+             var def2 = this._rpc({
+                model: 'testing.project',
+                method: 'get_projects'
+            }).then(function (result) {
+                self.projects = result;
+                console.log(self.result);
+            });
+            return $.when(def1, def2);
         },
 
         renderData: function () {
@@ -66,6 +75,15 @@ odoo.define('lk_base.sample_dashboard', function (require) {
             }, function (start, end, label) {
             });
             this.renderGraph(self.result);
+//            this.renderGraph(self.projects);
+             // Binding projects
+            var select = this.$el.find('#select-project');
+console.log(self.projects);
+console.log(select);
+            for (let i = 0; i < self.projects.length; i++) {
+                select.append(new Option(self.projects[i].name, self.projects[i].id));
+            }
+            self.view_project();
         },
 
         hrefLinkClicked: function (ev) {
@@ -75,6 +93,20 @@ odoo.define('lk_base.sample_dashboard', function (require) {
 
         viewDetail: function () {
 
+        },
+        view_project: function () {
+            var self = this;
+            var select_val = this.$el.find('#select-project').val()
+             for (var i = 0; i < self.projects.length; i++) {
+                if (self.projects[i].id == select_val) {
+                    self.$('#project_code').html(self.projects[i].code);
+                    self.$('#project_manager').html(self.projects[i].project_manager);
+                    self.$('#total_issues').html(self.projects[i].total_issues);
+                    self.$('#times').html(self.projects[i].times);
+                    self.$('#closed').html(self.projects[i].closed);
+                    self.$('#other').html(self.projects[i].other);
+                }
+             }
         },
 
         createLegend: function (chart, chart_type) {
@@ -411,7 +443,7 @@ odoo.define('lk_base.sample_dashboard', function (require) {
                         indexLabelFontColor: "white",
                         labels: result.pie_chart_label,
                         datasets: [{
-                            data: result.pie_chart_value,
+                            data: result.pie_chart_label,
                             backgroundColor: result.pie_chart_color,
                         }],
                     },
@@ -458,6 +490,6 @@ odoo.define('lk_base.sample_dashboard', function (require) {
         },
     });
 
-    core.action_registry.add('sample_dashboard', SampleDashboard);
-    return SampleDashboard;
+    core.action_registry.add('testing_project_dashboard', TestingProjectDashboard);
+    return TestingProjectDashboard;
 });

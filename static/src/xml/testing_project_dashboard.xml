@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="TestingProjectDashboard">
+        <style>
+            html .o_web_client > .o_action_manager {
+                overflow-y: auto;
+            }
+        </style>
+        <div class="container-fluid col-sm-12 col-md-12 col-lg-12 custom_dashboard" id="testing_project_dashboard">
+            <div class="row mt-3">
+                <div class="col-sm-12">
+                    <select class="form-control mr-2 w-auto inline-block" id="select_project">
+                        <option disabled="1" selected="1" value="">Project</option>
+                    </select>
+                    <select class="form-control w-auto inline-block mr-2" id="select_issues">
+                        <option disabled="1" selected="1" value="">Issues</option>
+                    </select>
+                    <input class="form-control w-auto inline-block mr-2" id="date_range" type="text" name="daterange"/>
+                    <button class="btn btn_normal">Bộ lọc</button>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-sm-12 col-md-7">
+                    <div class="custom_chart h-100">
+                        <div class="chart_title row no-margin">
+                            <div class="col-sm-8">
+                                 <h3 class="inline-block">Danh sách các dự án còn lỗi</h3>
+                            </div>
+                    </div>
+                        <div class="row mt-3 mb-3">
+                            <div class="col-sm-12">
+                                <div class="report_container o_list_view" t-if="widget.result.table_body">
+                                    <div class="table-responsive">
+                                        <table class="table-sm table o_list_table table-hover table-striped">
+                                            <thead>
+                                    <tr>
+                                        <th>Mã dự án</th>
+                                        <th>Tên dự án</th>
+                                        <th>Tổng issues</th>
+                                        <th>Số lần kiểm định</th>
+                                        <th>Người phụ trách</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="widget.result.table_body" t-as="data">
+                                        <td><a href="#"><t t-esc="data['code']"/></a></td>
+                                        <td><t t-esc="data['name']"/></td>
+                                        <td><t t-esc="data['total_issues']"/></td>
+                                        <td><t t-esc="data['times']"/></td>
+                                        <td><t t-esc="data['project_manager']"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                    </div>
+                </div>
+                 <div class="col-sm-12 col-md-5">
+                    <div class="custom_chart h-100" id="bar_chart">
+                        <div class="chart_title row no-margin">
+                            <div class="col-sm-8">
+                                <h4 class="inline-block">Top 5 dự án còn nhiều lỗi</h4>
+                            </div>
+                        </div>
+                        <div class="chart_content mt-5">
+                            <canvas id="BarChart"/>
+                        </div>
+                        <div id="BarChart-legends" class="mb-5"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="custom_chart h-100" id="doughnut_chart">
+                        <div class="chart_title row no-margin">
+                            <div class="col-sm-6">
+                                <h3 class="inline-block">Thông tin dự án</h3>
+                            </div>
+                            <div class="col-sm-5">
+                                <select id="select-project" class="form-control" placeholder="Chọn dự án..." >
+                                </select>
+                            </div>
+                        </div>
+                         <div class="card-body" style="border-top: 1px solid #eeeeee;">
+                            <div class="row">
+                                <div class="col-md-6 mb-0">
+                                    <div class="table-responsive scrollbar">
+                                        <table class="table mb-0 fs--1 border-200 table-borderless">
+                                            <tbody>
+                                                <tr class="border-bottom border-200">
+                                                    <td class="align-middle text-left" style="width:30%">
+                                                        Mã dự án:
+                                                    </td>
+                                                    <td class="align-middle text-left">
+                                                        <span id="project_code"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="border-bottom border-200">
+                                                    <td class="align-middle text-left">
+                                                        Người phụ trách:
+                                                    </td>
+                                                    <td class="align-middle text-left">
+                                                        <span id="project_manager"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="border-bottom border-200">
+                                                    <td class="align-middle text-left">
+                                                        Tổng issues:
+                                                    </td>
+                                                    <td class="align-middle text-left">
+                                                        <span id="total_issues">
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="border-bottom border-200">
+                                                    <td class="align-middle text-left">
+                                                        Số lần kiểm định :
+                                                    </td>
+                                                    <td class="align-middle text-left">
+                                                        <span id="times">
+
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="border-bottom border-200">
+                                                    <td class="align-middle text-left">
+                                                       Closed :
+                                                    </td>
+                                                    <td class="align-middle text-left">
+                                                        <span id="closed">
+
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr class="border-bottom border-200">
+                                                    <td class="align-middle text-left">
+                                                       Other:
+                                                    </td>
+                                                    <td class="align-middle text-left">
+                                                        <span id="other">
+
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <div class="project_status_chart">
+                                            <div class="chart_content mt-5" >
+                                                <canvas id="PieChart"/>
+                                            </div>
+                                            <div id="PieChart-legends" class="mb-5"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
