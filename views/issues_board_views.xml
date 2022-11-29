@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--action view-->
+        <record id="issues_dashboard_action" model="ir.actions.client">
+            <field name="name">Dashboard issues</field>
+            <field name="tag">issues_dashboard</field>
+        </record>
+        <menuitem id="menu_dashboard_view"
+                  sequence="6"
+                  action="issues_dashboard_action"
+                 />
+    </data>
+</odoo>

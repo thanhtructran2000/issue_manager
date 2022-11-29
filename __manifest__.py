@@ -10,7 +10,7 @@
     'depends': [
         'base',
         'mail',
-
+        'restful',
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -23,8 +23,16 @@
         'views/report_project_list_xls_views.xml',
         'views/times_views.xml',
 
+        'views/issues_board_views.xml',
+        'views/web_templates.xml',
+
 
     ],
+    'external_dependencies': {
+        'python': ['xlsxwriter', 'num2words', 'zxcvbn', 'paramiko', 'openpyxl', 'onesignal_sdk', 'docxtpl', 'docx',
+                   'docxcompose'],
+    },
+    'qweb': ['static/src/xml/*.xml'],
     'installable': True,
     'application': True,
 }

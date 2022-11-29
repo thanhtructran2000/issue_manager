@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+   <t t-name="IssuesDashboard">
+      <style>
+         html .o_web_client > .o_action_manager {
+         overflow-y: auto;
+         }
+         body {font-family: Arial;}
+         /* Style the tab */
+         .tab {
+         overflow: hidden;
+         border: 1px solid #ccc;
+         background-color: #f1f1f1;
+         }
+         /* Style the buttons inside the tab */
+         .tab button {
+         background-color: inherit;
+         float: left;
+         border: none;
+         outline: none;
+         cursor: pointer;
+         padding: 14px 16px;
+         transition: 0.3s;
+         font-size: 17px;
+         }
+         /* Change background color of buttons on hover */
+         .tab button:hover {
+         background-color: #ddd;
+         }
+         /* Create an active/current tablink class */
+         .tab button.active {
+         background-color: #ccc;
+         }
+         /* Style the tab content */
+         .tabcontent {
+         display: none;
+         padding: 6px 12px;
+         border: 1px solid #ccc;
+         border-top: none;
+         }
+      </style>
+       <div class="container-fluid col-sm-12 col-md-12 col-lg-12 custom_dashboard" id="issues_dashboard">
+      <div class="row mt-3">
+      <div class="col-sm-12 col-md-7">
+      <div class="custom_chart h-100" id="bar_chart_1">
+         <div class="chart_title row no-margin">
+            <div class="col-sm-8">
+               <h4 class="inline-block">Issues of function</h4>
+            </div>
+         </div>
+          <div class="chart_content mt-5">
+            <canvas id="BarChart_1"/>
+         </div>
+          <div id="BarChart-legends_1" class="mb-5"/>
+         </div>
+      </div>
+          <div class="col-sm-12 col-md-5">
+         <div class="custom_chart h-100" id="doughnut_chart">
+            <div class="chart_title row no-margin">
+               <div class="col-sm-8">
+                  <h4 class="inline-block">Issues bug and Issues closed</h4>
+               </div>
+            </div>
+             <div class="chart_content mt-5">
+               <canvas id="DoughnutChart"/>
+            </div>
+             <div id="DoughnutChart-legends" class="mb-5"/>
+            </div>
+         </div>
+      </div>
+           <div class="row mt-3">
+      <div class="col-sm-12 col-md-7">
+         <div class="custom_chart h-100" id="bar_chart">
+            <div class="chart_title row no-margin">
+               <div class="col-sm-8">
+                  <h4 class="inline-block">Issues of times</h4>
+               </div>
+            </div>
+             <div class="chart_content mt-5">
+               <canvas id="BarChart"/>
+            </div>
+             <div id="BarChart-legends" class="mb-5"/>
+            </div>
+         </div>
+               <div class="col-sm-12 col-md-5">
+            <div class="custom_chart h-100" id="doughnut_chart">
+               <div class="chart_title row no-margin">
+                  <div class="col-sm-8">
+                     <h4 class="inline-block">Issues of status</h4>
+                  </div>
+               </div>
+                <div class="chart_content mt-5">
+                  <canvas id="PieChart"/>
+               </div>
+                <div id="PieChart-legends" class="mb-5"/>
+               </div>
+            </div>
+         </div>
+
+
+           <div class="row mt-3 mb-3">
+                <div class="col-sm-12">
+                   <div class="custom_chart h-100">
+                         <div class="chart_title row no-margin">
+
+                        <div class="col-sm-8">
+                           <h4 class="inline-block">Danh sách các issues còn lỗi</h4>
+                        </div>
+                     </div>
+                       <div class="tab">
+                        <button class="tablinks" onclick="openIssues(event, 'Tongloi')" id="defaultTongloi">
+                           Tổng lỗi<br></br>
+                            <t t-esc="widget.result.table_tong_loi_count"/>
+                        </button>
+                           <button class="tablinks" onclick="openIssues(event, 'Blocker')">
+                           Blocker<br></br>
+                               <t t-esc="widget.result.table_blocker_count"/>
+                        </button>
+                           <button class="tablinks" onclick="openIssues(event, 'Critical')">
+                           Critical<br></br>
+                               <t t-esc="widget.result.table_critical_count"/>
+                        </button>
+                           <button class="tablinks" onclick="openIssues(event, 'Major')">
+                           Major<br></br>
+                               <t t-esc="widget.result.table_major_count"/>
+                        </button>
+                           <button class="tablinks" onclick="openIssues(event, 'Minor')">
+                           Minor<br></br>
+                               <t t-esc="widget.result.table_minor_count"/>
+                        </button>
+                           <button class="tablinks" onclick="openIssues(event, 'Trivial')">
+                           Trivial<br></br>
+                               <t t-esc="widget.result.table_trivial_count"/>
+                        </button>
+                  </div>
+                       <!--                          tổng lỗi-->
+
+                       <div id="Tongloi" class="tabcontent">
+                     <div class="report_container o_list_view">
+                        <div class="table-responsive">
+                           <table class="table-sm table o_list_table table-hover table-striped"
+                                  t-if="widget.result.table_tong_loi_body">
+                              <thead>
+                                 <tr>
+                                    <th>Bug ID</th>
+                                     <th>Title</th>
+                                     <th>Type</th>
+                                     <th>Severity</th>
+                                     <th>Status</th>
+                                 </tr>
+                              </thead>
+                               <tbody>
+                                 <tr t-foreach="widget.result.table_tong_loi_body" t-as="data">
+                                    <td>
+                                       <b>
+                                          <t t-esc="data['name']"/>
+                                       </b>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['title']"/>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['type']"/>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['priority']"/>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['status']"/>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+
+                       <!--                          kthuc tổng lỗi-->
+
+
+                       <!--                          blocker-->
+
+                       <div id="Blocker" class="tabcontent">
+                     <div class="report_container o_list_view">
+                        <div class="table-responsive">
+                           <table class="table-sm table o_list_table table-hover table-striped"
+                                  t-if="widget.result.table_blocker_body">
+                              <thead>
+                                 <tr>
+                                    <th>Bug ID</th>
+                                     <th>Title</th>
+                                     <th>Type</th>
+                                     <th>Severity</th>
+                                     <th>Status</th>
+                                 </tr>
+                              </thead>
+                               <tbody>
+                                 <tr t-foreach="widget.result.table_blocker_body" t-as="data">
+                                    <td>
+                                       <b>
+                                          <t t-esc="data['name']"/>
+                                       </b>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['title']"/>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['type']"/>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['priority']"/>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['status']"/>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+
+                       <!--                          kthuc blocker-->
+                       <!--                          critical-->
+
+                       <div id="Critical" class="tabcontent">
+                     <div class="report_container o_list_view">
+                        <div class="table-responsive">
+                           <table class="table-sm table o_list_table table-hover table-striped"
+                                  t-if="widget.result.table_critical_body">
+                              <thead>
+                                 <tr>
+                                    <th>Bug ID</th>
+                                     <th>Title</th>
+                                     <th>Type</th>
+                                     <th>Severity</th>
+                                     <th>Status</th>
+                                 </tr>
+                              </thead>
+                               <tbody>
+                                 <tr t-foreach="widget.result.table_critical_body" t-as="data">
+                                    <td>
+                                       <b>
+                                          <t t-esc="data['name']"/>
+                                       </b>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['title']"/>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['type']"/>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['priority']"/>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['status']"/>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+
+                       <!--                          kthuc critical-->
+                       <!--                          major-->
+
+                       <div id="Major" class="tabcontent">
+                     <div class="report_container o_list_view">
+                        <div class="table-responsive">
+                           <table class="table-sm table o_list_table table-hover table-striped"
+                                  t-if="widget.result.table_major_body">
+                              <thead>
+                                 <tr>
+                                    <th>Bug ID</th>
+                                     <th>Title</th>
+                                     <th>Type</th>
+                                     <th>Severity</th>
+                                     <th>Status</th>
+                                 </tr>
+                              </thead>
+                               <tbody>
+                                 <tr t-foreach="widget.result.table_major_body" t-as="data">
+                                    <td>
+                                       <b>
+                                          <t t-esc="data['name']"/>
+                                       </b>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['title']"/>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['type']"/>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['priority']"/>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['status']"/>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+
+                       <!--                          kthuc major-->
+                       <!--                          minor-->
+
+                       <div id="Minor" class="tabcontent">
+                     <div class="report_container o_list_view">
+                        <div class="table-responsive">
+                           <table class="table-sm table o_list_table table-hover table-striped"
+                                  t-if="widget.result.table_minor_body">
+                              <thead>
+                                 <tr>
+                                    <th>Bug ID</th>
+                                     <th>Title</th>
+                                     <th>Type</th>
+                                     <th>Severity</th>
+                                     <th>Status</th>
+                                 </tr>
+                              </thead>
+                               <tbody>
+                                 <tr t-foreach="widget.result.table_minor_body" t-as="data">
+                                    <td>
+                                       <b>
+                                          <t t-esc="data['name']"/>
+                                       </b>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['title']"/>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['type']"/>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['priority']"/>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['status']"/>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+
+                       <!--                          kthuc minor-->
+                       <!--                          trivial-->
+
+                       <div id="Trivial" class="tabcontent">
+                     <div class="report_container o_list_view">
+                        <div class="table-responsive">
+                           <table class="table-sm table o_list_table table-hover table-striped"
+                                  t-if="widget.result.table_trivial_body">
+                              <thead>
+                                 <tr>
+                                    <th>Bug ID</th>
+                                     <th>Title</th>
+                                     <th>Type</th>
+                                     <th>Severity</th>
+                                     <th>Status</th>
+                                 </tr>
+                              </thead>
+                               <tbody>
+                                 <tr t-foreach="widget.result.table_trivial_body" t-as="data">
+                                    <td>
+                                       <b>
+                                          <t t-esc="data['name']"/>
+                                       </b>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['title']"/>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['type']"/>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['priority']"/>
+                                    </td>
+                                     <td>
+                                       <t t-esc="data['status']"/>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+
+                       <!--                          kthuc trivial-->
+
+                       <script>
+                     function openIssues(evt, issuesName) {
+                       var i, tabcontent, tablinks;
+                       tabcontent = document.getElementsByClassName("tabcontent");
+                       for (var i = 0; i&lt;tabcontent.length; i++) {
+                         tabcontent[i].style.display = "none";
+                       }
+                       tablinks = document.getElementsByClassName("tablinks");
+                       for (var i = 0; i&lt;tablinks.length; i++) {
+                         tablinks[i].className = tablinks[i].className.replace(" active", "");
+                       }
+                       document.getElementById(issuesName).style.display = "block";
+                       evt.currentTarget.className += " active";
+                     }
+                         // Get the element with id="defaultOpen" and click on it
+                         document.getElementById("defaultTongloi").click();
+                  </script>
+                   </div>
+                </div>
+            </div>
+
+
+
+      </div>
+   </t>
+</templates>
