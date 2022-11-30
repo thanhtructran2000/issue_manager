@@ -24,6 +24,9 @@ odoo.define('issue_manager.issues_dashboard', function (require) {
         events: {
             'click a': 'hrefLinkClicked',
             'click .view_detail': 'viewDetail',
+            'click .redirect_project_detail': 'redirect_project_detail', // click từ dashboard project sang dashboard issues
+            'click .redirect_dashboard': 'redirect_dashboard', // click từ dashboard issues trở về dashboard project
+
         },
 
         init: function (parent, context) {
@@ -50,6 +53,8 @@ odoo.define('issue_manager.issues_dashboard', function (require) {
                 model: 'issues',
                 method: 'get_dashboard_data_issues',
                 args: [32]
+//                args: [self.project_id]
+
 
             }).then(function (result) {
                 self.result = result;
@@ -78,6 +83,46 @@ odoo.define('issue_manager.issues_dashboard', function (require) {
         viewDetail: function () {
 
         },
+
+
+        redirect_project_detail: function (e) {
+            e.stopPropagation();
+            var self = this;
+            self.$('#issues_dashboard').css("display", "block");
+            self.$('#testing_project_dashboard').css("display", "none");
+        },
+
+
+
+
+        redirect_dashboard: function (e) {
+            e.stopPropagation();
+            var self = this;
+
+            var active_id = self.GetURLParameter("active_id");
+            if (active_id != undefined) {
+                this.do_action('issue_manager.issues_dashboard_action', {clear_breadcrumbs: true,});
+            } else {
+                self.$('#issues_dashboard').css("display", "none");
+                self.$('#testing_project_dashboard').css("display", "block");
+            }
+        },
+
+        GetURLParameter: function (sParam) {
+
+            var sPageURL = window.location.href;
+
+            var sURLVariables = sPageURL.split('&');
+            for (var i = 0; i < sURLVariables.length; i++) {
+                var sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] == sParam) {
+                    return sParameterName[1];
+                }
+            }
+        },
+
+
+
 
         createLegend: function (chart, chart_type) {
             var text = [];

@@ -8,18 +8,6 @@
         </style>
         <div class="container-fluid col-sm-12 col-md-12 col-lg-12 custom_dashboard" id="testing_project_dashboard">
             <div class="row mt-3">
-                <div class="col-sm-12">
-                    <select class="form-control mr-2 w-auto inline-block" id="select_project">
-                        <option disabled="1" selected="1" value="">Project</option>
-                    </select>
-                    <select class="form-control w-auto inline-block mr-2" id="select_issues">
-                        <option disabled="1" selected="1" value="">Issues</option>
-                    </select>
-                    <input class="form-control w-auto inline-block mr-2" id="date_range" type="text" name="daterange"/>
-                    <button class="btn btn_normal">Bộ lọc</button>
-                </div>
-            </div>
-            <div class="row mt-3">
                 <div class="col-sm-12 col-md-7">
                     <div class="custom_chart h-100">
                         <div class="chart_title row no-margin">
@@ -71,8 +59,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
+            <div class="row mt-3 mb-3">
+                <div class="col-sm-12">
                     <div class="custom_chart h-100" id="doughnut_chart">
                         <div class="chart_title row no-margin">
                             <div class="col-sm-6">
@@ -82,6 +70,11 @@
                                 <select id="select-project" class="form-control" placeholder="Chọn dự án..." >
                                 </select>
                             </div>
+<!--                            nút-->
+                            <div class="col-sm-1">
+                                    <i class="fa fa-arrow-right redirect redirect_project_detail" style="margin-right:10px"></i>
+                            </div>
+<!--                            kthuc nút-->
                         </div>
                          <div class="card-body" style="border-top: 1px solid #eeeeee;">
                             <div class="row">

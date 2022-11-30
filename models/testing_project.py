@@ -343,6 +343,8 @@ class TestingProject(models.Model):
                 'other': line.issues_other,
                 'pie_chart_label': ['Closed', 'Other'],
                 'pie_chart_value': [line.issues_closed, line.issues_other],
+                'pie_chart_color': ['#ebbf80', '#4c73b3', '#e38634', '#f42828', '#dcdfe9',
+                                    'rgba(255, 99, 132)', 'rgba(75, 192, 192)', 'rgba(153, 102, 255)'],
             })
         return result_projects
 

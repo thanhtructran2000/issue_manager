@@ -25,6 +25,7 @@ odoo.define('issue_manager.testing_project_dashboard', function (require) {
             'click a': 'hrefLinkClicked',
             'click .view_detail': 'viewDetail',
             'change #select-project': 'view_project',
+
         },
 
         init: function (parent, context) {
@@ -94,6 +95,10 @@ console.log(select);
         viewDetail: function () {
 
         },
+
+
+
+
         view_project: function () {
             var self = this;
             var select_val = this.$el.find('#select-project').val()

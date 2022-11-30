@@ -45,7 +45,15 @@
       <div class="custom_chart h-100" id="bar_chart_1">
          <div class="chart_title row no-margin">
             <div class="col-sm-8">
-               <h4 class="inline-block">Issues of function</h4>
+
+               <h4 class="inline-block">
+<!--                   nút-->
+                   <i class="fa fa-arrow-left redirect_left redirect_dashboard" style="margin-right:10px"></i>
+                   Issues of function
+               </h4>
+
+
+
             </div>
          </div>
           <div class="chart_content mt-5">
