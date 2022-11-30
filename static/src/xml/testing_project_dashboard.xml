@@ -120,7 +120,6 @@
                                                     </td>
                                                     <td class="align-middle text-left">
                                                         <span id="times">
-
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -151,11 +150,11 @@
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-9">
-                                            <div class="project_status_chart">
-                                            <div class="chart_content mt-5" >
-                                                <canvas id="PieChart"/>
-                                            </div>
-                                            <div id="PieChart-legends" class="mb-5"/>
+                                            <div class="project_status_chart" >
+                                                <div class="chart_content mt-5">
+                                                    <canvas id="PieChart"/>
+                                                </div>
+                                                <div id="PieChart-legends" class="mb-5"/>
                                             </div>
                                         </div>
                                     </div>

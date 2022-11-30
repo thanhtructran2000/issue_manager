@@ -49,7 +49,7 @@ odoo.define('issue_manager.issues_dashboard', function (require) {
             var def1 = this._rpc({
                 model: 'issues',
                 method: 'get_dashboard_data_issues',
-                args: [32]
+                args: [2]
 
             }).then(function (result) {
                 self.result = result;
