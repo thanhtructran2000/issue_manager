@@ -52,15 +52,13 @@ odoo.define('issue_manager.testing_project_dashboard', function (require) {
                 method: 'get_dashboard_data'
             }).then(function (result) {
                 self.result = result;
-                console.log(self.result);
             });
 
              var def2 = this._rpc({
                 model: 'testing.project',
-                method: 'get_projects'
+                method: 'get_project_by_id'
             }).then(function (result) {
                 self.projects = result;
-                console.log(self.result);
             });
             return $.when(def1, def2);
         },
@@ -74,14 +72,12 @@ odoo.define('issue_manager.testing_project_dashboard', function (require) {
                 }
             }, function (start, end, label) {
             });
-            this.renderGraph(self.result);
-//            this.renderGraph(self.projects);
+            this.renderGraph(self.result, self.projects);
              // Binding projects
             var select = this.$el.find('#select-project');
-console.log(self.projects);
-console.log(select);
-            for (let i = 0; i < self.projects.length; i++) {
-                select.append(new Option(self.projects[i].name, self.projects[i].id));
+            console.log(self.projects.project_list)
+            for (let i = 0; i < self.projects.project_list; i++) {
+                select.append(new Option(self.projects.project_list.name, self.projects.project_list.id));
             }
             self.view_project();
         },
@@ -97,7 +93,7 @@ console.log(select);
         view_project: function () {
             var self = this;
             var select_val = this.$el.find('#select-project').val()
-             for (var i = 0; i < self.projects.length; i++) {
+            for (var i = 0; i < self.projects.length; i++) {
                 if (self.projects[i].id == select_val) {
                     self.$('#project_code').html(self.projects[i].code);
                     self.$('#project_manager').html(self.projects[i].project_manager);
@@ -105,6 +101,7 @@ console.log(select);
                     self.$('#times').html(self.projects[i].times);
                     self.$('#closed').html(self.projects[i].closed);
                     self.$('#other').html(self.projects[i].other);
+                    this.renderGraph(self.result, self.projects);
                 }
              }
         },
@@ -147,7 +144,7 @@ console.log(select);
             return value;
         },
 
-        renderGraph: function (result) {
+        renderGraph: function (result, projects) {
             var self = this;
             var ctx = this.$el.find('#LineChart');
             var doughnut_ctx = this.$el.find('#DoughnutChart');
@@ -437,14 +434,16 @@ console.log(select);
 
             // Pie chart
             if (pie_ctx.length) {
+console.log("ssss",projects);
+console.log("sss", projects.pie_chart_value);
                 var PieChart = new Chart(pie_ctx, {
                     type: 'pie',
                     data: {
                         indexLabelFontColor: "white",
-                        labels: result.pie_chart_label,
+                        labels: projects.pie_chart_label,
                         datasets: [{
-                            data: result.pie_chart_label,
-                            backgroundColor: result.pie_chart_color,
+                            data: projects.pie_chart_value,
+                            backgroundColor: ['#24bcfe', '#e9ecef'],
                         }],
                     },
                     options: {
@@ -458,13 +457,13 @@ console.log(select);
                             return self.createLegend(chart, 'single');
                         },
                         tooltips: {
-                            enabled: true,
-                            callbacks: {
-                                label: function (tooltipItem, data) {
-                                    var label = data.datasets[0].data[tooltipItem.index];
-                                    return self.shortenLabel(label, 'number');
-                                }
-                            }
+                            enabled: false,
+//                            callbacks: {
+//                                label: function (tooltipItem, data) {
+//                                    var label = data.datasets[0].data[tooltipItem.index];
+//                                    return self.shortenLabel(label, 'number');
+//                                }
+//                            }
                         },
                         responsive: true,
                         maintainAspectRatio: false,
