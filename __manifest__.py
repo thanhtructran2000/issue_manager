@@ -26,6 +26,9 @@
         'views/testing_project_board_views.xml',
         'views/menu_views.xml',
 
+        'views/issues_board_views.xml',
+        'views/web_templates.xml',
+
 
     ],
     'external_dependencies': {
