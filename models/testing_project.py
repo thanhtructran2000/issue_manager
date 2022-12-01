@@ -329,17 +329,7 @@ class TestingProject(models.Model):
                     'pie_chart_value': [issues_closed, issues_other],
                 })
             return {
-                # 'id': current_project.id,
-                # 'name': current_project.project_name,
-                # 'code': current_project.project_code,
-                # 'project_manager': current_project.manager_id.name,
-                # 'total_issues': current_project.issues_count,
-                # 'times': current_project.times_count,
-                # 'closed': issues_closed,
-                # # 'other': issues_other,
                 'project_list': project_list,
-                # 'pie_chart_label': ['Closed', 'Other'],
-                # 'pie_chart_value': [issues_closed, issues_other],
             }
         else:
             return False
