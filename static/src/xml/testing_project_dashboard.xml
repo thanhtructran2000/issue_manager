@@ -28,24 +28,24 @@
                                         <th>Số lần kiểm định</th>
                                         <th>Người phụ trách</th>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <tr t-foreach="widget.result.table_body" t-as="data">
-                                        <td><a href="#"><t t-esc="data['code']"/></a></td>
-                                        <td><t t-esc="data['name']"/></td>
-                                        <td><t t-esc="data['total_issues']"/></td>
-                                        <td><t t-esc="data['times']"/></td>
-                                        <td><t t-esc="data['project_manager']"/></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                            </thead>
+                                            <tbody>
+                                                <tr t-foreach="widget.result.table_body" t-as="data">
+                                                    <td><a href="#"><t t-esc="data['code']"/></a></td>
+                                                    <td><t t-esc="data['name']"/></td>
+                                                    <td><t t-esc="data['total_issues']"/></td>
+                                                    <td><t t-esc="data['times']"/></td>
+                                                    <td><t t-esc="data['project_manager']"/></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-                    </div>
-                </div>
-                 <div class="col-sm-12 col-md-5">
+                <div class="col-sm-12 col-md-5">
                     <div class="custom_chart h-100" id="bar_chart">
                         <div class="chart_title row no-margin">
                             <div class="col-sm-8">

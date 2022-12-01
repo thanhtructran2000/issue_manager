@@ -24,6 +24,7 @@ odoo.define('issue_manager.testing_project_dashboard', function (require) {
         events: {
             'click a': 'hrefLinkClicked',
             'click .view_detail': 'viewDetail',
+            'click .redirect_project_detail': 'redirect_project_detail',
             'change #select-project': 'view_project',
 
         },
@@ -76,11 +77,11 @@ odoo.define('issue_manager.testing_project_dashboard', function (require) {
             this.renderGraph(self.result, self.projects);
              // Binding projects
             var select = this.$el.find('#select-project');
-//          console.log(self.result.project_list)
             for (let i = 0; i < self.projects.project_list.length; i++) {
                 select.append(new Option(self.projects.project_list[i].name, self.projects.project_list[i].id));
             }
             self.view_project();
+
         },
 
         hrefLinkClicked: function (ev) {
@@ -106,9 +107,11 @@ odoo.define('issue_manager.testing_project_dashboard', function (require) {
                     self.$('#times').html(self.projects.project_list[i].times);
                     self.$('#closed').html(self.projects.project_list[i].closed);
                     self.$('#other').html(self.projects.project_list[i].other);
-                    this.renderGraph(self.result, self.projects);
+                    this.renderGraph(self.result, self.projects.project_list[i]);
                 }
              }
+        },
+        redirect_project_detail: function(e){
         },
 
         createLegend: function (chart, chart_type) {
@@ -193,163 +196,6 @@ odoo.define('issue_manager.testing_project_dashboard', function (require) {
                     }
                 },
             });
-
-            // Line chart
-            if (ctx.length) {
-                var LineChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        indexLabelFontColor: "black",
-                        labels: result.line_chart_label,
-                        datasets: [{
-                            label: result.line_chart1_label,
-                            data: result.line_chart1_value,
-                            backgroundColor: result.line_chart1_color,
-                            borderColor: result.line_chart1_color,
-                            fill: false,
-                            pointStyle: 'circle',
-                        }, {
-                            label: result.line_chart2_label,
-                            data: result.line_chart2_value,
-                            backgroundColor: result.line_chart2_color,
-                            borderColor: result.line_chart2_color,
-                            fill: false,
-                            pointStyle: 'circle',
-                        }],
-                    },
-                    options: {
-                        plugins: {
-                            datalabels: {
-                                display: false,
-                                // font: {
-                                //     size: 9,
-                                //     family: "Odoo Unicode Support Noto, Lucida Grande, Helvetica, Verdana, Arial, sans-serif",
-                                // },
-                                // anchor: 'center',
-                                // align: 'center',
-                                // formatter: Math.round,
-                            }
-                        },
-                        // elements: {
-                        //     line: {
-                        //         tension: 0, // disables bezier curves (straight lines yAxes instead of curves)
-                        //     }
-                        // },
-                        legendCallback: function (chart) {
-                            return self.createLegend(chart, 'multiple');
-                        },
-                        tooltips: {
-                            enabled: true,
-                            callbacks: {
-                                label: function (tooltipItem, data) {
-                                    var label = tooltipItem.yLabel;
-                                    return self.shortenLabel(label, 'number');
-                                }
-                            }
-                        },
-                        scales: {
-                            // hide vertical lines
-                            xAxes: [{
-                                gridLines: {
-                                    display: false,
-                                    color: '#1d1d1d'
-                                },
-                                ticks: {
-                                    fontSize: 12,
-                                    fontColor: "black",
-                                    autoSkip: false,
-                                    // maxRotation: 90,
-                                    // minRotation: 90
-                                }
-                            }],
-                            yAxes: [{
-                                ticks: {
-                                    fontSize: 12,
-                                    fontColor: "black",
-                                    beginAtZero: true,
-                                    suggestedMax: result.line_chart_max,
-                                    callback: function (label, index, labels) {
-                                        return self.shortenLabel(label, 'number');
-                                    }
-                                },
-                                gridLines: {
-                                    display: false,
-                                    drawBorder: true,
-                                    color: '#1d1d1d',
-                                },
-                            }]
-                        },
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        legend: {
-                            display: false,
-                        },
-                        title: {
-                            display: false,
-                            fontSize: 18,
-                            fontColor: 'black',
-                            text: "Dashboard",
-                        }
-                    },
-                });
-                if (this.$el.find('#LineChart-legends')) {
-                    this.$el.find('#LineChart-legends').html(LineChart.generateLegend());
-                }
-            }
-
-            // Doughnut chart
-            if (doughnut_ctx.length) {
-                var DoughnutChart = new Chart(doughnut_ctx, {
-                    type: 'doughnut',
-                    data: {
-                        indexLabelFontColor: "white",
-                        labels: result.doughnut_label,
-                        datasets: [{
-                            data: result.doughnut_value,
-                            backgroundColor: result.doughnut_color,
-                        }],
-                    },
-                    options: {
-                        // display value in top of column using chartjs-datalabels-plugin
-                        plugins: {
-                            datalabels: {
-                                display: false,
-                            }
-                        },
-                        tooltips: {
-                            enabled: true,
-                            callbacks: {
-                                label: function (tooltipItem, data) {
-                                    var label = data.datasets[0].data[tooltipItem.index];
-                                    return self.shortenLabel(label, 'percent');
-                                }
-                            }
-                        },
-                        legendCallback: function (chart) {
-                            return self.createLegend(chart, 'single');
-                        },
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        legend: {
-                            position: 'right',
-                            display: false,
-                            labels: {
-                                fontColor: 'black'
-                            }
-                        },
-                        title: {
-                            fontSize: 16,
-                            fontColor: 'black',
-                            display: false,
-                            text: 'Project report',
-                        }
-                    },
-                });
-                if (this.$el.find('#DoughnutChart-legends')) {
-                    this.$el.find('#DoughnutChart-legends').html(DoughnutChart.generateLegend());
-                }
-            }
-
             // Bar chart
             if (bar_ctx.length) {
                 var BarChart = new Chart(bar_ctx, {
@@ -439,7 +285,6 @@ odoo.define('issue_manager.testing_project_dashboard', function (require) {
 
             // Pie chart
             if (pie_ctx.length) {
-console.log("pie_value", projects.pie_chart_value);
                 var PieChart = new Chart(pie_ctx, {
                     type: 'pie',
                     data: {
@@ -447,7 +292,7 @@ console.log("pie_value", projects.pie_chart_value);
                         labels: projects.pie_chart_label,
                         datasets: [{
                             data: projects.pie_chart_value,
-                            backgroundColor: ['#24bcfe', '#e9ecef'],
+                            backgroundColor: ['rgba(255, 159, 64)', '#24bcfe'],
                         }],
                     },
                     options: {
@@ -461,13 +306,13 @@ console.log("pie_value", projects.pie_chart_value);
                             return self.createLegend(chart, 'single');
                         },
                         tooltips: {
-                            enabled: false,
-//                            callbacks: {
-//                                label: function (tooltipItem, data) {
-//                                    var label = data.datasets[0].data[tooltipItem.index];
-//                                    return self.shortenLabel(label, 'number');
-//                                }
-//                            }
+                            enabled: true,
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    var label = data.datasets[0].data[tooltipItem.index];
+                                    return self.shortenLabel(label, 'number');
+                                }
+                            }
                         },
                         responsive: true,
                         maintainAspectRatio: false,
