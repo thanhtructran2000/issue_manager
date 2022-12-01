@@ -169,8 +169,6 @@ class Issues(models.Model):
                                         'status': record.status, })
 
         # biểu đồ times
-
-
         search_times_of_project = projects.project_id.times_ids
         times_list = []
         issues_of_times_list = []
