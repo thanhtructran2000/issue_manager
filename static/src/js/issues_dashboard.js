@@ -55,7 +55,6 @@ odoo.define('issue_manager.issues_dashboard', function (require) {
                 args: [32]
 //                args: [self.project_id]
 
-
             }).then(function (result) {
                 self.result = result;
                 console.log(self.result);

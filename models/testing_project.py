@@ -296,23 +296,6 @@ class TestingProject(models.Model):
         for line in self.search([], order='issues_count desc', limit=5):
                 list5_project_name.append(line.project_name)
                 list5_project_issues.append(line.issues_count)
-
-        # result_projects = []
-        # projects = self.search([])
-        # for line in projects:
-        #     line.issues_other = self.env['issues'].search_count(
-        #         [('project_id', '=', line.id), ('status', 'in', ('new', 'open', 'onhold'))])
-        #     line.issues_closed = line.issues_count - line.issues_other
-        #     result_projects.append({
-        #         'id': line.id,
-        #         'name': line.project_name,
-        #         'code': line.project_code,
-        #         'project_manager': line.manager_id.name,
-        #         'total_issues': line.issues_count,
-        #         'times': line.times_count,
-        #         'closed': line.issues_closed,
-        #         'other': line.issues_other,
-        #     })
         return {
             'table_body': list_project,
             'bar_chart_label': list5_project_name,
@@ -325,31 +308,46 @@ class TestingProject(models.Model):
                }
 
     @api.model
-    def get_projects(self):
-        result_projects = []
-        projects = self.search([])
-        for line in projects:
-            line.issues_other = self.env['issues'].search_count(
-                [('project_id', '=', line.id), ('status', 'in', ('new', 'open', 'onhold'))])
-            line.issues_closed = line.issues_count - line.issues_other
-            result_projects.append({
-                'id': line.id,
-                'name': line.project_name,
-                'code': line.project_code,
-                'project_manager': line.manager_id.name,
-                'total_issues': line.issues_count,
-                'times': line.times_count,
-                'closed': line.issues_closed,
-                'other': line.issues_other,
+    def get_project_by_id(self, project_id=None):
+        if project_id:
+            current_project = self.search([('id', '=', project_id)])
+        else:
+            current_project = self.search([], limit=1)
+        if current_project:
+            issues_other = self.env['issues'].search_count(
+                [('project_id', '=', current_project.id), ('status', 'in', ('new', 'open', 'onhold'))])
+            issues_closed = current_project.issues_count - issues_other
+#
+
+            project_list = []
+            for record in self.search([]):
+                project_list.append({
+                    'id': record.id,
+                    'name':record.project_name,
+                    'code': record.project_code,
+                    'project_manager': record.manager_id.name,
+                    'total_issues': record.issues_count,
+                    'times': record.times_count,
+                    'closed': record.issues_count - record.issues_count_tong_loi,
+                    'other': record.issues_count_tong_loi,
+                })
+            return {
+                'id': current_project.id,
+                'name': current_project.project_name,
+                'code': current_project.project_code,
+                'project_manager': current_project.manager_id.name,
+                'total_issues': current_project.issues_count,
+                'times': current_project.times_count,
+                'closed': current_project.issues_count - current_project.issues_count_tong_loi,
+                'other': current_project.issues_count_tong_loi,
                 'pie_chart_label': ['Closed', 'Other'],
-                'pie_chart_value': [line.issues_closed, line.issues_other],
-                'pie_chart_color': ['#ebbf80', '#4c73b3', '#e38634', '#f42828', '#dcdfe9',
-                                    'rgba(255, 99, 132)', 'rgba(75, 192, 192)', 'rgba(153, 102, 255)'],
-            })
-        return result_projects
 
+                'pie_chart_value': [issues_closed, issues_other],
+                'project_list': project_list,
 
-
+            }
+        else:
+            return False
 
 
 
