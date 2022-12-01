@@ -26,6 +26,7 @@ odoo.define('issue_manager.testing_project_dashboard', function (require) {
             'click .view_detail': 'viewDetail',
             'click .redirect_project_detail': 'redirect_project_detail',
             'change #select-project': 'view_project',
+
         },
 
         init: function (parent, context) {
@@ -91,6 +92,10 @@ odoo.define('issue_manager.testing_project_dashboard', function (require) {
         viewDetail: function () {
 
         },
+
+
+
+
         view_project: function () {
             var self = this;
             var select_val = this.$el.find('#select-project').val()
